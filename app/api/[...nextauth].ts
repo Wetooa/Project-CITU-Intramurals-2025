@@ -1,3 +1,5 @@
+import { GS } from "@/db/db";
+import { AdminUser } from "@/types/types";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -6,19 +8,28 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        username: { label: "username", type: "text" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials) {
           return null;
         }
 
-        if (
-          credentials.username === "admin" &&
-          credentials.password === "secret"
-        ) {
-          return { id: "1", name: "Admin", email: "admin@example.com" };
+        const data = await GS.getSheetData("adminUser");
+        const rows = await data.getRows<AdminUser>();
+
+        const user = rows.find(
+          (row) =>
+            row.get("username") === credentials.username &&
+            row.get("password") === credentials.password,
+        );
+
+        if (user) {
+          return {
+            id: user.get("id"),
+            username: credentials.username,
+          };
         }
 
         return null;

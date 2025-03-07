@@ -55,7 +55,7 @@ export type Bracket = {
 export type AdminUser = {
   id: string;
   username: string;
-  passwordHash: string;
+  password: string;
   createdOn: Date;
   updatedOn: Date;
 };

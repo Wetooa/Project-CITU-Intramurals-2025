@@ -22,7 +22,10 @@ export async function GET() {
         updatedOn: row.get("updatedOn"),
       };
     });
-    return NextResponse.json({ leaderboard }, { status: 200 });
+    return NextResponse.json(
+      { message: "Fetched leaderboard successfully!", leaderboard },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
