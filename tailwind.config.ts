@@ -15,6 +15,7 @@ export default {
 			// put custom colors here
   			coral_red: '#FF4A4A',
 			mocha: "#262524",
+			charcoal_black : "#1b1a18",
 			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
