@@ -59,7 +59,7 @@ export type AdminUser = {
   createdOn: Date;
   updatedOn: Date;
 };
-export const GoogleSheetsTitle = ["leaderboard", "player"] as const;
+export const GoogleSheetsTitle = ["leaderboard", "player", "schedule", "bracket"] as const;
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
 export type Tables =
