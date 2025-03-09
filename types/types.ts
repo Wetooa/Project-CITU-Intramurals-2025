@@ -33,6 +33,8 @@ export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 export interface Schedule {
   id: number;
   match_date: Date;
+  team1_name: string
+  team2_name: string
   team1_id: number;
   team2_id: number;
   category: string;
