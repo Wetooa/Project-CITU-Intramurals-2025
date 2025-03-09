@@ -1,7 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-
-export type GoogleSheetsTitle = "leaderboard" | "player";
+import { GoogleSheetsTitleType } from "@/types/types";
 
 class GoogleSheetsClient {
   private doc;
@@ -9,7 +8,7 @@ class GoogleSheetsClient {
   private sheetId: string | undefined;
 
   constructor() {
-    this.sheetId = process.env.GOOGLE_SHEET_ID;
+    this.sheetId = process.env.SHEET_ID;
 
     if (this.sheetId === undefined) {
       throw new Error("URL is not defined");
@@ -31,14 +30,13 @@ class GoogleSheetsClient {
     return GoogleSheetsClient.instance;
   }
 
-  async getSheetData(sheetTitle: GoogleSheetsTitle) {
+  async getSheetData(sheetTitle: GoogleSheetsTitleType) {
     await this.doc.loadInfo();
 
     const sheet = this.doc.sheetsByTitle[sheetTitle];
-    const rows = await sheet.getRows();
 
-    return rows;
+    return sheet;
   }
 }
 
-export const googleSheets = GoogleSheetsClient.getInstance();
+export const GS = GoogleSheetsClient.getInstance();
