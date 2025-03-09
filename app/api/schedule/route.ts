@@ -6,24 +6,48 @@ import { getServerSession } from "next-auth";
 
 export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam ? parseInt(limitParam, 10) : 10;
+    const offset = (page - 1) * limit;
+
     const data = await GS.getSheetData("schedule");
     const sheet = await data.getRows();
+    const total = sheet.length;
 
-    const schedule: Schedule[] = sheet.map((row) => {
+    // Sort by matchDate (latest to earliest)
+    sheet.sort((a, b) => new Date(b.get("matchDate")).getTime() - new Date(a.get("matchDate")).getTime());
+    
+    
+    // Sort by matchDate (earliest to latest)
+    // sheet.sort((a, b) => new Date(a.get("matchDate")).getTime() - new Date(b.get("matchDate")).getTime());
+    
+
+    const schedule = sheet.slice(offset, offset + limit).map((row) => {
       return {
         id: row.get("id"),
-        matchDate: row.get("match_date"),
-        team1Id: row.get("team1_id"),
-        team2Id: row.get("team2_id"),
+        matchDate: row.get("matchDate"),
+        team1Id: row.get("team1Id"),
+        team1Name: row.get("team1Name"),
+        team2Id: row.get("team2Id"),
+        team2Name: row.get("team2Name"),
         category: row.get("category"),
-        scoreTeam1: row.get("score_team1"),
-        scoreTeam2: row.get("score_team2"),
+        scoreTeam1: row.get("scoreTeam1"),
+        scoreTeam2: row.get("scoreTeam2"),
         status: row.get("status"),
-        createdOn: row.get("created_on"),
-        updatedOn: row.get("updated_on"),
+        createdOn: row.get("createdOn"),
+        updatedOn: row.get("updatedOn"),
       };
     });
-    return NextResponse.json({ schedule }, { status: 200 });
+
+    return NextResponse.json({
+      schedule,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
