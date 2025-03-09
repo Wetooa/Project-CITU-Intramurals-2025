@@ -6,10 +6,17 @@ import { getServerSession } from "next-auth";
 
 export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam ? parseInt(limitParam, 10) : 10;
+    const offset = (page - 1) * limit;
+
     const data = await GS.getSheetData("schedule");
     const sheet = await data.getRows();
+    const total = sheet.length;
 
-    const schedule: Schedule[] = sheet.map((row) => {
+    const schedule = sheet.slice(offset, offset + limit).map((row) => {
       return {
         id: row.get("id"),
         matchDate: row.get("match_date"),
@@ -23,7 +30,14 @@ export async function GET(req: Request) {
         updatedOn: row.get("updated_on"),
       };
     });
-    return NextResponse.json({ schedule }, { status: 200 });
+
+    return NextResponse.json({
+      schedule,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
