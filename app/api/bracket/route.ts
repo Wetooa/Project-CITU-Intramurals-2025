@@ -1,7 +1,6 @@
+import { auth } from "@/auth";
 import { GS } from "@/db/db";
 import { NextResponse } from "next/server";
-import { authOptions } from "../[...nextauth]";
-import { getServerSession } from "next-auth";
 
 // GET: Fetch all bracket details
 export async function GET() {
@@ -26,9 +25,9 @@ export async function GET() {
 }
 
 // POST: Create or update tournament bracket
-export async function POST(req : Request) {
+export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }

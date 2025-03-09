@@ -55,11 +55,17 @@ export type Bracket = {
 export type AdminUser = {
   id: string;
   username: string;
-  passwordHash: string;
+  password: string;
   createdOn: Date;
   updatedOn: Date;
 };
-export const GoogleSheetsTitle = ["leaderboard", "player", "schedule", "bracket"] as const;
+export const GoogleSheetsTitle = [
+  "leaderboard",
+  "player",
+  "schedule",
+  "bracket",
+  "adminUser",
+] as const;
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
 export type Tables =
