@@ -2,7 +2,7 @@ import { GS } from "@/db/db";
 import { AdminUser } from "@/types/types";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../[...nextauth]";
+import { authOptions } from "../../auth/[...nextauth]";
 
 export async function GET() {
   try {

@@ -1,5 +1,6 @@
-import { GS } from "@/db/db";
 import { AdminUser } from "@/types/types";
+import { GS } from "@/db/db";
+
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -39,4 +40,4 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export default NextAuth(authOptions);
+export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);

@@ -1,7 +1,7 @@
 import { GS } from "@/db/db";
 import { Schedule } from "@/types/types";
 import { NextResponse } from "next/server";
-import { authOptions } from "../[...nextauth]";
+import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
 export async function GET(req: Request) {
@@ -17,12 +17,14 @@ export async function GET(req: Request) {
     const total = sheet.length;
 
     // Sort by matchDate (latest to earliest)
-    sheet.sort((a, b) => new Date(b.get("matchDate")).getTime() - new Date(a.get("matchDate")).getTime());
-    
-    
+    sheet.sort(
+      (a, b) =>
+        new Date(b.get("matchDate")).getTime() -
+        new Date(a.get("matchDate")).getTime(),
+    );
+
     // Sort by matchDate (earliest to latest)
     // sheet.sort((a, b) => new Date(a.get("matchDate")).getTime() - new Date(b.get("matchDate")).getTime());
-    
 
     const schedule = sheet.slice(offset, offset + limit).map((row) => {
       return {
@@ -72,7 +74,10 @@ export async function POST(req: Request) {
 
     await data.addRow(rowData);
 
-    return NextResponse.json({ message: "Schedule added successfully!" }, { status: 201 });
+    return NextResponse.json(
+      { message: "Schedule added successfully!" },
+      { status: 201 },
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
@@ -93,13 +98,19 @@ export async function PUT(req: Request) {
     const rowIndex = rows.findIndex((row) => row.get("id") === id);
 
     if (rowIndex === -1) {
-      return NextResponse.json({ message: "Schedule not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Schedule not found" },
+        { status: 404 },
+      );
     }
 
     rows[rowIndex].assign(reqData);
     await rows[rowIndex].save();
 
-    return NextResponse.json({ message: "Schedule updated successfully!" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Schedule updated successfully!" },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
@@ -118,12 +129,18 @@ export async function DELETE(req: Request) {
     const rowIndex = rows.findIndex((row) => row.get("id") === id);
 
     if (rowIndex === -1) {
-      return NextResponse.json({ message: "Schedule not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Schedule not found" },
+        { status: 404 },
+      );
     }
 
     await rows[rowIndex].delete();
 
-    return NextResponse.json({ message: "Schedule deleted successfully!" }, { status: 200 });
+    return NextResponse.json(
+      { message: "Schedule deleted successfully!" },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

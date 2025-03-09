@@ -1,11 +1,13 @@
 "use client";
 
-import { Inter } from "next/font/google";
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
-import { NavBar } from "./navbar";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnimatePresence, motion } from "framer-motion";
+import { Inter } from "next/font/google";
+import { usePathname } from "next/navigation";
+import { Toaster } from "sonner";
+import "./globals.css";
+import { NavBar } from "./navbar";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -36,7 +38,10 @@ export default function RootLayout({
               defaultTheme="dark"
               disableTransitionOnChange
             >
-              {children}
+              <SessionProvider>
+                {children}
+                <Toaster />
+              </SessionProvider>
             </ThemeProvider>
           </motion.div>
         </AnimatePresence>

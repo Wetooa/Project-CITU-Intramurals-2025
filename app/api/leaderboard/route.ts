@@ -1,7 +1,7 @@
 import { GS } from "@/db/db";
 import { Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
-import { authOptions } from "../[...nextauth]";
+import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
 export async function GET() {
