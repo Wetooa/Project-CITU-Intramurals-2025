@@ -2,12 +2,12 @@
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { AnimatePresence, motion } from "framer-motion";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { NavBar } from "./navbar";
-import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   variable: "--font-geist-sans",

@@ -1,10 +1,8 @@
-"use client";
-
-import { getSession } from "next-auth/react";
+import { auth } from "@/auth";
 import Image from "next/image";
 
-export default function Home() {
-  const session = getSession();
+export default async function Home() {
+  const session = await auth();
   console.log(session);
 
   return (

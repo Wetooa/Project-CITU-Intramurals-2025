@@ -1,8 +1,7 @@
 import { GS } from "@/db/db";
 import { Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
@@ -33,7 +32,7 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }

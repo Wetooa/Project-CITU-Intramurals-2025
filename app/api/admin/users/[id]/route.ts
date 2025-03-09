@@ -1,8 +1,7 @@
+import { auth } from "@/auth";
 import { GS } from "@/db/db";
 import { AdminUser } from "@/types/types";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import { authOptions } from "../../../auth/[...nextauth]";
 
 type Props = {
   params: Promise<{
@@ -12,7 +11,7 @@ type Props = {
 
 export async function DELETE(req: Request, props: Props) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
