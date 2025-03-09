@@ -17,15 +17,17 @@ export async function GET(
 
     return NextResponse.json({
       id: match.get("id"),
-      matchDate: match.get("match_date"),
-      team1Id: match.get("team1_id"),
-      team2Id: match.get("team2_id"),
+      matchDate: match.get("matchDate"),
+      team1Id: match.get("team1Id"),
+      team1Name: match.get("team1Name"),
+      team2Id: match.get("team2Id"),
+      team2Name: match.get("team2Name"),
       category: match.get("category"),
-      scoreTeam1: match.get("score_team1"),
-      scoreTeam2: match.get("score_team2"),
+      scoreTeam1: match.get("scoreTeam1"),
+      scoreTeam2: match.get("scoreTeam2"),
       status: match.get("status"),
-      createdOn: match.get("created_on"),
-      updatedOn: match.get("updated_on"),
+      createdOn: match.get("createdOn"),
+      updatedOn: match.get("updatedOn"),
     });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
