@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ModeToggle } from "@/components/theme-toggle";
 
 export function NavBar() {
   return (
