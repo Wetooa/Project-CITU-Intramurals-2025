@@ -21,11 +21,6 @@ export default function GameFiltersSchedule() {
         }));
     };
 
-    useEffect(() => {
-        console.log(filters)
-    }, [filters]);
-
-
 
     return (
         <>
@@ -34,11 +29,14 @@ export default function GameFiltersSchedule() {
                 <div className="flex justify-between w-full p-4 gap-2">
                     <div className='flex flex-col gap-7 items-center justify-center'>
                         <div className='flex md:flex-row flex-col gap-5 justify-between w-full items-center'>
-                            <CustomizedSelect title={"Game"} value={filters.Game} options={games} onChange = {(value) => handleFilterChange("Game", value)} />
-                            <CustomizedSelect title={"Date"} value={filters.Date} options={["1", "2", "3"]} onChange = {(value) => handleFilterChange("Date", value)}/>
+                            <CustomizedSelect title={"Game"} value={filters.Game} options={games}
+                                              onChange={(value) => handleFilterChange("Game", value)}/>
+                            <CustomizedSelect title={"Date"} value={filters.Date} options={["1", "2", "3"]}
+                                              onChange={(value) => handleFilterChange("Date", value)}/>
                         </div>
                         <div className='flex md:flex-row flex-col gap-5 justify-between w-full items-center'>
-                            <CustomizedSelect title={"Team"} value={filters.Team} options={teams} onChange={(value) => handleFilterChange("Team", value)}/>
+                            <CustomizedSelect title={"Team"} value={filters.Team} options={teams}
+                                              onChange={(value) => handleFilterChange("Team", value)}/>
                             <Image
                                 src={SWORD_ICON}
                                 width={30}
@@ -46,7 +44,8 @@ export default function GameFiltersSchedule() {
                                 alt="Sword_Icon"
                                 className='md:self-end md:bottom-2 relative self-center bottom-0'
                             />
-                            <CustomizedSelect title={"Rival Team"} options={teams} value={filters.Rival_Team} onChange={(value) => handleFilterChange("Rival_Team", value)}/>
+                            <CustomizedSelect title={"Rival Team"} options={teams} value={filters.Rival_Team}
+                                              onChange={(value) => handleFilterChange("Rival_Team", value)}/>
                         </div>
                     </div>
 

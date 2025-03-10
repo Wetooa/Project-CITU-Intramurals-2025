@@ -20,7 +20,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
     return (
         <QueryClientProvider client={queryClient}>
             <html lang="en">
-            <body className={`${inter.variable} antialiased  bg-charcoal_black`}>
+            <body className={`${inter.variable} antialiased   text-white bg-charcoal_black`}>
             <NavBar/>
             <AnimatePresence mode="wait">
                 <motion.div

@@ -60,19 +60,19 @@ function GameResultCard(props: Schedule) {
                 animate={{opacity: 1, scale: 1}}
                 exit={{opacity: 0, scale: 0.8}}
                 transition={{duration: 0.5}}
-                className={`px-3 py-1 rounded text-white font-semibold ${props.status === "Ongoing" ? "bg-red-500 animate-pulse" : "bg-gray-700"}`}
+                className={`px-3 py-1 rounded-2xl text-white text-center w-52 font-semibold ${props.status === "Ongoing" ? "bg-red-500 animate-pulse" : "bg-gray-700"}`}
             >
                 {props.status}
             </motion.p>
             <p className='text-md font-bold'>{props.category}</p>
             <div className="bg-mocha p-5 w-full flex justify-center items-center gap-5">
-                <TeamScore team_name="Leo" score={2} position="left" scoreStatus={winStatus}/>
+                <TeamScore team_name="Leo" score={props.scoreTeam1} position="left" scoreStatus={winStatus}/>
                 <div className='flex flex-col items-center justify-center'>
-                    <p className="font-bold">VS</p>
+                    <p className="font-bold lg:text-2xl">VS</p>
                     <Separator/>
-                    <p className="text-xs whitespace-nowrap text-center font-medium">{matchDateTime}</p>
+                    <p className="text-xs lg:text-xl whitespace-nowrap text-center font-medium text-gray-400">{matchDateTime}</p>
                 </div>
-                <TeamScore team_name="Capricorn" score={5} position="right" scoreStatus={winStatus}/>
+                <TeamScore team_name="Capricorn" score={props.scoreTeam2} position="right" scoreStatus={winStatus}/>
             </div>
         </div>
     );
@@ -84,7 +84,7 @@ function TeamScore({team_name, score, position, scoreStatus}: TeamScoreProps) {
     return (
         <div className={`flex items-center gap-5  : ""}`}>
             {position === "right" &&
-                <p className={`text-2xl text-center ${scoreStatus === "Team_1_Win" ? "animate-pulse text-green-400": "text-red-500"}`}>{score}</p>
+                <p className={`text-2xl lg:text-5xl text-center ${scoreStatus === "Team_2_Win" ? "animate-pulse text-green-400" : "text-red-500"}`}>{score}</p>
             }
 
             <div className="relative flex flex-col items-center gap-2">
@@ -92,11 +92,10 @@ function TeamScore({team_name, score, position, scoreStatus}: TeamScoreProps) {
                     src={`/team_logo/${team_name}.png`}
                     width={100}
                     height={100}
-                    className="rounded-full cursor-pointer"
+                    className="rounded-full min-w-12 cursor-pointer lg:hover:scale-110"
                     alt={team_name}
                     onClick={() => setShowName(!showName)}
                 />
-
                 <AnimatePresence>
                     {showName && (
                         <motion.span
@@ -104,7 +103,7 @@ function TeamScore({team_name, score, position, scoreStatus}: TeamScoreProps) {
                             animate={{opacity: 1, scale: 1, y: 0}}
                             exit={{opacity: 0, scale: 0.8, y: 10}}
                             transition={{duration: 0.3}}
-                            className="absolute bottom-12 bg-gray-800 text-white text-xs px-2 py-1 rounded"
+                            className="absolute top-0 lg:hidden bg-gray-800 text-white text-xs px-2 py-1 rounded"
                         >
                             {team_name}
                         </motion.span>
@@ -114,7 +113,7 @@ function TeamScore({team_name, score, position, scoreStatus}: TeamScoreProps) {
                 <p className='block lg:hidden'>{zodiacSignsAcronym[team_name]}</p>
             </div>
             {position === "left" &&
-                <p className={`text-2xl text-center ${scoreStatus === "Team_2_Win" ? "animate-pulse text-green-400" : "text-red-500"}`}>{score}</p>
+                <p className={`text-2xl lg:text-5xl text-center ${scoreStatus === "Team_1_Win" ? "animate-pulse text-green-400" : "text-red-500"}`}>{score}</p>
             }
         </div>
     );

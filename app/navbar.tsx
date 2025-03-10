@@ -12,8 +12,9 @@ export function NavBar() {
 
     return (
         <nav
-            className="w-full  h-16 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
+            className="w-full  h-16 pl-10 pr-10 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
             {/* Logo */}
+
             <Image className="h-auto cursor-pointer max-w-full" src="/thetechnologian_logo.svg" height={10} width={180}
                    alt="image description" onClick={() => redirect("/")}
             />
