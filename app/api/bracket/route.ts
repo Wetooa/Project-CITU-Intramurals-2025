@@ -18,6 +18,7 @@ export async function GET() {
         updatedOn: row.get("updatedOn"),
       };
     });
+
     return NextResponse.json({ brackets }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
