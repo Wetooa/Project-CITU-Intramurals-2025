@@ -2,7 +2,7 @@ import { GS } from "@/db/db";
 import { Team } from "@/types/types";
 import { NextResponse } from "next/server";
 
-// GET: Fetchees all team details
+// GET: Fetches all team details
 export async function GET() {
   try {
     const data = await GS.getSheetData("team");
@@ -12,8 +12,6 @@ export async function GET() {
         id: row.get("id"),
         color: row.get("color"),
         district: row.get("district"),
-        createdOn: row.get("createdOn"),
-        updatedOn: row.get("updatedOn"),
       } as Team;
     });
 

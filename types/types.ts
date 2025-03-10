@@ -1,4 +1,19 @@
-export type CategoryName = "Basketball (men)" | "Basketball (women)";
+export const GoogleSheetsTitle = [
+  "team",
+  "category",
+  "schedule",
+  "bracket",
+  "adminUser",
+] as const;
+export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
+
+export type Category =
+  | "Basketball (men)"
+  | "Basketball (women)"
+  | "Volleyball (men)"
+  | "Volleyball (women)"
+  | "Chess";
+
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
 export const ALL_TEAMS = [
@@ -16,13 +31,6 @@ export type Team = {
   id: string;
   color: string;
   district: string;
-  createdOn: Date;
-  updatedOn: Date;
-};
-
-export type Category = {
-  id: CategoryName;
-  venue: string;
 };
 
 export type Leaderboard = {
@@ -46,6 +54,7 @@ export type Schedule = {
 
   matchDate: Date;
   category: Category;
+  venue: string;
 
   scoreTeam1?: number | null;
   scoreTeam2?: number | null;
@@ -74,12 +83,3 @@ export type AdminUser = {
   createdOn: Date;
   updatedOn: Date;
 };
-
-export const GoogleSheetsTitle = [
-  "team",
-  "category",
-  "schedule",
-  "bracket",
-  "adminUser",
-] as const;
-export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
