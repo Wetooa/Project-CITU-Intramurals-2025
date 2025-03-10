@@ -13,6 +13,19 @@ export const zodiacSignsAcronym: Record<string, string> = {
     Pisces: "PI"
 };
 
+export const teamLogos: Record<string, string> = {
+    Capricorn: "/team_logo/Capricorn.png",
+    Leo: "/team_logo/Leo.png",
+    Libra: "/team_logo/Libra.png",
+    Pisces: "/team_logo/Pisces.png",
+    Sagittarius: "/team_logo/Sagittarius.png",
+    Scorpio: "/team_logo/Scorpio.png",
+    Taurus: "/team_logo/Taurus.png",
+    Virgo: "/team_logo/Virgo.png",
+};
+
+
+
 export const teams = [
     "Aries",
     "Taurus",
@@ -27,10 +40,6 @@ export const teams = [
     "Aquarius",
     "Pisces",
 ];
-
-
-
-
 
 
 export const games = [
