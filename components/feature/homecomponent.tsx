@@ -20,11 +20,11 @@ export default function homecomponent(schedule: Schedule) {
 
           <div className="flex items-center gap-2">
             <div className="w-[30px] h-[30px] rounded-full bg-white"></div>
-            <span className="text-2xl font-bold">LEO</span>
+            <span className="text-2xl font-bold">schedule.team2Id</span>
           </div>
         </div>
 
-        <span className="text-2xl font-bold">BASKETBALL</span>
+        <span className="text-2xl font-bold">schedule.category</span>
       </div>
 
       <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-center">
