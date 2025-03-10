@@ -8,7 +8,7 @@ import { ModeToggle } from "@/components/theme-toggle";
 
 export function NavBar() {
   return (
-    <nav className="w-full h-16 bg-mocha   flex align-middle justify-between  shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
+    <nav className="w-full h-16  flex align-middle justify-between  shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
       <Image
         className="h-auto max-w-full"
         src="/thetechnologian_logo.png"
