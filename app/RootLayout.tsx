@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
@@ -14,6 +15,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: {
@@ -22,30 +25,33 @@ export default function RootLayout({
   const pathname = usePathname();
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased bg-mocha`}>
-        <NavBar />
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              disableTransitionOnChange
+    <QueryClientProvider client={queryClient}>
+      <html lang="en">
+        <body
+          className={`${inter.variable} antialiased   text-white bg-charcoal_black`}
+        >
+          <NavBar />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeIn" }}
             >
-              <SessionProvider>
-                {children}
-                <Toaster />
-              </SessionProvider>
-            </ThemeProvider>
-          </motion.div>
-        </AnimatePresence>
-      </body>
-    </html>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                disableTransitionOnChange
+              >
+                <SessionProvider>
+                  {children}
+                  <Toaster />
+                </SessionProvider>
+              </ThemeProvider>
+            </motion.div>
+          </AnimatePresence>
+        </body>
+      </html>
+    </QueryClientProvider>
   );
 }
