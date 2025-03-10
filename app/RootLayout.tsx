@@ -1,11 +1,14 @@
 "use client";
 
-import { Inter } from "next/font/google";
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
-import { NavBar } from "./navbar";
-import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
+import { SessionProvider } from "next-auth/react";
+import { Inter } from "next/font/google";
+import { usePathname } from "next/navigation";
+import "./globals.css";
+import { NavBar } from "./navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -35,7 +38,16 @@ export default function RootLayout({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease: "easeIn" }}
             >
-              {children}
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                disableTransitionOnChange
+              >
+                <SessionProvider>
+                  {children}
+                  <Toaster />
+                </SessionProvider>
+              </ThemeProvider>
             </motion.div>
           </AnimatePresence>
         </body>
