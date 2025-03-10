@@ -17,17 +17,23 @@ export function HomeRanking({
         className="mt-4 opacity-50"
         orientation="horizontal"
       ></Separator>
-      <span className="font-bold text-xl mt-4">1 {first}</span>
+      <span className="font-bold text-xl mt-4 hover:animate-pulse">
+        1 {first}
+      </span>
       <Separator
         className="mt-4 opacity-50"
         orientation="horizontal"
       ></Separator>
-      <span className="font-bold text-xl mt-4">2 {second}</span>
+      <span className="font-bold text-xl mt-4 hover:animate-pulse">
+        2 {second}
+      </span>
       <Separator
         className="mt-4 opacity-50"
         orientation="horizontal"
       ></Separator>
-      <span className="font-bold text-xl mt-4">3 {third}</span>
+      <span className="font-bold text-xl mt-4 hover:animate-pulse">
+        3 {third}
+      </span>
       <Separator
         className="mt-4 opacity-50"
         orientation="horizontal"
