@@ -24,21 +24,29 @@ export async function GET(req: Request) {
     // Sort by matchDate (earliest to latest)
     // sheet.sort((a, b) => new Date(a.get("matchDate")).getTime() - new Date(b.get("matchDate")).getTime());
 
-    const schedule = sheet.slice(offset, offset + limit).map((row) => {
-      return {
-        id: row.get("id"),
-        matchDate: row.get("matchDate"),
-        team1Id: row.get("team1Id"),
-        team2Id: row.get("team2Id"),
-        category: row.get("category"),
-        scoreTeam1: row.get("scoreTeam1"),
-        scoreTeam2: row.get("scoreTeam2"),
-        status: row.get("status"),
-        venue: row.get("venue"),
-        createdOn: row.get("createdOn"),
-        updatedOn: row.get("updatedOn"),
-      } as Schedule;
-    });
+    const schedule: Schedule[] = sheet
+      .slice(offset, offset + limit)
+      .map((row) => {
+        return {
+          id: row.get("id"),
+          team1Id: row.get("team1Id"),
+          team2Id: row.get("team2Id"),
+
+          matchDate: row.get("matchDate"),
+          category: row.get("category"),
+          venue: row.get("venue"),
+          round: row.get("round"),
+
+          status: row.get("status"),
+          winner: row.get("winner"),
+
+          scoreTeam1: row.get("scoreTeam1"),
+          scoreTeam2: row.get("scoreTeam2"),
+
+          createdOn: row.get("createdOn"),
+          updatedOn: row.get("updatedOn"),
+        };
+      });
 
     return NextResponse.json({
       message: "Schedule fetched successfully!",

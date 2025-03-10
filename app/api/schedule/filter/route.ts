@@ -49,7 +49,10 @@ export async function GET(req: Request) {
         matchDate: row.get("matchDate"),
         category: row.get("category"),
         venue: row.get("venue"),
+        round: row.get("round"),
+
         status: row.get("status"),
+        winner: row.get("winner"),
 
         scoreTeam1: row.get("scoreTeam1"),
         scoreTeam2: row.get("scoreTeam2"),

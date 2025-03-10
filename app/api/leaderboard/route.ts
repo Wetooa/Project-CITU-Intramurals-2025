@@ -1,5 +1,5 @@
 import { GS } from "@/db/db";
-import { ALL_TEAMS } from "@/types/types";
+import { ALL_TEAMS, Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -19,8 +19,6 @@ export async function GET(req: Request) {
       teamsPoints[team] = 0;
     });
 
-    console.log("Category:", category, filteredRows);
-
     filteredRows.forEach((row) => {
       const team1Id = row.get("team1Id");
       const team2Id = row.get("team2Id");
@@ -39,7 +37,14 @@ export async function GET(req: Request) {
       }
     });
 
-    const leaderboard = Object.entries(teamsPoints).sort((a, b) => b[1] - a[1]);
+    const leaderboard: Leaderboard[] = Object.entries(teamsPoints)
+      .sort((a, b) => b[1] - a[1])
+      .map(([teamId, points]) => {
+        return {
+          teamId,
+          points,
+        };
+      });
 
     return NextResponse.json(
       { message: "Fetched leaderboard successfully!", leaderboard },

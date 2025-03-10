@@ -2,7 +2,6 @@ export const GoogleSheetsTitle = [
   "team",
   "category",
   "schedule",
-  "bracket",
   "adminUser",
 ] as const;
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
@@ -15,6 +14,8 @@ export type Category =
   | "Chess";
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
+
+export type Winner = "team1" | "team2" | "draw";
 
 export const ALL_TEAMS = [
   "Virgo",
@@ -33,20 +34,6 @@ export type Team = {
   district: string;
 };
 
-export type Leaderboard = {
-  id: string;
-  categoryId: string;
-  departmentId: string;
-
-  wins: number;
-  losses: number;
-  draws: number;
-  points: number;
-
-  createdOn: Date;
-  updatedOn: Date;
-};
-
 export type Schedule = {
   id: string;
   team1Id: string;
@@ -55,20 +42,13 @@ export type Schedule = {
   matchDate: Date;
   category: Category;
   venue: string;
+  round: string;
+
+  status: MatchStatus;
+  winner?: Winner | null;
 
   scoreTeam1?: number | null;
   scoreTeam2?: number | null;
-
-  status: MatchStatus;
-
-  createdOn: Date;
-  updatedOn: Date;
-};
-
-export type Bracket = {
-  matchId: string;
-
-  round: number;
 
   createdOn: Date;
   updatedOn: Date;
@@ -82,4 +62,19 @@ export type AdminUser = {
 
   createdOn: Date;
   updatedOn: Date;
+};
+
+export type Leaderboard = {
+  teamId: string;
+  points: number;
+};
+
+export type Bracket = {
+  team1Id: string;
+  team2Id: string;
+  round: string;
+
+  scoreTeam1?: number | null;
+  scoreTeam2?: number | null;
+  winner?: Winner | null;
 };
