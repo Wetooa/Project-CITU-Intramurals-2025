@@ -27,9 +27,12 @@ export default function homecomponent(schedule: Schedule) {
         <span className="text-2xl font-bold">schedule.category</span>
       </div>
 
-      <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-center">
+      <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-between">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
           Game 1 - Finals
+        </span>
+        <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
+          Venue
         </span>
       </div>
     </div>

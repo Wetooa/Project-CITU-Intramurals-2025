@@ -19,8 +19,8 @@ export default function Home() {
   const [selectCategory, setSelectedCategory] = useState("BASKETBALL");
   const [filter, setFilter] = useState("ONGOING");
   return (
-    <div className="flex pl-12 pr-12 gap-6 w-full h-screen">
-      <div className="h-screen w-[400px] z-50 flex  p-6  pl-10  justify-start bg-phantom_ash te flex-col">
+    <div className="flex pl-12 pr-12 gap-6 w-full h-screen overflow-hidden">
+      <div className="h-screen w-[400px] flex  p-6  pl-10  justify-start bg-phantom_ash flex-col">
         <Image
           src="/citu_intrams.svg"
           width={250}
@@ -86,25 +86,5 @@ export default function Home() {
         third="Department C"
       />
     </div>
-  );
-}
-
-export function SelectDemo() {
-  return (
-    <Select
-      defaultValue="ongoing"
-      onValueChange={(value) => setFilter(value.toUpperCase())}
-    >
-      <SelectTrigger className="border-0 bg-[#302F2E] h-16 w-[180px] text-xl font-bold">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent className="bg-[#582424] font-bold text-lg text-white">
-        <SelectGroup>
-          <SelectItem value="ongoing">ONGOING</SelectItem>
-          <SelectItem value="finished">FINISHED</SelectItem>
-          <SelectItem value="later">LATER</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
   );
 }
