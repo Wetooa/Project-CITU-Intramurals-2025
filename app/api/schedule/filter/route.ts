@@ -1,34 +1,43 @@
 import { GS } from "@/db/db";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  req: Request,
-  context: { params: { type: string; value: string } }
-) {
+export async function GET(req: Request) {
   try {
-    const { type, value } = context.params;
+    const { searchParams } = new URL(req.url);
+    const filters = Object.fromEntries(searchParams);
+    
+    if (Object.keys(filters).length === 0) {
+      return NextResponse.json({ message: "No filters provided" }, { status: 400 });
+    }
+
     const validFilters = ["team1Id", "team2Id", "team1Name", "team2Name", "matchDate", "category"];
     
-    if (!validFilters.includes(type)) {
-      return NextResponse.json({ message: "Invalid filter type" }, { status: 400 });
+    for (const key in filters) {
+      if (!validFilters.includes(key)) {
+        return NextResponse.json({ message: `Invalid filter: ${key}` }, { status: 400 });
+      }
     }
 
     const data = await GS.getSheetData("schedule");
     const sheet = await data.getRows();
-    console.log("Type: ", type);
-    console.log("Value: ", value);
-    const matches = sheet.filter((row) => row.get(type) == value);
-    if (matches.length === 0) {
-      return NextResponse.json({ message: "No matches found" }, { status: 404 });
-    }
+
+    let matches = sheet.filter((row) => {
+      return Object.entries(filters).some(([key, value]) => 
+        row.get(key)?.toString().trim().toLowerCase() === value.trim().toLowerCase()
+      );
+    });
 
     // Sort by matchDate (latest to earliest)
     matches.sort((a, b) => new Date(b.get("matchDate")).getTime() - new Date(a.get("matchDate")).getTime());
-
+    
     /*
-    // Sort by matchDate (earliest to latest)
+    // Uncomment for sorting from earliest to latest
     matches.sort((a, b) => new Date(a.get("matchDate")).getTime() - new Date(b.get("matchDate")).getTime());
     */
+
+    if (matches.length === 0) {
+      return NextResponse.json({ message: "No matches found" }, { status: 404 });
+    }
 
     return NextResponse.json(
         matches.map((row) => ({
