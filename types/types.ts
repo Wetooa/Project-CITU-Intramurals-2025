@@ -1,7 +1,18 @@
 export type CategoryName = "Basketball (men)" | "Basketball (women)";
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
-export type Department = {
+export const ALL_TEAMS = [
+  "Virgo",
+  "Pisces",
+  "Sagitarius",
+  "Capricorn",
+  "Libra",
+  "Scorpio",
+  "Taurus",
+  "Leo",
+];
+
+export type Team = {
   id: string;
   color: string;
   district: string;
@@ -47,15 +58,19 @@ export type Schedule = {
 
 export type Bracket = {
   matchId: string;
+
   round: number;
+
   createdOn: Date;
   updatedOn: Date;
 };
 
 export type AdminUser = {
   id: string;
+
   username: string;
   password: string;
+
   createdOn: Date;
   updatedOn: Date;
 };
