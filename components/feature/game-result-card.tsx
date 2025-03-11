@@ -53,7 +53,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
             exit={{opacity: 0, y: -20}}    // Animate out by fading and moving up
             transition={{duration: 0.5, ease: "easeOut"}}  // Smooth transition
         >
-            {Object.entries(groupedMatches).map(([date, matches]) => {
+            {Object.entries(groupedMatches).map(([date, matches], index) => {
                 const formattedDate = new Date(date).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -65,7 +65,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
                 });
 
                 return (
-                    <div key={date} className="flex flex-col gap-2 w-full">
+                    <div key={`${date}-${index}`} className="flex flex-col gap-2 w-full">
                         {/* Display Date Header */}
                         <div className='self-start flex flex-col gap-0'>
                             <p className='self-start text-2xl'>{formattedDate}</p>
