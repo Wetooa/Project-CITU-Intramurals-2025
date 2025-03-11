@@ -63,11 +63,25 @@ export const GAMES = [
 export const GENDER = ["MEN", "WOMEN"] as const;
 
 export const VENUES = [
-    "RTL",
-    "GLE",
-    "NGE",
-    "Gymnasium"
-]
+    "Open Court 1",
+    "Open Court 2",
+    "Elem Basketball Court",
+    "Covered Court",
+    "Gymnasium",
+    "ME157",
+    "ME158",
+    "WIL",
+    "NGE Computer Labs",
+    "MassCom Theater",
+    "Covered Court",
+    "Open Court",
+    "Open Court 1 & 2"
+];
+
+const venuesString = VENUES.join(", ");
+console.log(venuesString);
+``
+
 
 export const MATCH_DATES: Record<string, string> = {
     "March 12, 2025": "2025-03-12",
