@@ -90,7 +90,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
                                 round={match.round}
                                 venue={match.venue}
                                 matchTime={match.matchTime}
-                            />
+                                game={match.game}/>
                         ))}
                     </div>
                 );

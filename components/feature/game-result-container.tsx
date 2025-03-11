@@ -1,14 +1,9 @@
 "use client";
 
 import {format} from "date-fns";
-import {CalendarIcon, Clock, MapPin} from "lucide-react";
+import {CalendarIcon, Clock, Gamepad, MapPin, Swords} from "lucide-react";
 
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardFooter,
-} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader,} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {cn} from "@/lib/utils";
 import {Separator} from "@/components/ui/separator";
@@ -20,6 +15,7 @@ export function GameResultCardContainer({
                                             matchDate,
                                             team1Id,
                                             team2Id,
+                                            game,
                                             scoreTeam1,
                                             scoreTeam2,
                                             category,
@@ -116,6 +112,10 @@ export function GameResultCardContainer({
                     <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4"/>
                         <span>{matchTime}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <Swords className="h-4 w-4"/>
+                        <span>Game {game}</span>
                     </div>
                     <div className="flex items-center gap-1">
                         <MapPin className="h-4 w-4"/>
