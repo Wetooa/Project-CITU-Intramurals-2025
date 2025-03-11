@@ -19,14 +19,14 @@ import {
 } from "@/components/ui/select";
 import { getDateToday } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
-import { Schedule } from "@/types/types";
+import { Leaderboard, Schedule } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 async function getSchedule(date: string, filter: string, category: string) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
-      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`
+      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
   );
   const result = await response.json();
   return result.schedule;
@@ -34,7 +34,7 @@ async function getSchedule(date: string, filter: string, category: string) {
 
 async function getRanking() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`
+    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`,
   );
   const result = await response.json();
   return result.leaderboard;
@@ -43,7 +43,7 @@ async function getRanking() {
 export default function Home() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [ranking, setRanking] = useState([]);
+  const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   const dateToday = getDateToday();
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
