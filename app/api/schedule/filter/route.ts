@@ -51,7 +51,7 @@ export async function GET(req: Request) {
         team1Id: row.get("team1Id"),
         team2Id: row.get("team2Id"),
 
-        matchDate: row.get("matchDate"),
+        matchDate: new Date(row.get("matchDate")),
         category: row.get("category"),
         venue: row.get("venue"),
         round: row.get("round"),
@@ -61,8 +61,8 @@ export async function GET(req: Request) {
 
         scoreTeam1: row.get("scoreTeam1"),
         scoreTeam2: row.get("scoreTeam2"),
-        createdOn: row.get("createdOn"),
-        updatedOn: row.get("updatedOn"),
+        createdOn: new Date(row.get("createdOn")),
+        updatedOn: new Date(row.get("updatedOn")),
       };
     });
 

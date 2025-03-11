@@ -28,17 +28,18 @@ export async function GET(req: Request, props: Props) {
       team1Id: match.get("team1Id"),
       team2Id: match.get("team2Id"),
 
-      matchDate: match.get("matchDate"),
+      matchDate: new Date(match.get("matchDate")),
       category: match.get("category"),
       venue: match.get("venue"),
+      round: match.get("round"),
 
       status: match.get("status"),
 
       scoreTeam1: match.get("scoreTeam1"),
       scoreTeam2: match.get("scoreTeam2"),
 
-      createdOn: match.get("createdOn"),
-      updatedOn: match.get("updatedOn"),
+      createdOn: new Date(match.get("createdOn")),
+      updatedOn: new Date(match.get("updatedOn")),
     };
 
     return NextResponse.json({
