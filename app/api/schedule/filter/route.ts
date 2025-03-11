@@ -13,8 +13,8 @@ export async function GET(req: Request) {
     const category = searchParams.get("category") || "";
     const venue = searchParams.get("venue") || "";
     const status = searchParams.get("status") || "";
-    const round = searchParams.get("round") || "";
 
+    const round = searchParams.get("round") || "";
     const winner = searchParams.get("winner") || "";
 
     const data = await GS.getSheetData("schedule");
@@ -62,6 +62,7 @@ export async function GET(req: Request) {
         matchTime: row.get("matchTime"),
 
         category: row.get("category"),
+        gender: row.get("gender"),
         venue: row.get("venue"),
         round: row.get("round"),
 

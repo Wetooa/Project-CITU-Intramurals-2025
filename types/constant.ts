@@ -60,4 +60,4 @@ export const GAMES = [
   "DOTA 2",
 ] as const;
 
-export const gender = ["MEN", "WOMEN"];
+export const GENDER = ["MEN", "WOMEN"] as const;

@@ -1,7 +1,7 @@
 import { Schedule } from "@/types/types";
-import { HomeComponent, HomeComponentSkeleton } from "./homecomponent";
-import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
+import { Skeleton } from "../ui/skeleton";
+import { HomeComponent, HomeComponentSkeleton } from "./homecomponent";
 
 export default function HomeMatches({ Schedules }: { Schedules: Schedule[] }) {
   if (!Schedules)
