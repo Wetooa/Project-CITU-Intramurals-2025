@@ -22,11 +22,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 interface LeaderboardContextType {
-  data: Leaderboard[] | undefined;
-  isLoading: boolean;
-  isError: boolean;
+  dataLB: Leaderboard[] | undefined;
+  isLoadingLB: boolean;
+  isErrorLB: boolean;
   fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
 }
 
@@ -44,8 +45,25 @@ const fetchLeaderboard = async (category?: string) => {
     );
   }
 
+  const dataLB = await response.json();
+  return dataLB.leaderboard;
+};
+
+const fetchLeaderboardHighlights = async () => {
+  const response = await fetch("/api/leaderboard/highlights");
+
+  if (!response.ok) {
+    throw new Error(
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
+    );
+  }
+
   const data = await response.json();
-  return data.leaderboard;
+  return {
+    bestMover: data.bestMover,
+    biggestWinner: data.biggestWinner,
+    biggestLoser: data.biggestLoser,
+  };
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
@@ -56,7 +74,11 @@ export default function LeaderBoardScreen() {
   const [selectedSport, setSelectedSport] = useState<string>("Overall");
   const [selectedGender, setSelectedGender] = useState<string>("(men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: dataLB,
+    isLoading: isLoadingLB,
+    isError: isErrorLB,
+  } = useQuery({
     queryKey: ["leaderboard", selectedSport, selectedGender],
     queryFn: () => {
       const isSportSelected = Sports.some(
@@ -67,6 +89,18 @@ export default function LeaderBoardScreen() {
         : fetchLeaderboard(selectedSport);
     },
   });
+
+  const {
+    data: dataHL,
+    isLoading: isLoadingHL,
+    isError: isErrorHL,
+  } = useQuery({
+    queryKey: ["leaderboardHighlights"],
+    queryFn: fetchLeaderboardHighlights,
+  });
+
+  console.log("Data i will be changing: ", dataHL);
+
   function handleSportChange(sportSelected: string) {
     const isSelected = Sports.some((sport) => sport.value === sportSelected);
     setSelectedSport(sportSelected);
@@ -77,6 +111,7 @@ export default function LeaderBoardScreen() {
     { value: "Basketball", label: "BASKETBALL" },
     { value: "Volleyball", label: "VOLLEYBALL" },
     { value: "Badminton", label: "BADMINTON" },
+    { value: "Sepak Takraw", label: "SEPAK TAKRAW" },
     { value: "Futsal", label: "FUTSAL" },
     { value: "Table Tennis", label: "TABLE TENNIS" },
     { value: "Chess", label: "CHESS" },
@@ -91,9 +126,10 @@ export default function LeaderBoardScreen() {
     { value: "Dota 2", label: "DOTA 2" },
   ];
   const Genders = [
-    { value: "(men)", label: "MEN" },
-    { value: "(women)", label: "WOMEN" },
+    { value: "(Men)", label: "MEN" },
+    { value: "(Women)", label: "WOMEN" },
   ];
+
   const highlightStyle =
     "flex flex-col gap-5  pt-5 rounded-3xl min-w-64 items-center ";
   const highlightTitle =
@@ -101,63 +137,99 @@ export default function LeaderBoardScreen() {
     "lg:px-2 text-black bg-white border-2 border-white rounded-full w-48 h-10 whitespace-nowrap overflow-hidden";
   const highlightTeam =
     "rounded-xl bg-[#FF212140] lg:h-32 bottom-0 py-8 min-w-64 ";
-  const highlightImage = "rounded-full w-24 h-24 object-cover lg:mb-10";
+  const highlightImage =
+    "rounded-full w-40 h-40 object-cover lg:mb-5 flex justify-center items-center";
 
   return (
     <LeaderboardContext.Provider
-      value={{ data, isLoading, isError, fetchLeaderboard }}
+      value={{ dataLB, isLoadingLB, isErrorLB, fetchLeaderboard }}
     >
-      <div className="w-full  h-full flex flex-col justify-center items-center px-5p ">
+      <div className="w-full  h-full flex  flex-col justify-center items-center px-5p ">
         <div className="w-full text-center lg:text-left">
-          <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl  text-white font-bold pt-10">
+          <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-14 text-white font-bold pt-10">
             LEADERBOARD
           </p>
         </div>
-        <div className="text-center text-white  ">
-          <p className=" py-20p lg:py-10 text-2xl lg:text-4xl font-bold mb-24">
+        <div className="text-center text-white ">
+          <p className=" pb-20p lg:py-10 text-2xl lg:text-4xl font-bold mb-24 lg:mb-14">
             Highlights
           </p>
-          <div
-            className="flex flex-col lg:flex-row lg:flex-wrap min-h-full justify-center  
-           gap-5 lg:px-20 max-h-[35rem] mb-14"
-          >
-            <div className={`${highlightStyle}`}>
-              <img
-                className={`${highlightImage}`}
-                src="../public/img/prac.png"
-              ></img>
-              <div className="relative">
-                <p className={`${highlightTitle}`}>Biggest Winner Today</p>
-                <div className={`${highlightTeam}`}>
-                  <p className="font-bold text-xl">Leo</p>
-                  <p>8 Wins </p>
+
+          {isLoadingHL && (
+            <div
+              className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
+              gap-7 lg:px-20 max-h-[35rem] mb-14 mt-72 md:mt-20"
+            >
+              <Skeleton className="min-h-80 rounded-3xl min-w-64" />
+              <Skeleton className="min-h-80 rounded-3xl min-w-64" />
+              <Skeleton className="min-h-80 rounded-3xl min-w-64" />
+            </div>
+          )}
+          {isErrorHL && <h1>Error was found</h1>}
+          {dataHL && (
+            <div
+              className="flex flex-col md:flex-row md:flex-wrap min-h-full justify-center  
+             gap-10 lg:px-20 max-h-[35rem] mt-72 md:mt-20"
+            >
+              <div className={`${highlightStyle}`}>
+                <Image
+                  className={`${highlightImage}`}
+                  src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
+                  alt="Team image of the Best Winner"
+                  width={160}
+                  height={160}
+                />
+                <div className="relative">
+                  <p className={`${highlightTitle}`}>Biggest Winner Today</p>
+                  <div className={`${highlightTeam}`}>
+                    <p className="font-bold text-xl">
+                      {dataHL.biggestWinner.teamId}
+                    </p>
+                    <p>{dataHL.biggestWinner.points} Wins</p>
+                  </div>
+                </div>
+              </div>
+              <div className={`${highlightStyle}`}>
+                <Image
+                  className={`${highlightImage}`}
+                  src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
+                  alt="Team image of the Best Loser"
+                  width={160}
+                  height={160}
+                />
+                <div className="relative">
+                  <p className={`${highlightTitle}`}>Most Losses Today</p>
+                  <div className={`${highlightTeam}`}>
+                    <p className="font-bold text-xl">
+                      {dataHL.biggestLoser.teamId}
+                    </p>
+                    <p>{dataHL.biggestLoser.points} Losses </p>
+                  </div>
+                </div>
+              </div>
+              <div className={`${highlightStyle}`}>
+                <Image
+                  className={`${highlightImage}`}
+                  src={`/team_logo/${dataHL.bestMover[0]}.png`}
+                  alt="Team image of the Best Mover"
+                  width={160}
+                  height={160}
+                />
+                <div className="relative">
+                  <p className={`${highlightTitle}`}>Biggest Mover</p>
+                  <div className={`${highlightTeam}`}>
+                    <p className="font-bold text-xl">{dataHL.bestMover[0]}</p>
+                    <p>
+                      #{dataHL.bestMover[1][0]} → #{dataHL.bestMover[1][1]}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className={`${highlightStyle}`}>
-              <img className={`${highlightImage}`}></img>
-              <div className="relative">
-                <p className={`${highlightTitle}`}>Most Losses Today</p>
-                <div className={`${highlightTeam}`}>
-                  <p className="font-bold text-xl">Leo</p>
-                  <p>3 Losses </p>
-                </div>
-              </div>
-            </div>
-            <div className={`${highlightStyle}`}>
-              <img className={`${highlightImage}`}></img>
-              <div className="relative">
-                <p className={`${highlightTitle}`}>Biggest Mover</p>
-                <div className={`${highlightTeam}`}>
-                  <p className="font-bold text-xl">Leo</p>
-                  <p>#39 → #8 </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
-      <div className="flex flex-col text-white gap-3 text-center mt-16 px-10">
+      <div className="flex flex-col text-white gap-3 text-center mt-60 px-10">
         <div className="flex flex-col justify-center items-center mt-10 gap-5 lg:hidden">
           <Button
             variant="link"
@@ -288,20 +360,20 @@ export default function LeaderBoardScreen() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading && (
+                {isLoadingLB && (
                   <TableRow>
                     <TableCell colSpan={3}>
                       <Skeleton className="h-4 w-[250px]" />
                     </TableCell>
                   </TableRow>
                 )}
-                {isError && (
+                {isErrorLB && (
                   <TableRow>
-                    <TableCell colSpan={3}>Error fetching data</TableCell>
+                    <TableCell colSpan={3}>Error fetching dataLB</TableCell>
                   </TableRow>
                 )}
-                {data &&
-                  data
+                {dataLB &&
+                  dataLB
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
                         Number(b.points) - Number(a.points)

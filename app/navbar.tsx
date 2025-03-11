@@ -11,7 +11,7 @@ export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="w-full  h-16 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
+    <nav className="w-full z-50  h-16 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">
       {/* Logo */}
       <Image
         className="h-auto cursor-pointer max-w-full"

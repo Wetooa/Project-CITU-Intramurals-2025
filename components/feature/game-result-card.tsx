@@ -4,6 +4,7 @@ import {motion} from "framer-motion";
 import {Schedule} from "@/types/types";
 import {Skeleton} from "@/components/ui/skeleton";
 import {GameResultCardContainer} from "@/components/feature/game-result-container";
+import {NoMatchFoundWithoutBackground} from "@/components/shared/no-match-found";
 
 
 interface ScheduleProps {
@@ -32,7 +33,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
 
     console.log("Schedule", schedule)
     if (schedule == undefined || schedule.length === 0) {
-        return <p className="text-4xl animate-pulse font-bold mt-10">No matches available</p>;
+        return <NoMatchFoundWithoutBackground/>
     }
     // **Group matches by matchDate**
     const groupedMatches: Record<string, Schedule[]> = schedule.reduce((acc, match) => {
@@ -53,7 +54,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
             exit={{opacity: 0, y: -20}}    // Animate out by fading and moving up
             transition={{duration: 0.5, ease: "easeOut"}}  // Smooth transition
         >
-            {Object.entries(groupedMatches).map(([date, matches]) => {
+            {Object.entries(groupedMatches).map(([date, matches], index) => {
                 const formattedDate = new Date(date).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -65,7 +66,7 @@ export default function DayResultContainer({schedule, isLoading}: ScheduleProps)
                 });
 
                 return (
-                    <div key={date} className="flex flex-col gap-2 w-full">
+                    <div key={`${date}-${index}`} className="flex flex-col gap-2 w-full">
                         {/* Display Date Header */}
                         <div className='self-start flex flex-col gap-0'>
                             <p className='self-start text-2xl'>{formattedDate}</p>

@@ -3,20 +3,19 @@
 import { format } from "date-fns";
 import { CalendarIcon, Clock, MapPin } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
+  CardFooter,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 import { Schedule } from "@/types/types";
 import Image from "next/image";
 
 export function GameResultCardContainer({
-  id,
   matchDate,
   team1Id,
   team2Id,
@@ -24,8 +23,6 @@ export function GameResultCardContainer({
   scoreTeam2,
   category,
   status,
-  createdOn,
-  updatedOn,
   round,
   venue,
   matchTime,
