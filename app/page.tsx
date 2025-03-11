@@ -15,11 +15,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import HomeMatches from "@/components/feature/homematch";
+import { fetchData } from "next-auth/client/_utils";
+
+async function getSchedule() {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/api/schedule"
+  );
+  const result = await response.json();
+  return result.schedule;
+}
 
 export default function Home() {
+  const [schedules, setSchedules] = useState([]);
+  // const [isLoading, setLoading] = useState(true)
+
   const [selectSport, setSelectedSport] = useState("BASKETBALL");
   const [selectCategory, setSelectedCategory] = useState("MEN");
   const [filter, setFilter] = useState("ONGOING");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setSchedules(await getSchedule());
+      } catch (error) {
+        console.log("lol");
+      }
+    };
+    fetchData();
+  }, [selectCategory, selectSport, filter]);
+
+  console.log(schedules);
   return (
     <div className="flex md:pl-12 md:pr-12 pl-6 pr-6 gap-6 w-full h-screen ">
       <div className="h-screen w-[400px] md:flex  p-6  pl-10  justify-start bg-phantom_ash flex-col hidden mb-6">
@@ -142,9 +168,8 @@ export default function Home() {
         <span className="self-center md:hidden md:text-5xl text-md font-bold">
           MATCH TODAY
         </span>
-        <div className="bg-[#242322] rounded-tr-lg rounded-tl-lg p-2 w-full h-full">
-          <HomeComponent></HomeComponent>
-        </div>
+
+        {schedules && <HomeMatches Schedules={schedules} />}
       </div>
 
       <HomeRanking

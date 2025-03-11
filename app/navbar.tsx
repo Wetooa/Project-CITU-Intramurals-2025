@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-<<<<<<< HEAD
 import { redirect, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-=======
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
->>>>>>> 59f78e69515e1c8c78eb25a02e6b4c246dffdc5c
 import Image from "next/image";
 
 export function NavBar() {

@@ -1,10 +1,11 @@
 import { Schedule } from "@/types/types";
 
-export function HomeComponent(schedule: Schedule) {
+export function HomeComponent({ schedule }: { schedule: Schedule }) {
+  const date = schedule.matchDate;
   return (
     <div className="w-full h-28 bg-[#302F2E] rounded-md border-white border border-opacity-5 flex flex-col">
       <div className="w-full h-full flex items-center justify-evenly p-6">
-        <span className="text-2xl font-bold">schedule.matchDate</span>
+        <span className="text-2xl font-bold">{date.getTime().toString()}</span>
 
         <div className="flex items-center justify-evenly w-1/3 h-full">
           <div className="flex items-center gap-2">
@@ -27,7 +28,7 @@ export function HomeComponent(schedule: Schedule) {
         <span className="text-2xl font-bold">schedule.category</span>
       </div>
 
-      <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-between">
+      <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-around">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
           Game 1 - Finals
         </span>
