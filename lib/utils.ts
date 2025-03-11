@@ -1,5 +1,4 @@
 import { TEAMS } from "@/types/constant";
-import { Leaderboard } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { twMerge } from "tailwind-merge";
@@ -14,6 +13,7 @@ export function getDateToday() {
 
 export function getLeaderboard(
   rows: GoogleSpreadsheetRow<Record<string, unknown>>[],
+  byLosses: boolean = false,
 ) {
   const teamsPoints: Record<string, number> = {};
 
@@ -29,17 +29,21 @@ export function getLeaderboard(
 
     if (scoreTeam1 === null || scoreTeam2 === null) return;
 
-    if (scoreTeam1 === scoreTeam2) {
-      teamsPoints[team1Id] += 0.5;
-      teamsPoints[team2Id] += 0.5;
-    } else if (scoreTeam1 > scoreTeam2) {
-      teamsPoints[team1Id] += 1;
+    if (!byLosses) {
+      if (scoreTeam1 === scoreTeam2) {
+        teamsPoints[team1Id] += 0.5;
+        teamsPoints[team2Id] += 0.5;
+      } else if (scoreTeam1 > scoreTeam2) {
+        teamsPoints[team1Id] += 1;
+      } else {
+        teamsPoints[team2Id] += 1;
+      }
     } else {
-      teamsPoints[team2Id] += 1;
+      teamsPoints[team1Id] += 1;
     }
   });
 
-  const leaderboard: Leaderboard[] = Object.entries(teamsPoints)
+  const leaderboard = Object.entries(teamsPoints)
     .sort((a, b) => b[1] - a[1])
     .map(([teamId, points]) => {
       return {
