@@ -19,8 +19,8 @@ export async function GET(_: Request, props: Props) {
     const filteredRows = rows.filter(
       (row) => (row.get("status") as MatchStatus) == "Completed",
     );
-    const leaderboard = getLeaderboard(filteredRows)[int];
 
+    const leaderboard = getLeaderboard(filteredRows)[int];
     return NextResponse.json(
       { message: "Fetched leaderboard successfully!", leaderboard },
       { status: 200 },

@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { getDateToday } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
-import { Schedule } from "@/types/types";
+import { Leaderboard, Schedule } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -32,18 +32,10 @@ async function getSchedule(date: string, filter: string, category: string) {
   return result.schedule;
 }
 
-async function getRanking() {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`,
-  );
-  const result = await response.json();
-  return result.leaderboard;
-}
-
 export default function Home() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [ranking, setRanking] = useState([]);
+  const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   const dateToday = getDateToday();
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
