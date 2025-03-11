@@ -147,7 +147,7 @@ export default function LeaderBoardScreen() {
             <div className={`${highlightStyle}`}>
               <img className={`${highlightImage}`}></img>
               <div className="relative">
-                <p className={`${highlightTitle}`}>Biggest Mover - 1st</p>
+                <p className={`${highlightTitle}`}>Biggest Mover</p>
                 <div className={`${highlightTeam}`}>
                   <p className="font-bold text-xl">Leo</p>
                   <p>#39 → #8 </p>
