@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 async function getSchedule(date: string, filter: string, category: string) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
-      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
+      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`
   );
   const result = await response.json();
   return result.schedule;
@@ -34,7 +34,7 @@ async function getSchedule(date: string, filter: string, category: string) {
 
 async function getRanking() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`,
+    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`
   );
   const result = await response.json();
   return result.leaderboard;
@@ -46,7 +46,7 @@ export default function Home() {
   const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   const dateToday = getDateToday();
-  const [selectSport, setSelectedSport] = useState("Basketball (Men)");
+  const [selectSport, setSelectedSport] = useState("Basketball 3x3 (Men)");
   const [filter, setFilter] = useState("Ongoing");
 
   // console.log(dateToday);
@@ -114,7 +114,7 @@ export default function Home() {
           </span>
 
           <Select
-            defaultValue="Basketball (Men)"
+            defaultValue="Basketball 3x3 (Men)"
             onValueChange={setSelectedSport}
           >
             <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3 md:text-xl md:hidden text-sm font-bold">

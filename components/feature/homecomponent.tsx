@@ -77,10 +77,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
 
       <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md  flex items-center justify-around">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
-          Game {schedule.game}
+          Game {schedule.game} - Round {schedule.round}
         </span>
         <span className="text-sm text-[#CCCCCC] text-opacity-50  md:hidden">
-          Game {schedule.game} • {schedule.category} • {schedule.venue}
+          Game {schedule.game} - Round {schedule.round} • {schedule.category} •{" "}
+          {schedule.venue}
         </span>
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
           {schedule.venue}
