@@ -71,8 +71,8 @@ const fetchLeaderboardHighlights = async () => {
   const data = await response.json();
   return {
     bestMover: data.bestMover,
-    bestWinner: data.bestWinner,
-    bestLoser: data.bestLoser,
+    biggestWinner: data.biggestWinner,
+    biggestLoser: data.biggestLoser,
   };
 };
 
@@ -185,32 +185,32 @@ export default function LeaderBoardScreen() {
               <div className={`${highlightStyle}`}>
                 <img
                   className={`${highlightImage}`}
-                  src={`/team_logo/${dataHL.bestWinner.teamId}.png`}
+                  src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
                   alt="Team image of the Best Winner"
                 ></img>
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Biggest Winner Today</p>
                   <div className={`${highlightTeam}`}>
                     <p className="font-bold text-xl">
-                      {dataHL.bestWinner.teamId}
+                      {dataHL.biggestWinner.teamId}
                     </p>
-                    <p>{dataHL.bestWinner.points} Wins</p>
+                    <p>{dataHL.biggestWinner.points} Wins</p>
                   </div>
                 </div>
               </div>
               <div className={`${highlightStyle}`}>
                 <img
                   className={`${highlightImage}`}
-                  src={`/team_logo/${dataHL.bestLoser.teamId}.png`}
+                  src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
                   alt="Team image of the Best Loser"
                 ></img>
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Most Losses Today</p>
                   <div className={`${highlightTeam}`}>
                     <p className="font-bold text-xl">
-                      {dataHL.bestLoser.teamId}
+                      {dataHL.biggestLoser.teamId}
                     </p>
-                    <p>{dataHL.bestLoser.points} Losses </p>
+                    <p>{dataHL.biggestLoser.points} Losses </p>
                   </div>
                 </div>
               </div>
