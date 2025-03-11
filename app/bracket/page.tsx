@@ -1,22 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import CustomizedSelect from "@/components/shared/customized-select";
-import { GAMES, TEAMS } from "@/types/constant";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useEffect, useState } from "react";
 
 export default function BracketScreen() {
-  const [selectBracket, setSelectedBracket] = useState("Basketball (Men)");
+  const [selectBracket] = useState("Basketball (Men)");
 
   useEffect(() => {
     console.log(selectBracket);
@@ -24,6 +12,10 @@ export default function BracketScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
+      <span className="text-4xl font-bold align-middle text-center">
+        There are no bracket matches scheduled for today. Round-robin matches
+        are still in progress.
+      </span>
       <motion.div
         animate={{ y: [0, -5, 0] }} // Moves up and down
         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -35,7 +27,6 @@ export default function BracketScreen() {
           alt="404 leo"
         ></Image>
       </motion.div>
-      <span className="text-6xl font-bold">Sorry ! Work in Progress</span>
     </div>
   );
 

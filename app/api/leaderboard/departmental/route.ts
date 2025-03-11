@@ -3,7 +3,7 @@ import { getLeaderboard } from "@/lib/utils";
 import { MatchStatus } from "@/types/types";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
