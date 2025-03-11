@@ -9,7 +9,7 @@ type Props = {
   }>;
 };
 
-export async function GET(req: Request, props: Props) {
+export async function GET(_: Request, props: Props) {
   try {
     const params = await props.params;
     const id = params.id;

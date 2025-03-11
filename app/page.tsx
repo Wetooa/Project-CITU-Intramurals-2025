@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { getDateToday } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
-import { Schedule } from "@/types/types";
+import { Leaderboard, Schedule } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -43,7 +43,7 @@ async function getRanking() {
 export default function Home() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isLoading, setLoading] = useState(true);
-  const [ranking, setRanking] = useState([]);
+  const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   const dateToday = getDateToday();
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
@@ -59,7 +59,7 @@ export default function Home() {
         setRanking(await getRanking());
         setLoading(false);
       } catch (error) {
-        console.log("lol");
+        console.log("lol -> ", error);
       }
     };
     fetchData();
@@ -166,7 +166,7 @@ export default function Home() {
         )}
       </div>
 
-      {isLoading ? (
+      {isLoading || !ranking ? (
         <HomeRankingSkeleton />
       ) : (
         <HomeRanking
