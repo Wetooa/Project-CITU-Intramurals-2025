@@ -22,23 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 interface LeaderboardContextType {
   dataLB: Leaderboard[] | undefined;
   isLoadingLB: boolean;
   isErrorLB: boolean;
   fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
-}
-interface Highlights {
-  bestLoser: { teamId: string; points: number };
-  bestWinner: { teamId: string; points: number };
-  bestMover: [string, [number, number]];
-}
-
-interface HighlightContextType {
-  dataHL: Highlights[] | undefined;
-  isLoadingHL: boolean;
-  isErrorHL: boolean;
 }
 
 const fetchLeaderboard = async (category?: string) => {
@@ -71,15 +61,12 @@ const fetchLeaderboardHighlights = async () => {
   const data = await response.json();
   return {
     bestMover: data.bestMover,
-    bestWinner: data.bestWinner,
-    bestLoser: data.bestLoser,
+    biggestWinner: data.biggestWinner,
+    biggestLoser: data.biggestLoser,
   };
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined
-);
-const HighlightContext = createContext<HighlightContextType | undefined>(
   undefined
 );
 
@@ -124,6 +111,7 @@ export default function LeaderBoardScreen() {
     { value: "Basketball", label: "BASKETBALL" },
     { value: "Volleyball", label: "VOLLEYBALL" },
     { value: "Badminton", label: "BADMINTON" },
+    { value: "Sepak Takraw", label: "SEPAK TAKRAW" },
     { value: "Futsal", label: "FUTSAL" },
     { value: "Table Tennis", label: "TABLE TENNIS" },
     { value: "Chess", label: "CHESS" },
@@ -138,9 +126,10 @@ export default function LeaderBoardScreen() {
     { value: "Dota 2", label: "DOTA 2" },
   ];
   const Genders = [
-    { value: "(men)", label: "MEN" },
-    { value: "(women)", label: "WOMEN" },
+    { value: "(Men)", label: "MEN" },
+    { value: "(Women)", label: "WOMEN" },
   ];
+
   const highlightStyle =
     "flex flex-col gap-5  pt-5 rounded-3xl min-w-64 items-center ";
   const highlightTitle =
@@ -169,7 +158,7 @@ export default function LeaderBoardScreen() {
           {isLoadingHL && (
             <div
               className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-              gap-7 lg:px-20 max-h-[35rem] mb-14"
+              gap-7 lg:px-20 max-h-[35rem] mb-14 mt-72 md:mt-20"
             >
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
@@ -179,47 +168,53 @@ export default function LeaderBoardScreen() {
           {isErrorHL && <h1>Error was found</h1>}
           {dataHL && (
             <div
-              className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-             gap-10 lg:px-20 max-h-[35rem] mx-72"
+              className="flex flex-col md:flex-row md:flex-wrap min-h-full justify-center  
+             gap-10 lg:px-20 max-h-[35rem] mt-72 md:mt-20"
             >
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
-                  src={`/team_logo/${dataHL.bestWinner.teamId}.png`}
+                  src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
                   alt="Team image of the Best Winner"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Biggest Winner Today</p>
                   <div className={`${highlightTeam}`}>
                     <p className="font-bold text-xl">
-                      {dataHL.bestWinner.teamId}
+                      {dataHL.biggestWinner.teamId}
                     </p>
-                    <p>{dataHL.bestWinner.points} Wins</p>
+                    <p>{dataHL.biggestWinner.points} Wins</p>
                   </div>
                 </div>
               </div>
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
-                  src={`/team_logo/${dataHL.bestLoser.teamId}.png`}
+                  src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
                   alt="Team image of the Best Loser"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Most Losses Today</p>
                   <div className={`${highlightTeam}`}>
                     <p className="font-bold text-xl">
-                      {dataHL.bestLoser.teamId}
+                      {dataHL.biggestLoser.teamId}
                     </p>
-                    <p>{dataHL.bestLoser.points} Losses </p>
+                    <p>{dataHL.biggestLoser.points} Losses </p>
                   </div>
                 </div>
               </div>
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.bestMover[0]}.png`}
                   alt="Team image of the Best Mover"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Biggest Mover</p>
                   <div className={`${highlightTeam}`}>

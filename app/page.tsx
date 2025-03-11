@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { TEAMS, GAMES, gender } from "@/types/constant";
+import HomeMatches, {
+  HomeMatchesSkeleton,
+} from "@/components/feature/homematch";
 import {
   HomeRanking,
   HomeRankingSkeleton,
 } from "@/components/feature/homeranking";
-import {
-  HomeComponent,
-  HomeComponentSkeleton,
-} from "@/components/feature/homecomponent";
 import {
   Select,
   SelectContent,
@@ -21,16 +17,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import HomeMatches, {
-  HomeMatchesSkeleton,
-} from "@/components/feature/homematch";
-import { fetchData } from "next-auth/client/_utils";
+import { getDateToday } from "@/lib/utils";
+import { GAMES } from "@/types/constant";
 import { Schedule } from "@/types/types";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
-async function getSchedule(date: String, filter: String, category: String) {
+async function getSchedule(date: string, filter: string, category: string) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
-      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`
+      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
   );
   const result = await response.json();
   return result.schedule;
@@ -38,7 +34,7 @@ async function getSchedule(date: String, filter: String, category: String) {
 
 async function getRanking() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`
+    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`,
   );
   const result = await response.json();
   return result.leaderboard;
@@ -49,7 +45,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [ranking, setRanking] = useState([]);
 
-  const dateToday = new Date().toISOString().split("T")[0];
+  const dateToday = getDateToday();
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
   const [filter, setFilter] = useState("Ongoing");
 
