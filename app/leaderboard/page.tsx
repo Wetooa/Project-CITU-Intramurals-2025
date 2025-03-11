@@ -115,7 +115,7 @@ export default function LeaderBoardScreen() {
     { value: "Futsal", label: "FUTSAL" },
     { value: "Table Tennis", label: "TABLE TENNIS" },
     { value: "Chess", label: "CHESS" },
-    { value: "Scrable", label: "SCRABLE" },
+    { value: "Scrabble", label: "SCRABBLE" },
   ];
   const Esports = [
     { value: "Valorant", label: "VALORANT" },
