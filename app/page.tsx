@@ -17,12 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getDateToday } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
 import { Schedule } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-async function getSchedule(date: String, filter: String, category: String) {
+async function getSchedule(date: string, filter: string, category: string) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
       `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
@@ -44,7 +45,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [ranking, setRanking] = useState([]);
 
-  const dateToday = new Date().toISOString().split("T")[0];
+  const dateToday = getDateToday();
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
   const [filter, setFilter] = useState("Ongoing");
 
