@@ -11,7 +11,7 @@ export function HomeRanking({
   third: String;
 }) {
   return (
-    <div className="flex flex-col w-1/5 h-full p-6">
+    <div className="md:flex flex-col w-1/5 h-full p-6 hidden">
       <span className="font-bold text-2xl">Departmental Rankings </span>
       <Separator
         className="mt-4 opacity-50"

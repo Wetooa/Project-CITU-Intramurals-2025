@@ -1,6 +1,6 @@
 import { Schedule } from "@/types/types";
 
-export default function homecomponent(schedule: Schedule) {
+export function HomeComponent(schedule: Schedule) {
   return (
     <div className="w-full h-28 bg-[#302F2E] rounded-md border-white border border-opacity-5 flex flex-col">
       <div className="w-full h-full flex items-center justify-evenly p-6">
