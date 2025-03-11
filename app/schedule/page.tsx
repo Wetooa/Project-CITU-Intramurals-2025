@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import GameFiltersSchedule from "@/components/feature/game-filters";
@@ -12,9 +13,18 @@ interface ScheduleContextType {
   isError: boolean;
   filters: Filters;
   setFilters: (filters: Filters) => void;
+  data: Schedule[] | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
 }
 
 interface Filters {
+  game?: string;
+  date?: string;
+  team?: string;
+  rivalTeam?: string;
   game?: string;
   date?: string;
   team?: string;
@@ -23,7 +33,7 @@ interface Filters {
 
 // Create Context
 const ScheduleContext = createContext<ScheduleContextType | undefined>(
-  undefined,
+  undefined
 );
 
 async function fetchSchedule(filters: Filters) {
@@ -34,6 +44,11 @@ async function fetchSchedule(filters: Filters) {
 }
 
 export function useSchedule() {
+  const context = useContext(ScheduleContext);
+  if (!context) {
+    throw new Error("useSchedule must be used within a ScheduleProvider");
+  }
+  return context;
   const context = useContext(ScheduleContext);
   if (!context) {
     throw new Error("useSchedule must be used within a ScheduleProvider");
@@ -53,6 +68,19 @@ export default function ScheduleScreen() {
     refetchOnWindowFocus: false,
   });
 
+  return (
+    <ScheduleContext.Provider
+      value={{ data, isLoading, isError, filters, setFilters }}
+    >
+      <div className="2xl:relative w-full h-full flex flex-col gap-5 justify-center items-center p-10">
+        <p className=" xl:text-4xl xl: 2xl:absolute 2xl:left-10 2xl:top-20 text-white font-bold text-4xl 2xl:text-8xl">
+          Schedule
+        </p>
+        <GameFiltersSchedule />
+        <GameResultCard />
+      </div>
+    </ScheduleContext.Provider>
+  );
   return (
     <ScheduleContext.Provider
       value={{ data, isLoading, isError, filters, setFilters }}
