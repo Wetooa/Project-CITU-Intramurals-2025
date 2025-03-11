@@ -17,15 +17,15 @@ export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 export type Winner = "team1" | "team2" | "draw";
 
 export type Team = {
-  id: string;
+  id: TeamType;
   color: string;
   district: string;
 };
 
 export type Schedule = {
   id: string;
-  team1Id: string;
-  team2Id: string;
+  team1Id: TeamType;
+  team2Id: TeamType;
 
   matchDate: string;
   matchTime: string;
@@ -55,13 +55,13 @@ export type AdminUser = {
 };
 
 export type Leaderboard = {
-  teamId: string;
+  teamId: TeamType;
   points: number;
 };
 
 export type Bracket = {
-  team1Id: string;
-  team2Id: string;
+  team1Id: TeamType;
+  team2Id: TeamType;
   round: string;
 
   scoreTeam1?: number | null;
