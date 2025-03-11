@@ -43,8 +43,8 @@ export function GameResultCardContainer({
     };
 
     return (
-        <Card key={id}
-              className="overflow-hidden transition-all hover:shadow-md border-maroon bg-eerie_black text-gray-200">
+        <Card
+            className="overflow-hidden transition-all hover:shadow-md border-maroon bg-eerie_black text-gray-200">
             <CardHeader className="p-4 pb-2">
                 <Badge
                     variant="outline"
