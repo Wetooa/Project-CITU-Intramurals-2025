@@ -24,22 +24,18 @@ export const teamLogos: Record<string, string> = {
   Virgo: "/team_logo/Virgo.png",
 };
 
-export const teams = [
-  "Aries",
-  "Taurus",
-  "Gemini",
-  "Cancer",
-  "Leo",
+export const TEAMS = [
   "Virgo",
+  "Pisces",
+  "Sagitarius",
+  "Capricorn",
   "Libra",
   "Scorpio",
-  "Sagittarius",
-  "Capricorn",
-  "Aquarius",
-  "Pisces",
-];
+  "Taurus",
+  "Leo",
+] as const;
 
-export const games = [
+export const GAMES = [
   "Basketball",
   "Volleyball",
   "Badminton",
@@ -54,6 +50,6 @@ export const games = [
   "Valorant",
   "Marvel Rivals",
   "DOTA 2",
-];
+] as const;
 
 export const gender = ["MEN", "WOMEN"];
