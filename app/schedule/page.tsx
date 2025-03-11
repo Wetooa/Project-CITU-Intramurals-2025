@@ -67,22 +67,3 @@ export default function ScheduleScreen() {
     </ScheduleContext.Provider>
   );
 }
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-=======
-    return (
-        <ScheduleContext.Provider value={{data, isLoading, isError, filters, setFilters}}>
-            <div className="2xl:relative w-full h-full flex flex-col gap-5 justify-center items-center p-10">
-                <p className=" xl:text-4xl xl: 2xl:absolute 2xl:left-10 2xl:top-20 text-white font-bold text-4xl 2xl:text-8xl">
-                    Schedule
-                </p>
-                <GameFiltersSchedule/>
-                <GameResultCard/>
-            </div>
-        </ScheduleContext.Provider>
-    );
-}
->>>>>>> 3a3a2de891a05143716e774b21b7c1ca61e8bce6
-=======
->>>>>>> 59f78e69515e1c8c78eb25a02e6b4c246dffdc5c
