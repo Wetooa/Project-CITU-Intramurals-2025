@@ -1,3 +1,5 @@
+import { GAMES } from "./constant";
+
 export const GoogleSheetsTitle = [
   "team",
   "category",
@@ -6,27 +8,11 @@ export const GoogleSheetsTitle = [
 ] as const;
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
-export type Category =
-  | "Basketball (men)"
-  | "Basketball (women)"
-  | "Volleyball (men)"
-  | "Volleyball (women)"
-  | "Chess";
+export type Games = (typeof GAMES)[number];
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
 export type Winner = "team1" | "team2" | "draw";
-
-export const ALL_TEAMS = [
-  "Virgo",
-  "Pisces",
-  "Sagitarius",
-  "Capricorn",
-  "Libra",
-  "Scorpio",
-  "Taurus",
-  "Leo",
-];
 
 export type Team = {
   id: string;
@@ -42,7 +28,7 @@ export type Schedule = {
   matchDate: string;
   matchTime: string;
 
-  category: Category;
+  category: Games;
   venue: string;
   round: string;
 

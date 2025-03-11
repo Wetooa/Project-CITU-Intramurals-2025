@@ -1,5 +1,6 @@
 import { GS } from "@/db/db";
-import { ALL_TEAMS, Leaderboard } from "@/types/types";
+import { TEAMS } from "@/types/constant";
+import { Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -15,7 +16,7 @@ export async function GET(req: Request) {
 
     const teamsPoints: Record<string, number> = {};
 
-    ALL_TEAMS.forEach((team) => {
+    TEAMS.forEach((team) => {
       teamsPoints[team] = 0;
     });
 
