@@ -1,105 +1,182 @@
-import { auth } from "@/auth";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { teams, games, gender } from "@/types/constant";
+import { HomeRanking } from "@/components/feature/homeranking";
+import { HomeComponent } from "@/components/feature/homecomponent";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import HomeMatches from "@/components/feature/homematch";
+import { fetchData } from "next-auth/client/_utils";
 
-export default async function Home() {
-  const session = await auth();
-  console.log(session);
+async function getSchedule() {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/api/schedule"
+  );
+  const result = await response.json();
+  return result.schedule;
+}
 
+export default function Home() {
+  const [schedules, setSchedules] = useState([]);
+  // const [isLoading, setLoading] = useState(true)
+
+  const [selectSport, setSelectedSport] = useState("BASKETBALL");
+  const [selectCategory, setSelectedCategory] = useState("MEN");
+  const [filter, setFilter] = useState("ONGOING");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setSchedules(await getSchedule());
+      } catch (error) {
+        console.log("lol");
+      }
+    };
+    fetchData();
+  }, [selectCategory, selectSport, filter]);
+
+  console.log(schedules);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="flex md:pl-12 md:pr-12 pl-6 pr-6 gap-6 w-full h-screen ">
+      <div className="h-screen w-[400px] md:flex  p-6  pl-10  justify-start bg-phantom_ash flex-col hidden mb-6">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          src="/citu_intrams.svg"
+          width={250}
+          height={50}
+          alt="intrams logo"
+        ></Image>
+        <p className="text-2xl font-bold self-start mt-10">CATEGORY</p>
+        <div className="mt-5 flex flex-col gap-2">
+          {gender.map((game, index) => (
+            <p
+              key={index}
+              className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
+                selectCategory === game.toUpperCase()
+                  ? "text-red-500"
+                  : "text-gray-200"
+              }`}
+              onClick={() => setSelectedCategory(game.toUpperCase())}
+            >
+              {game.toUpperCase()}
+            </p>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
+        <div className="mt-5 flex flex-col gap-2">
+          {games.slice(0, 8).map((game, index) => (
+            <p
+              key={index}
+              className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
+                selectSport === game.toUpperCase()
+                  ? "text-red-500"
+                  : "text-gray-200"
+              }`}
+              onClick={() => setSelectedSport(game.toUpperCase())}
+            >
+              {game.toUpperCase()}
+            </p>
+          ))}
+        </div>
+        <p className="text-2xl font-bold self-start mt-10">ESPORTS</p>
+        <div className="mt-5 flex flex-col gap-2">
+          {games.slice(8).map((game, index) => (
+            <p
+              key={index}
+              className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
+                selectSport === game.toUpperCase()
+                  ? "text-red-500"
+                  : "text-gray-200"
+              }`}
+              onClick={() => setSelectedSport(game.toUpperCase())}
+            >
+              {game.toUpperCase()}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col md:w-1/2 w-full gap-4 h-full">
+        <div className="bg-[#242322] rounded-br-lg rounded-bl-lg w-full flex gap-2 justify-between items-center md:p-6 p-2 h-32">
+          <span className="hidden md:block md:text-5xl text-md font-bold">
+            MATCH TODAY
+          </span>
+
+          <Select defaultValue="MEN" onValueChange={setFilter}>
+            <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3 md:text-xl text-sm md:hidden font-bold">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-[#582424] font-bold text-lg text-white">
+              <SelectGroup>
+                <SelectItem value="MEN">MEN</SelectItem>
+                <SelectItem value="WOMEN">WOMEN</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Select defaultValue="BASKETBALL" onValueChange={setSelectedCategory}>
+            <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3 md:text-xl md:hidden text-sm font-bold">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-[#582424] font-bold text-lg text-white">
+              <SelectGroup>
+                <SelectLabel className="text-lg font-bold">SPORTS</SelectLabel>
+                <SelectItem value="BASKETBALL">BASKETBALL</SelectItem>
+                <SelectItem value="VOLLEYBALL">VOLLEYBALL</SelectItem>
+                <SelectItem value="BADMINTON">BADMINTON</SelectItem>
+                <SelectItem value="TABLE_TENNIS">TABLE TENNIS</SelectItem>
+                <SelectItem value="CHESS">CHESS</SelectItem>
+                <SelectItem value="SCRABBLE">SCRABBLE</SelectItem>
+                <SelectItem value="FUTSAL">FUTSAL</SelectItem>
+                <SelectItem value="SEPAK_TAKRAW">SEPAK TAKRAW</SelectItem>
+                <SelectSeparator></SelectSeparator>
+
+                <SelectLabel className="text-lg font-bold">ESPORTS</SelectLabel>
+
+                <SelectItem value="CODM">CODM</SelectItem>
+                <SelectItem value="MLBB">MLBB</SelectItem>
+                <SelectItem value="TEKKEN_8">TEKKEN 8</SelectItem>
+                <SelectItem value="VALORANT">VALORANT</SelectItem>
+                <SelectItem value="MARVEL_RIVALS">MARVEL RIVALS</SelectItem>
+                <SelectItem value="DOTA_2">DOTA 2</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Select defaultValue="ONGOING" onValueChange={setFilter}>
+            <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3  md:text-xl text-sm  font-bold">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-[#582424] font-bold text-lg text-white">
+              <SelectGroup>
+                <SelectItem value="ONGOING">ONGOING</SelectItem>
+                <SelectItem value="FINISHED">FINISHED</SelectItem>
+                <SelectItem value="LATER">LATER</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <span className="self-center md:hidden md:text-5xl text-md font-bold">
+          MATCH TODAY
+        </span>
+
+        {schedules && <HomeMatches Schedules={schedules} />}
+      </div>
+
+      <HomeRanking
+        first="Department A"
+        second="Department B"
+        third="Department C"
+      />
     </div>
   );
 }
