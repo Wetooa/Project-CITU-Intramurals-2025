@@ -1,5 +1,6 @@
 import { Schedule } from "@/types/types";
 import { HomeComponent } from "./homecomponent";
+import { Skeleton } from "../ui/skeleton";
 
 export default function HomeMatches({ Schedules }: { Schedules: Schedule[] }) {
   return (
@@ -8,5 +9,11 @@ export default function HomeMatches({ Schedules }: { Schedules: Schedule[] }) {
         <HomeComponent key={index} schedule={schedule}></HomeComponent>
       ))}
     </div>
+  );
+}
+
+export function HomeMatchesSkeleton() {
+  return (
+    <Skeleton className="rounded-tr-lg rounded-tl-lg p-2 w-full h-full"></Skeleton>
   );
 }
