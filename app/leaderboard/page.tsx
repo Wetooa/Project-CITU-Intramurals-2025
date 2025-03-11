@@ -41,7 +41,7 @@ const fetchLeaderboard = async (category?: string) => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard: ${response.status} ${response.statusText}`,
+      `Error fetching leaderboard: ${response.status} ${response.statusText}`
     );
   }
 
@@ -54,7 +54,7 @@ const fetchLeaderboardHighlights = async () => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
     );
   }
 
@@ -67,7 +67,7 @@ const fetchLeaderboardHighlights = async () => {
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export default function LeaderBoardScreen() {
@@ -82,7 +82,7 @@ export default function LeaderBoardScreen() {
     queryKey: ["leaderboard", selectedSport, selectedGender],
     queryFn: () => {
       const isSportSelected = Sports.some(
-        (sport) => sport.value === selectedSport,
+        (sport) => sport.value === selectedSport
       );
       return isSportSelected
         ? fetchLeaderboard(selectedSport + " " + selectedGender)
@@ -158,7 +158,7 @@ export default function LeaderBoardScreen() {
           {isLoadingHL && (
             <div
               className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-              gap-7 lg:px-20 max-h-[35rem] mb-14"
+              gap-7 lg:px-20 max-h-[35rem] mb-14 mt-72"
             >
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
@@ -169,7 +169,7 @@ export default function LeaderBoardScreen() {
           {dataHL && (
             <div
               className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-             gap-10 lg:px-20 max-h-[35rem] mx-72"
+             gap-10 lg:px-20 max-h-[35rem] mt-72"
             >
               <div className={`${highlightStyle}`}>
                 <Image
@@ -376,7 +376,7 @@ export default function LeaderBoardScreen() {
                   dataLB
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
-                        Number(b.points) - Number(a.points),
+                        Number(b.points) - Number(a.points)
                     )
                     .map((item: Leaderboard, index: number) => (
                       <TableRow key={item.teamId}>
