@@ -18,9 +18,9 @@ import {
 import HomeMatches from "@/components/feature/homematch";
 import { fetchData } from "next-auth/client/_utils";
 
-async function getSchedule() {
+async function getSchedule(date: String) {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/api/schedule"
+    process.env.NEXT_PUBLIC_API_URL + `/api/schedule/filter?matchDate=${date}`
   );
   const result = await response.json();
   return result.schedule;
@@ -30,22 +30,26 @@ export default function Home() {
   const [schedules, setSchedules] = useState([]);
   // const [isLoading, setLoading] = useState(true)
 
+  const dateToday = new Date().toISOString().split("T")[0];
   const [selectSport, setSelectedSport] = useState("BASKETBALL");
   const [selectCategory, setSelectedCategory] = useState("MEN");
   const [filter, setFilter] = useState("ONGOING");
 
+  // console.log(dateToday);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setSchedules(await getSchedule());
+        setSchedules(await getSchedule(dateToday));
       } catch (error) {
         console.log("lol");
       }
     };
     fetchData();
-  }, [selectCategory, selectSport, filter]);
+  }, [selectCategory, selectSport, filter, dateToday]);
 
   console.log(schedules);
+
   return (
     <div className="flex md:pl-12 md:pr-12 pl-6 pr-6 gap-6 w-full h-screen ">
       <div className="h-screen w-[400px] md:flex  p-6  pl-10  justify-start bg-phantom_ash flex-col hidden mb-6">
