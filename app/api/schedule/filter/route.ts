@@ -16,9 +16,14 @@ export async function GET(req: Request) {
     const sheet = await data.getRows();
 
     const matches = sheet.filter((row) => {
+      const teams = [row.get("team1Id"), row.get("team2Id")];
+
       return (
-        (team1Id === "" || row.get("team1Id") === team1Id) &&
-        (team2Id === "" || row.get("team2Id") === team2Id) &&
+        (team1Id === "" || teams.includes(team1Id)) &&
+        (team2Id === "" || teams.includes(team2Id)) &&
+        (team2Id === "" ||
+          team1Id === "" ||
+          (teams.includes(team1Id) && teams.includes(team2Id))) &&
         (matchDate === "" || row.get("matchDate") === matchDate) &&
         (category === "" || row.get("category") === category) &&
         (venue === "" || row.get("venue") === venue) &&
