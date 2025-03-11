@@ -19,6 +19,7 @@ export default {
                 phantom_ash: "#161616",
                 eerie_black: '#1C1C1C',
                 night_black: '#161616',
+                maroon: '#592424',
                 card: {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
