@@ -63,7 +63,7 @@ export function GameResultCardContainer({
                             className="rounded-full min-w-12 cursor-pointer lg:hover:scale-110"
                             alt={team1Id}
                         />
-                        <p className="font-semibold text-gray-200">{team1Id}</p>
+                        <p className="font-semibold text-gray-200 break-words truncate">{team1Id}</p>
                     </div>
                     <div className="col-span-1 flex justify-center">
                         <div
@@ -79,7 +79,7 @@ export function GameResultCardContainer({
                         </div>
                     </div>
                     <div className="col-span-3 flex items-center justify-center gap-2">
-                        <p className="font-semibold text-gray-200">{team2Id}</p>
+                        <p className="font-semibold text-gray-200 break-words">{team2Id}</p>
                         <Image
                             src={`/team_logo/${team2Id}.png`}
                             width={50}
@@ -93,7 +93,8 @@ export function GameResultCardContainer({
 
                 <Separator className="my-3 bg-gray-800"/>
 
-                <div className="grid grid-cols-1 gap-2 text-sm text-gray-400 sm:grid-cols-3">
+                <div
+                    className="grid grid-cols-1 gap-2 text-sm text-gray-400  sm:flex sm:items-center sm:justify-between sm:px-4">
                     <div className="flex items-center gap-1">
                         <CalendarIcon className="h-4 w-4"/>
                         <span>{formattedDate}</span>

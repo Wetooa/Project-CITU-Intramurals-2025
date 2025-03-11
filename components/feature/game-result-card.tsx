@@ -5,12 +5,6 @@ import {Schedule} from "@/types/types";
 import {Skeleton} from "@/components/ui/skeleton";
 import {GameResultCardContainer} from "@/components/feature/game-result-container";
 
-// interface TeamScoreProps {
-//     team_name: string,
-//     score?: number | null,
-//     position: "left" | "right",
-//     scoreStatus: string
-// }
 
 interface ScheduleProps {
     schedule: Schedule[],
