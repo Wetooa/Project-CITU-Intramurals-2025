@@ -18,14 +18,19 @@ export async function GET(req: Request) {
     const sheet = await data.getRows();
 
     const matches = sheet.filter((row) => {
+      const teams = [row.get("team1Id"), row.get("team2Id")];
+
       return (
-        (team1Id === "" || row.get("team1Id") === team1Id) &&
-        (team2Id === "" || row.get("team2Id") === team2Id) &&
+        (team1Id === "" || teams.includes(team1Id)) &&
+        (team2Id === "" || teams.includes(team2Id)) &&
+        (team2Id === "" ||
+          team1Id === "" ||
+          (teams.includes(team1Id) && teams.includes(team2Id))) &&
         (matchDate === "" || row.get("matchDate") === matchDate) &&
         (category === "" || row.get("category") === category) &&
         (venue === "" || row.get("venue") === venue) &&
         (status === "" || row.get("status") === status) &&
-        (round === "" || row.get("round") === round) && 
+        (round === "" || row.get("round") === round) &&
         (winner === "" || row.get("winner") === winner)
       );
     });
@@ -51,6 +56,8 @@ export async function GET(req: Request) {
         team2Id: row.get("team2Id"),
 
         matchDate: row.get("matchDate"),
+        matchTime: row.get("matchTime"),
+
         category: row.get("category"),
         venue: row.get("venue"),
         round: row.get("round"),
@@ -60,8 +67,8 @@ export async function GET(req: Request) {
 
         scoreTeam1: row.get("scoreTeam1"),
         scoreTeam2: row.get("scoreTeam2"),
-        createdOn: row.get("createdOn"),
-        updatedOn: row.get("updatedOn"),
+        createdOn: new Date(row.get("createdOn")),
+        updatedOn: new Date(row.get("updatedOn")),
       };
     });
 

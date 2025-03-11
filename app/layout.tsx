@@ -1,6 +1,5 @@
-import type {Metadata} from "next";
-import RootLayout from "./RootLayout";
-import './globals.css'
+import type { Metadata } from "next";
+import RootLayout from "./RootLayout"; // Import the client layout
 
 export const metadata: Metadata = {
   title: "CIT-U Intramurals",
