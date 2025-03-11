@@ -1,9 +1,9 @@
 'use client'
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import GameFiltersSchedule from "@/components/feature/game-filters";
-import GameResultCard from "@/components/feature/game-result-card";
 import {Schedule} from "@/types/types";
+import DayResultContainer from "@/components/feature/game-result-card";
 
 // Context Type
 interface ScheduleContextType {
@@ -15,10 +15,12 @@ interface ScheduleContextType {
 }
 
 interface Filters {
-    game?: string;
-    date?: string;
-    team?: string;
-    rivalTeam?: string;
+    category?: string;
+    matchDate?: string;
+    team1Id?: string;
+    team2Id?: string;
+    venue?: string;
+    gender?: string;
 }
 
 // Create Context
@@ -26,7 +28,7 @@ const ScheduleContext = createContext<ScheduleContextType | undefined>(undefined
 
 async function fetchSchedule(filters: Filters) {
     const queryParams = new URLSearchParams(filters as Record<string, string>);
-    const response = await fetch(`/api/schedule?${queryParams}`);
+    const response = await fetch(`/api/schedule/filter?${queryParams}`);
     console.log("fetching data")
     return response.json();
 }
@@ -42,16 +44,17 @@ export function useSchedule() {
 export default function ScheduleScreen() {
     const [filters, setFilters] = useState<Filters>({});
     const {data, isLoading, isError} = useQuery({
-        queryKey: ["schedule", filters],
+        queryKey: ["schedule", JSON.stringify(filters)],
         queryFn: () => fetchSchedule(filters),
-        staleTime: 1000 * 60 * 10,
-        gcTime: 1000 * 60 * 30,
         refetchIntervalInBackground: false,
         refetchOnMount: false,
+        enabled: !!filters,
         refetchOnWindowFocus: false
     });
+    useEffect(() => {
+        console.log("Data: ", data)
 
-
+    }, [data]);
     return (
         <ScheduleContext.Provider value={{data, isLoading, isError, filters, setFilters}}>
             <div className="2xl:relative w-full h-full flex flex-col gap-5 justify-center items-center p-10">
@@ -59,7 +62,7 @@ export default function ScheduleScreen() {
                     Schedule
                 </p>
                 <GameFiltersSchedule/>
-                <GameResultCard/>
+                <DayResultContainer schedule={data ? data.schedule : []} isLoading={isLoading}/>
             </div>
         </ScheduleContext.Provider>
     );
