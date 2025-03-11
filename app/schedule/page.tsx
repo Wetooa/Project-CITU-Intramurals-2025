@@ -14,7 +14,7 @@ interface ScheduleContextType {
   setFilters: (filters: Filters) => void;
 }
 
-interface Filters {
+export interface Filters {
   category?: string;
   matchDate?: string;
   team1Id?: string;
@@ -35,13 +35,13 @@ async function fetchSchedule(filters: Filters) {
   return response.json();
 }
 
-export function useSchedule() {
-  const context = useContext(ScheduleContext);
-  if (!context) {
-    throw new Error("useSchedule must be used within a ScheduleProvider");
-  }
-  return context;
-}
+// export function useSchedule() {
+//   const context = useContext(ScheduleContext);
+//   if (!context) {
+//     throw new Error("useSchedule must be used within a ScheduleProvider");
+//   }
+//   return context;
+// }
 
 export default function ScheduleScreen() {
   const [filters, setFilters] = useState<Filters>({});
@@ -64,7 +64,7 @@ export default function ScheduleScreen() {
         <p className=" xl:text-4xl xl: 2xl:absolute 2xl:left-10 2xl:top-20 text-white font-bold text-4xl 2xl:text-8xl">
           Schedule
         </p>
-        <GameFiltersSchedule />
+        <GameFiltersSchedule filters={filters} setFilters={setFilters} />
         <DayResultContainer
           schedule={data ? data.schedule : []}
           isLoading={isLoading}

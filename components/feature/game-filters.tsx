@@ -1,15 +1,19 @@
-"use client";
 import CustomizedSelect from "@/components/shared/customized-select";
-import Image from "next/image";
 import { GAMES, MATCH_DATES, TEAMS, VENUES } from "@/types/constant";
+import React, { SetStateAction } from "react";
 
-import { useSchedule } from "@/app/schedule/page";
+import { Filters } from "@/app/schedule/page";
+import Image from "next/image";
 
 const SWORD_ICON = "/sword_icon.svg";
 
-export default function GameFiltersSchedule() {
-  const { filters, setFilters } = useSchedule();
-
+export default function GameFiltersSchedule({
+  filters,
+  setFilters,
+}: {
+  filters: Filters;
+  setFilters: React.Dispatch<SetStateAction<Filters>>;
+}) {
   const handleFilterChange = (filterKey: string, value: string) => {
     // Map component filter keys to context filter keys
     const contextKeyMap: Record<string, string> = {
