@@ -22,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Label } from "@radix-ui/react-select";
 
 interface LeaderboardContextType {
   data: Leaderboard[] | undefined;
@@ -58,7 +57,7 @@ export default function LeaderBoardScreen() {
   const [selectedGender, setSelectedGender] = useState<string>("(men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["leaderboard", selectedSport],
+    queryKey: ["leaderboard", selectedSport, selectedGender],
     queryFn: () => {
       const isSportSelected = Sports.some(
         (sport) => sport.value === selectedSport
@@ -98,7 +97,8 @@ export default function LeaderBoardScreen() {
   const highlightStyle =
     "flex flex-col gap-5  pt-5 rounded-3xl min-w-64 items-center ";
   const highlightTitle =
-    "absolute top-[-1rem]  left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-10 lg:px-2 text-black bg-white border-2 border-white rounded-full w-48 h-10 whitespace-nowrap overflow-hidden";
+    "absolute top-[-1rem]  left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 lg:px-10 " +
+    "lg:px-2 text-black bg-white border-2 border-white rounded-full w-48 h-10 whitespace-nowrap overflow-hidden";
   const highlightTeam =
     "rounded-xl bg-[#FF212140] lg:h-32 bottom-0 py-8 min-w-64 ";
   const highlightImage = "rounded-full w-24 h-24 object-cover lg:mb-10";
@@ -114,10 +114,13 @@ export default function LeaderBoardScreen() {
           </p>
         </div>
         <div className="text-center text-white  ">
-          <p className=" py-20p lg:py-10 text-2xl lg:text-4xl font-bold">
+          <p className=" py-20p lg:py-10 text-2xl lg:text-4xl font-bold mb-24">
             Highlights
           </p>
-          <div className="flex flex-col lg:flex-row flex-wrap min-h-full justify-center  gap-5 overflow-y-auto lg:px-20 max-h-[35rem] lg:overflow-y-hidden [&::-webkit-scrollbar]:hidden">
+          <div
+            className="flex flex-col lg:flex-row lg:flex-wrap min-h-full justify-center  
+           gap-5 lg:px-20 max-h-[35rem] mb-14"
+          >
             <div className={`${highlightStyle}`}>
               <img
                 className={`${highlightImage}`}
@@ -151,31 +154,11 @@ export default function LeaderBoardScreen() {
                 </div>
               </div>
             </div>
-            <div className={`${highlightStyle}`}>
-              <img className={`${highlightImage}`}></img>
-              <div className="relative">
-                <p className={`${highlightTitle}`}>Biggest Mover - 2nd</p>
-                <div className={`${highlightTeam}`}>
-                  <p className="font-bold text-xl">Leo</p>
-                  <p>#39 → #8 </p>
-                </div>
-              </div>
-            </div>
-            <div className={`${highlightStyle}`}>
-              <img className={`${highlightImage}`}></img>
-              <div className="relative">
-                <p className={`${highlightTitle}`}>Biggest Mover - 3rd</p>
-                <div className={`${highlightTeam}`}>
-                  <p className="font-bold text-xl">Leo</p>
-                  <p>#39 → #8 </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div className="flex flex-col text-white gap-3 text-center mt-16 px-10">
-        <div className="flex flex-col justify-center items-center gap-5 lg:hidden">
+        <div className="flex flex-col justify-center items-center mt-10 gap-5 lg:hidden">
           <Button
             variant="link"
             className={`text-3xl font-bold ${
@@ -276,7 +259,7 @@ export default function LeaderBoardScreen() {
                 Team Rankings
               </p>
               {isSportSelected && (
-                <div className="ml-auto hidden md:flex">
+                <div className="ml-auto hidden lg:flex">
                   {Genders.map((gender) => (
                     <Button
                       variant="link"
