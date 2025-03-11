@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { teams, games, gender } from "@/types/constant";
+import { GAMES, gender } from "@/types/constant";
+
 import { HomeRanking } from "@/components/feature/homeranking";
-import { HomeComponent } from "@/components/feature/homecomponent";
 import {
   Select,
   SelectContent,
@@ -16,11 +16,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import HomeMatches from "@/components/feature/homematch";
-import { fetchData } from "next-auth/client/_utils";
 
 async function getSchedule() {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/api/schedule"
+    process.env.NEXT_PUBLIC_API_URL + "/api/schedule",
   );
   const result = await response.json();
   return result.schedule;
@@ -73,7 +72,7 @@ export default function Home() {
         </div>
         <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
         <div className="mt-5 flex flex-col gap-2">
-          {games.slice(0, 8).map((game, index) => (
+          {GAMES.slice(0, 8).map((game, index) => (
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
@@ -89,7 +88,7 @@ export default function Home() {
         </div>
         <p className="text-2xl font-bold self-start mt-10">ESPORTS</p>
         <div className="mt-5 flex flex-col gap-2">
-          {games.slice(8).map((game, index) => (
+          {GAMES.slice(8).map((game, index) => (
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${

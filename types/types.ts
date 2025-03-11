@@ -1,4 +1,4 @@
-import { GAMES } from "./constant";
+import { GAMES, TEAMS } from "./constant";
 
 export const GoogleSheetsTitle = [
   "team",
@@ -9,6 +9,7 @@ export const GoogleSheetsTitle = [
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
 export type Games = (typeof GAMES)[number];
+export type TeamType = (typeof TEAMS)[number];
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 

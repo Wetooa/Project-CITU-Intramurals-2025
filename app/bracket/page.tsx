@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import CustomizedSelect from "@/components/shared/customized-select";
-import { teams, games } from "@/types/constant";
+import { TEAMS, GAMES } from "@/types/constant";
 
 export default function BracketScreen() {
   const [selectBracket, setSelectedBracket] = useState("");
@@ -14,7 +14,7 @@ export default function BracketScreen() {
         <div className="md:hidden">
           <CustomizedSelect
             title={"Brackets"}
-            options={teams}
+            options={TEAMS}
             value={selectBracket}
             onChange={(value) => setSelectedBracket(value)}
           ></CustomizedSelect>
@@ -25,7 +25,7 @@ export default function BracketScreen() {
           </p>
           <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
           <div className="mt-5 flex flex-col gap-2">
-            {games.slice(0, 7).map((game, index) => (
+            {GAMES.slice(0, 7).map((game, index) => (
               <p
                 key={index}
                 className="text-xl text-gray-200 cursor-pointer hover:scale-105 transition-all font-bold "
@@ -35,7 +35,7 @@ export default function BracketScreen() {
               </p>
             ))}
             <p className="text-2xl font-bold self-start mt-10">ESPORTS</p>
-            {games.slice(7).map((game, index) => (
+            {GAMES.slice(7).map((game, index) => (
               <p
                 key={index}
                 className="text-xl text-gray-200 cursor-pointer hover:scale-105 transition-all font-bold "
