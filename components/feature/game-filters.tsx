@@ -17,11 +17,11 @@ export default function GameFiltersSchedule({
   const handleFilterChange = (filterKey: string, value: string) => {
     // Map component filter keys to context filter keys
     const contextKeyMap: Record<string, string> = {
-      category: "category",
-      matchDate: "matchDate",
-      team1Id: "team1Id",
-      team2Id: "team2Id",
-      venue: "venue",
+      category: "",
+      matchDate: "",
+      team1Id: "",
+      team2Id: "",
+      venue: "",
     };
 
     const contextKey = contextKeyMap[filterKey];
