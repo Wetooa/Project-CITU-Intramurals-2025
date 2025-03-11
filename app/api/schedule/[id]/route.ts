@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { GS } from "@/db/db";
 import { Schedule } from "@/types/types";
 import { NextResponse } from "next/server";
@@ -56,11 +55,6 @@ export async function GET(_: Request, props: Props) {
 
 export async function PUT(req: Request, props: Props) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const params = await props.params;
     const id = params.id;
     const reqData = (await req.json()) as Schedule;
@@ -88,13 +82,8 @@ export async function PUT(req: Request, props: Props) {
   }
 }
 
-export async function DELETE(req: Request, props: Props) {
+export async function DELETE(_: Request, props: Props) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const params = await props.params;
     const id = params.id;
 

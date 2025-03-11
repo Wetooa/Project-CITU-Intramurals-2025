@@ -1,7 +1,6 @@
 import { GS } from "@/db/db";
 import { Schedule } from "@/types/types";
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 
 export async function GET(req: Request) {
   try {
@@ -66,11 +65,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const reqData = (await req.json()) as Schedule;
     const data = await GS.getSheetData("schedule");
 
