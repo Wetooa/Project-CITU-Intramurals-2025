@@ -32,6 +32,14 @@ async function getSchedule(date: string, filter: string, category: string) {
   return result.schedule;
 }
 
+async function getRanking() {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`,
+  );
+  const result = await response.json();
+  return result.leaderboard;
+}
+
 export default function Home() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isLoading, setLoading] = useState(true);
