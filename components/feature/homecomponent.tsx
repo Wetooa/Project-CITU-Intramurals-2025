@@ -1,11 +1,12 @@
 import { teamLogos } from "@/types/constant";
 import { Schedule } from "@/types/types";
 import Image from "next/image";
+import { Skeleton } from "../ui/skeleton";
 
 export function HomeComponent({ schedule }: { schedule: Schedule }) {
   return (
     <div className="w-full h-28 bg-[#302F2E] rounded-md border-white border border-opacity-5 flex flex-col">
-      <div className="w-full h-full  grid grid-cols-7  justify-evenly p-6">
+      <div className="w-full h-4/5  grid grid-cols-7  justify-evenly p-6">
         <div className="w-full h-full flex items-center justify-left">
           <span className="text-2xl font-bold align-middle text-left">
             {schedule.matchTime}
@@ -37,17 +38,19 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
               height={510}
               alt="team 1 logo"
             ></Image>
-            <span className="text-xl font-bold">{schedule.team2Id}</span>
+            <span className="md:text-xl text:md font-bold">
+              {schedule.team2Id}
+            </span>
           </div>
         </div>
         <div className="w-full h-full flex items-center justify-right">
-          <span className="w-full text-sm font-bold text-right">
+          <span className="w-full md:text-sm text-xs font-bold text-right">
             {schedule.category}
           </span>
         </div>
       </div>
 
-      <div className="w-full h-1/2 bg-[#2B2A29]  flex items-center justify-around">
+      <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md  flex items-center justify-around">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
           Game 1 - Finals
         </span>
@@ -56,5 +59,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
         </span>
       </div>
     </div>
+  );
+}
+
+export function HomeComponentSkeleton() {
+  return (
+    <Skeleton className="w-full h-28 rounded-md border-white border border-opacity-5"></Skeleton>
   );
 }

@@ -2,9 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { teams, games, gender } from "@/types/constant";
+import { TEAMS, GAMES, gender } from "@/types/constant";
 import { HomeRanking } from "@/components/feature/homeranking";
-import { HomeComponent } from "@/components/feature/homecomponent";
+import {
+  HomeComponent,
+  HomeComponentSkeleton,
+} from "@/components/feature/homecomponent";
 import {
   Select,
   SelectContent,
@@ -15,7 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import HomeMatches from "@/components/feature/homematch";
+import HomeMatches, {
+  HomeMatchesSkeleton,
+} from "@/components/feature/homematch";
 import { fetchData } from "next-auth/client/_utils";
 
 async function getSchedule(date: String) {
@@ -28,7 +33,7 @@ async function getSchedule(date: String) {
 
 export default function Home() {
   const [schedules, setSchedules] = useState([]);
-  // const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(true);
 
   const dateToday = new Date().toISOString().split("T")[0];
   const [selectSport, setSelectedSport] = useState("BASKETBALL");
@@ -41,6 +46,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setSchedules(await getSchedule(dateToday));
+        setLoading(false);
       } catch (error) {
         console.log("lol");
       }
@@ -77,7 +83,7 @@ export default function Home() {
         </div>
         <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
         <div className="mt-5 flex flex-col gap-2">
-          {games.slice(0, 8).map((game, index) => (
+          {GAMES.slice(0, 8).map((game, index) => (
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
@@ -93,7 +99,7 @@ export default function Home() {
         </div>
         <p className="text-2xl font-bold self-start mt-10">ESPORTS</p>
         <div className="mt-5 flex flex-col gap-2">
-          {games.slice(8).map((game, index) => (
+          {GAMES.slice(8).map((game, index) => (
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
@@ -173,7 +179,11 @@ export default function Home() {
           MATCH TODAY
         </span>
 
-        {schedules && <HomeMatches Schedules={schedules} />}
+        {isLoading ? (
+          <HomeMatchesSkeleton />
+        ) : (
+          <HomeMatches Schedules={schedules} />
+        )}
       </div>
 
       <HomeRanking
