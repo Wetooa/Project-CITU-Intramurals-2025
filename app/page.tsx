@@ -59,7 +59,7 @@ export default function Home() {
         setRanking(await getRanking());
         setLoading(false);
       } catch (error) {
-        console.log("lol");
+        console.log(error);
       }
     };
     fetchData();

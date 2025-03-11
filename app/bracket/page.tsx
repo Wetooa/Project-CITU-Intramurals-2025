@@ -1,18 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import CustomizedSelect from "@/components/shared/customized-select";
 import { GAMES, TEAMS } from "@/types/constant";
-import Image from "next/image";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useEffect, useState } from "react";
 
 export default function BracketScreen() {
   const [selectBracket, setSelectedBracket] = useState("Basketball (Men)");

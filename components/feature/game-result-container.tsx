@@ -16,7 +16,6 @@ import { Schedule } from "@/types/types";
 import Image from "next/image";
 
 export function GameResultCardContainer({
-  id,
   matchDate,
   team1Id,
   team2Id,
@@ -24,8 +23,6 @@ export function GameResultCardContainer({
   scoreTeam2,
   category,
   status,
-  createdOn,
-  updatedOn,
   round,
   venue,
   matchTime,
