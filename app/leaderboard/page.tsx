@@ -22,23 +22,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 interface LeaderboardContextType {
   dataLB: Leaderboard[] | undefined;
   isLoadingLB: boolean;
   isErrorLB: boolean;
   fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
-}
-interface Highlights {
-  bestLoser: { teamId: string; points: number };
-  bestWinner: { teamId: string; points: number };
-  bestMover: [string, [number, number]];
-}
-
-interface HighlightContextType {
-  dataHL: Highlights[] | undefined;
-  isLoadingHL: boolean;
-  isErrorHL: boolean;
 }
 
 const fetchLeaderboard = async (category?: string) => {
@@ -51,7 +41,7 @@ const fetchLeaderboard = async (category?: string) => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -64,7 +54,7 @@ const fetchLeaderboardHighlights = async () => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -77,10 +67,7 @@ const fetchLeaderboardHighlights = async () => {
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined
-);
-const HighlightContext = createContext<HighlightContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export default function LeaderBoardScreen() {
@@ -95,7 +82,7 @@ export default function LeaderBoardScreen() {
     queryKey: ["leaderboard", selectedSport, selectedGender],
     queryFn: () => {
       const isSportSelected = Sports.some(
-        (sport) => sport.value === selectedSport
+        (sport) => sport.value === selectedSport,
       );
       return isSportSelected
         ? fetchLeaderboard(selectedSport + " " + selectedGender)
@@ -139,9 +126,10 @@ export default function LeaderBoardScreen() {
     { value: "Dota 2", label: "DOTA 2" },
   ];
   const Genders = [
-    { value: "(men)", label: "MEN" },
-    { value: "(women)", label: "WOMEN" },
+    { value: "(Men)", label: "MEN" },
+    { value: "(Women)", label: "WOMEN" },
   ];
+
   const highlightStyle =
     "flex flex-col gap-5  pt-5 rounded-3xl min-w-64 items-center ";
   const highlightTitle =
@@ -184,11 +172,13 @@ export default function LeaderBoardScreen() {
              gap-10 lg:px-20 max-h-[35rem] mx-72"
             >
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
                   alt="Team image of the Best Winner"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Biggest Winner Today</p>
                   <div className={`${highlightTeam}`}>
@@ -200,11 +190,13 @@ export default function LeaderBoardScreen() {
                 </div>
               </div>
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
                   alt="Team image of the Best Loser"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Most Losses Today</p>
                   <div className={`${highlightTeam}`}>
@@ -216,11 +208,13 @@ export default function LeaderBoardScreen() {
                 </div>
               </div>
               <div className={`${highlightStyle}`}>
-                <img
+                <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.bestMover[0]}.png`}
                   alt="Team image of the Best Mover"
-                ></img>
+                  width={160}
+                  height={160}
+                />
                 <div className="relative">
                   <p className={`${highlightTitle}`}>Biggest Mover</p>
                   <div className={`${highlightTeam}`}>
@@ -382,7 +376,7 @@ export default function LeaderBoardScreen() {
                   dataLB
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
-                        Number(b.points) - Number(a.points)
+                        Number(b.points) - Number(a.points),
                     )
                     .map((item: Leaderboard, index: number) => (
                       <TableRow key={item.teamId}>
