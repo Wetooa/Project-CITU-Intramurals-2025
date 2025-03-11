@@ -34,6 +34,7 @@ export async function GET(req: Request, props: Props) {
       category: match.get("category"),
       venue: match.get("venue"),
       round: match.get("round"),
+      game: match.get("game"),
 
       status: match.get("status"),
 
