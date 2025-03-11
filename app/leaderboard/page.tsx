@@ -243,7 +243,9 @@ export default function LeaderBoardScreen() {
           <div className="flex flex-row justify-between gap-5">
             <Select onValueChange={(value) => handleSportChange(value)}>
               <SelectTrigger
-                className={` ${isSportSelected ? "w-[280px]" : ""} px-3`}
+                className={` ${
+                  isSportSelected ? "w-[240px]" : "w-[400px]"
+                } px-3`}
               >
                 <SelectValue placeholder="Select A Sport" />
               </SelectTrigger>
@@ -268,7 +270,7 @@ export default function LeaderBoardScreen() {
             </Select>
             {isSportSelected && (
               <Select onValueChange={(value) => setSelectedGender(value)}>
-                <SelectTrigger className="lg:w-[280px] px-5">
+                <SelectTrigger className="w-[240px] px-5">
                   <SelectValue placeholder="Men" />
                 </SelectTrigger>
                 <SelectContent>
