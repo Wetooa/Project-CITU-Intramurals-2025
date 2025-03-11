@@ -28,7 +28,9 @@ export async function GET(req: Request, props: Props) {
       team1Id: match.get("team1Id"),
       team2Id: match.get("team2Id"),
 
-      matchDate: new Date(match.get("matchDate")),
+      matchDate: match.get("matchDate"),
+      matchTime: match.get("matchTime"),
+
       category: match.get("category"),
       venue: match.get("venue"),
       round: match.get("round"),

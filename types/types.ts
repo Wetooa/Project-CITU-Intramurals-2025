@@ -39,7 +39,9 @@ export type Schedule = {
   team1Id: string;
   team2Id: string;
 
-  matchDate: Date;
+  matchDate: string;
+  matchTime: string;
+
   category: Category;
   venue: string;
   round: string;

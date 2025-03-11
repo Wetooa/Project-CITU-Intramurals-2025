@@ -30,7 +30,7 @@ export async function GET(req: Request) {
         (category === "" || row.get("category") === category) &&
         (venue === "" || row.get("venue") === venue) &&
         (status === "" || row.get("status") === status) &&
-        (round === "" || row.get("round") === round) && 
+        (round === "" || row.get("round") === round) &&
         (winner === "" || row.get("winner") === winner)
       );
     });
@@ -55,7 +55,9 @@ export async function GET(req: Request) {
         team1Id: row.get("team1Id"),
         team2Id: row.get("team2Id"),
 
-        matchDate: new Date(row.get("matchDate")),
+        matchDate: row.get("matchDate"),
+        matchTime: row.get("matchTime"),
+
         category: row.get("category"),
         venue: row.get("venue"),
         round: row.get("round"),
