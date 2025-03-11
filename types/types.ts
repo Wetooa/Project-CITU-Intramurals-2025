@@ -11,7 +11,16 @@ export type Category =
   | "Basketball (women)"
   | "Volleyball (men)"
   | "Volleyball (women)"
-  | "Chess";
+  | "Chess (men)"
+  | "Chess (women)"
+  | "Futsal (men)"
+  | "Futsal (women)"
+  | "Valorant"
+  | "CODM"
+  | "MLBB"
+  | "Tekken 8"
+  | "Marvel Rivals"
+  | "Dota 2";
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
