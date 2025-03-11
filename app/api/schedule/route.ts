@@ -38,6 +38,7 @@ export async function GET(req: Request) {
           category: row.get("category"),
           venue: row.get("venue"),
           round: row.get("round"),
+          game: row.get("game"),
 
           status: row.get("status"),
           winner: row.get("winner"),

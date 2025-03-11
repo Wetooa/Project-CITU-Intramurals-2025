@@ -32,7 +32,9 @@ export type Schedule = {
 
   category: Games;
   venue: string;
-  round: string;
+
+  round?: string;
+  game: string;
 
   status: MatchStatus;
   winner?: Winner | null;
