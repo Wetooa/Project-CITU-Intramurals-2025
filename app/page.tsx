@@ -1,9 +1,16 @@
 "use client";
 
-import HomeMatches, {
-  HomeMatchesSkeleton,
-} from "@/components/feature/homematch";
-import { HomeRanking } from "@/components/feature/homeranking";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { TEAMS, GAMES, gender } from "@/types/constant";
+import {
+  HomeRanking,
+  HomeRankingSkeleton,
+} from "@/components/feature/homeranking";
+import {
+  HomeComponent,
+  HomeComponentSkeleton,
+} from "@/components/feature/homecomponent";
 import {
   Select,
   SelectContent,
@@ -14,23 +21,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GAMES } from "@/types/constant";
+import HomeMatches, {
+  HomeMatchesSkeleton,
+} from "@/components/feature/homematch";
+import { fetchData } from "next-auth/client/_utils";
 import { Schedule } from "@/types/types";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 
-async function getSchedule(date: string, filter: string, category: string) {
+async function getSchedule(date: String, filter: String, category: String) {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_URL +
-      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
+      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`
   );
   const result = await response.json();
   return result.schedule;
 }
 
+async function getRanking() {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`
+  );
+  const result = await response.json();
+  return result.leaderboard;
+}
+
 export default function Home() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [isLoading, setLoading] = useState(true);
+  const [ranking, setRanking] = useState([]);
 
   const dateToday = new Date().toISOString().split("T")[0];
   const [selectSport, setSelectedSport] = useState("Basketball (Men)");
@@ -43,6 +60,7 @@ export default function Home() {
       try {
         setLoading(true);
         setSchedules(await getSchedule(dateToday, filter, selectSport));
+        setRanking(await getRanking());
         setLoading(false);
       } catch (error) {
         console.log("lol");
@@ -62,6 +80,7 @@ export default function Home() {
           height={50}
           alt="intrams logo"
         ></Image>
+
         <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
         <div className="mt-5 flex flex-col gap-2">
           {GAMES.slice(0, 16).map((game, index) => (
@@ -151,11 +170,15 @@ export default function Home() {
         )}
       </div>
 
-      <HomeRanking
-        first="Department A"
-        second="Department B"
-        third="Department C"
-      />
+      {isLoading ? (
+        <HomeRankingSkeleton />
+      ) : (
+        <HomeRanking
+          first={ranking[0].teamId}
+          second={ranking[1].teamId}
+          third={ranking[2].teamId}
+        ></HomeRanking>
+      )}
     </div>
   );
 }

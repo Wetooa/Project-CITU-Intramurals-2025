@@ -1,4 +1,4 @@
-import { teamLogos } from "@/types/constant";
+import { teamLogos, zodiacSignsAcronym } from "@/types/constant";
 import { Schedule } from "@/types/types";
 import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
@@ -14,8 +14,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
         </div>
         <div className="md:col-span-5 col-start-4 col-span-3 grid-cols-3 grid md:grid-cols-5 md:col-start-2 items-center justify-around w-full h-full">
           <div className="flex md:col-start-2 items-center justify-end  mr-2 gap-2">
-            <span className="md:text-xl text-sm md:font-bold">
+            <span className="md:text-xl hidden md:block text-sm md:font-bold">
               {schedule.team1Id}
+            </span>
+            <span className="md:hidden text-xl font-bold md:font-bold">
+              {zodiacSignsAcronym[schedule.team1Id]}
             </span>
             <Image
               src={teamLogos[schedule.team1Id]}
@@ -56,8 +59,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
               height={510}
               alt="team 1 logo"
             ></Image>
-            <span className="md:text-xl text-sm md:font-bold">
+            <span className="md:text-xl hidden md:block text-sm md:font-bold">
               {schedule.team2Id}
+            </span>
+            <span className="md:text-xl md:hidden font-bold text-xl md:font-bold">
+              {zodiacSignsAcronym[schedule.team2Id]}
             </span>
           </div>
         </div>
