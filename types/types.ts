@@ -1,71 +1,80 @@
-export type Department = {
-  id: string;
-  name: string;
-  createdOn: Date;
-  updatedOn: Date;
-};
+export const GoogleSheetsTitle = [
+  "team",
+  "category",
+  "schedule",
+  "adminUser",
+] as const;
+export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
-export type Player = {
-  id: string;
-  name: string;
-  departmentId: string;
-  points: number;
-  assists: number;
-  rebounds: number;
-  createdOn: Date;
-  updatedOn: Date;
-};
-
-export type Leaderboard = {
-  id: string;
-  departmentId: string;
-  category: string; // Basketball, Volleyball, Chess, etc.
-  wins: number;
-  losses: number;
-  draws: number;
-  points: number;
-  createdOn: Date;
-  updatedOn: Date;
-};
+export type Category =
+  | "Basketball (men)"
+  | "Basketball (women)"
+  | "Volleyball (men)"
+  | "Volleyball (women)"
+  | "Chess";
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
-export type Schedule = {
+export type Winner = "team1" | "team2" | "draw";
+
+export const ALL_TEAMS = [
+  "Virgo",
+  "Pisces",
+  "Sagitarius",
+  "Capricorn",
+  "Libra",
+  "Scorpio",
+  "Taurus",
+  "Leo",
+];
+
+export type Team = {
   id: string;
-  matchDate: Date;
-  team1Id: string;
-  team2Id: string;
-  category: string;
-  scoreTeam1?: number | null;
-  scoreTeam2?: number | null;
-  status: MatchStatus;
-  createdOn: Date;
-  updatedOn: Date;
+  color: string;
+  district: string;
 };
 
-export type Bracket = {
+export type Schedule = {
   id: string;
-  round: number;
-  matchId: string;
-  winnerId?: string | null;
+  team1Id: string;
+  team2Id: string;
+
+  matchDate: Date;
+  category: Category;
+  venue: string;
+  round: string;
+
+  status: MatchStatus;
+  winner?: Winner | null;
+
+  scoreTeam1?: number | null;
+  scoreTeam2?: number | null;
+
   createdOn: Date;
   updatedOn: Date;
 };
 
 export type AdminUser = {
   id: string;
+
   username: string;
-  passwordHash: string;
+  password: string;
+
   createdOn: Date;
   updatedOn: Date;
 };
-export const GoogleSheetsTitle = ["leaderboard", "player", "schedule", "bracket"] as const;
-export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
-export type Tables =
-  | Leaderboard
-  | Player
-  | Department
-  | Schedule
-  | Bracket
-  | AdminUser;
+export type Leaderboard = {
+  teamId: string;
+  points: number;
+};
+
+export type Bracket = {
+  team1Id: string;
+  team2Id: string;
+  round: string;
+
+  scoreTeam1?: number | null;
+  scoreTeam2?: number | null;
+  winner?: Winner | null;
+};

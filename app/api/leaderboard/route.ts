@@ -1,54 +1,55 @@
 import { GS } from "@/db/db";
-import { Leaderboard } from "@/types/types";
+import { ALL_TEAMS, Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
-import { authOptions } from "../[...nextauth]";
-import { getServerSession } from "next-auth";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const data = await GS.getSheetData("leaderboard");
-    const sheet = await data.getRows();
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get("category") || "";
 
-    const leaderboard: Leaderboard[] = sheet.map((row) => {
-      return {
-        id: row.get("id"),
-        departmentId: row.get("departmentId"),
-        category: row.get("category"),
-        wins: row.get("wins"),
-        losses: row.get("losses"),
-        draws: row.get("draws"),
-        points: row.get("points"),
-        createdOn: row.get("createdOn"),
-        updatedOn: row.get("updatedOn"),
-      };
-    });
-    return NextResponse.json({ leaderboard }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
-  }
-}
-
-export async function PUT(req: Request) {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
-    const reqData = (await req.json()) as Leaderboard;
-    const { id } = reqData;
-
-    const data = await GS.getSheetData("leaderboard");
+    const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-    const rowIndex = rows.findIndex((row) => row.get("id") === id);
+    const filteredRows = category
+      ? rows.filter((row) => row.get("category") === category)
+      : rows;
 
-    rows[rowIndex].assign(reqData);
-    await rows[rowIndex].save();
+    const teamsPoints: Record<string, number> = {};
 
-    return NextResponse.json({
-      message: "Row updated successfully!",
-      updatedRow: reqData,
+    ALL_TEAMS.forEach((team) => {
+      teamsPoints[team] = 0;
     });
+
+    filteredRows.forEach((row) => {
+      const team1Id = row.get("team1Id");
+      const team2Id = row.get("team2Id");
+      const scoreTeam1 = row.get("scoreTeam1");
+      const scoreTeam2 = row.get("scoreTeam2");
+
+      if (scoreTeam1 === null || scoreTeam2 === null) return;
+
+      if (scoreTeam1 === scoreTeam2) {
+        teamsPoints[team1Id] += 0.5;
+        teamsPoints[team2Id] += 0.5;
+      } else if (scoreTeam1 > scoreTeam2) {
+        teamsPoints[team1Id] += 1;
+      } else {
+        teamsPoints[team2Id] += 1;
+      }
+    });
+
+    const leaderboard: Leaderboard[] = Object.entries(teamsPoints)
+      .sort((a, b) => b[1] - a[1])
+      .map(([teamId, points]) => {
+        return {
+          teamId,
+          points,
+        };
+      });
+
+    return NextResponse.json(
+      { message: "Fetched leaderboard successfully!", leaderboard },
+      { status: 200 },
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
