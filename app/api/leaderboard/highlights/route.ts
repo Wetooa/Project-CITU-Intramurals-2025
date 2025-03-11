@@ -1,7 +1,7 @@
 import { GS } from "@/db/db";
 import { getDateToday, getLeaderboard } from "@/lib/utils";
 import { TEAMS } from "@/types/constant";
-import { TeamType } from "@/types/types";
+import { MatchStatus } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -14,12 +14,19 @@ export async function GET() {
     const previousRows = rows.filter(
       (row) =>
         new Date(row.get("matchDate")).getDate() <
-        new Date(dateToday).getDate(),
+          new Date(dateToday).getDate() &&
+        (row.get("status") as MatchStatus) == "Completed",
     );
-    const todaysRows = rows.filter((row) => row.get("matchDate") === dateToday);
+    const todaysRows = rows.filter(
+      (row) =>
+        row.get("matchDate") === dateToday &&
+        (row.get("status") as MatchStatus) == "Completed",
+    );
 
     const previousLeaderboard = getLeaderboard(previousRows);
     const todaysLeaderboard = getLeaderboard(todaysRows);
+
+    const todaysLeaderboardByLoser = getLeaderboard(todaysRows, true);
 
     const previousRanking: Record<string, number> = {};
     const todaysRanking: Record<string, number> = {};
@@ -41,15 +48,18 @@ export async function GET() {
     const bestMover = Object.entries(rankDifference).reduce((team, best) => {
       const [a, b] = team[1];
       const [x, y] = best[1];
-      return b - a > y - x ? team : best;
+      return b - a < y - x ? team : best;
     });
+
+    const biggestWinner = todaysLeaderboard[0];
+    const biggestLoser = todaysLeaderboardByLoser[0];
 
     return NextResponse.json(
       {
-        message: "Fetched leaderboard successfully!",
+        message: "Fetched leaderboard highlights successfully!",
         bestMover: bestMover,
-        bestWinner: todaysLeaderboard[0],
-        bestLoser: todaysLeaderboard[todaysLeaderboard.length - 1],
+        biggestWinner: biggestWinner,
+        biggestLoser: biggestLoser,
       },
       { status: 200 },
     );

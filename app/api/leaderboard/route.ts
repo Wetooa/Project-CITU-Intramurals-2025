@@ -1,5 +1,6 @@
 import { GS } from "@/db/db";
 import { getLeaderboard } from "@/lib/utils";
+import { MatchStatus } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -16,7 +17,11 @@ export async function GET(req: Request) {
 
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-    const filteredRows = rows.filter((row) => row.get("category") === category);
+    const filteredRows = rows.filter(
+      (row) =>
+        row.get("category") === category &&
+        (row.get("status") as MatchStatus) == "Completed",
+    );
 
     const leaderboard = getLeaderboard(filteredRows);
 
