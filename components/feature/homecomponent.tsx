@@ -18,10 +18,10 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
               {schedule.team1Id}
             </span>
             <span className="md:hidden text-xl font-bold md:font-bold">
-              {zodiacSignsAcronym[schedule.team1Id]}
+              {zodiacSignsAcronym[schedule.team1Id as string]}
             </span>
             <Image
-              src={teamLogos[schedule.team1Id]}
+              src={teamLogos[schedule.team1Id as string]}
               width={50}
               height={50}
               alt="team 1 logo"
@@ -37,7 +37,7 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
                     : "text-opacity-25"
                 }
               >
-                {schedule.scoreTeam1 == "" ? "0" : schedule.scoreTeam1}
+                {!schedule.scoreTeam1 ? "0" : schedule.scoreTeam1}
               </span>{" "}
               <span className="text-opacity-50">/</span>{" "}
               <span
@@ -47,23 +47,23 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
                     : "text-opacity-25"
                 }
               >
-                {schedule.scoreTeam2 == "" ? "0" : schedule.scoreTeam2}
+                {!schedule.scoreTeam2 ? "0" : schedule.scoreTeam2}
               </span>
             </span>
           </div>
 
           <div className="flex items-center justify-start gap-2">
             <Image
-              src={teamLogos[schedule.team2Id]}
+              src={teamLogos[schedule.team2Id as string]}
               width={50}
-              height={510}
+              height={50}
               alt="team 1 logo"
             ></Image>
             <span className="md:text-xl hidden md:block text-sm md:font-bold">
               {schedule.team2Id}
             </span>
             <span className="md:text-xl md:hidden font-bold text-xl md:font-bold">
-              {zodiacSignsAcronym[schedule.team2Id]}
+              {zodiacSignsAcronym[schedule.team2Id as string]}
             </span>
           </div>
         </div>
