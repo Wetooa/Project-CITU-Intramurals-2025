@@ -17,9 +17,7 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -29,10 +27,15 @@ interface LeaderboardContextType {
   data: Leaderboard[] | undefined;
   isLoading: boolean;
   isError: boolean;
+  fetchLeaderboard: (category?: string) => Promise<Leaderboard[]>;
 }
 
-const fetchLeaderboard = async () => {
-  const response = await fetch("/api/leaderboard");
+const fetchLeaderboard = async (category?: string) => {
+  const url = category
+    ? `/api/leaderboard?category=${encodeURIComponent(category)}`
+    : "/api/leaderboard";
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(
@@ -49,11 +52,14 @@ const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
 );
 
 export default function LeaderBoardScreen() {
+  const [selectedSport, setSelectedSport] = useState<string | undefined>(
+    undefined
+  );
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["leaderboard"], // Refetch when filters change
-    queryFn: () => fetchLeaderboard(),
+    queryKey: ["leaderboard", selectedSport],
+    queryFn: () => fetchLeaderboard(selectedSport),
   });
-  const [selectedSport, setSelectedSport] = useState<string | null>(null);
 
   const Sports = [
     { value: "Basketball", label: "BASKETBALL" },
@@ -69,8 +75,6 @@ export default function LeaderBoardScreen() {
   const highlightTeam =
     "rounded-xl bg-[#FF212140] lg:h-32 bottom-0 py-8 min-w-64 ";
   const highlightImage = "rounded-full w-24 h-24 object-cover lg:mb-10";
-
-  console.log("This is the data: ", data);
 
   return (
     <LeaderboardContext.Provider value={{ data, isLoading, isError }}>
@@ -206,44 +210,22 @@ export default function LeaderBoardScreen() {
                   </TableRow>
                 )}
                 {data &&
-                  (data.some(
-                    (item: Leaderboard) => item.category === selectedSport
-                  ) ? (
-                    data
-                      .filter(
-                        (item: Leaderboard) => item.category === selectedSport
-                      )
-                      .sort(
-                        (a: Leaderboard, b: Leaderboard) =>
-                          Number(b.wins) - Number(a.wins)
-                      )
-                      .map((item: Leaderboard, index: number) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium">
-                            {index + 1}
-                          </TableCell>
-                          <TableCell>{item.departmentId}</TableCell>
-                          <TableCell className="text-right">
-                            {item.wins}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center">
-                        No data for {selectedSport}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                {/* format:
-         {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
-        ))} */}
+                  data
+                    .sort(
+                      (a: Leaderboard, b: Leaderboard) =>
+                        Number(b.points) - Number(a.points)
+                    )
+                    .map((item: Leaderboard, index: number) => (
+                      <TableRow key={item.teamId}>
+                        <TableCell className="font-medium">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell>{item.teamId}</TableCell>
+                        <TableCell className="text-right">
+                          {item.points}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 <TableRow className="h-96"></TableRow>
               </TableBody>
             </Table>
