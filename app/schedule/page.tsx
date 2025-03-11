@@ -1,9 +1,9 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import GameFiltersSchedule from "@/components/feature/game-filters";
-import { Schedule } from "@/types/types";
 import DayResultContainer from "@/components/feature/game-result-card";
+import { Schedule } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
+import { createContext, useEffect, useState } from "react";
 
 // Context Type
 interface ScheduleContextType {
