@@ -166,7 +166,7 @@ export default function Home() {
         )}
       </div>
 
-      {isLoading ? (
+      {isLoading || !ranking ? (
         <HomeRankingSkeleton />
       ) : (
         <HomeRanking
