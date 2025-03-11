@@ -6,9 +6,9 @@ export function HomeRanking({
   second,
   third,
 }: {
-  first: String;
-  second: String;
-  third: String;
+  first: string;
+  second: string;
+  third: string;
 }) {
   return (
     <div className="md:flex flex-col w-1/5 h-full p-6 hidden">

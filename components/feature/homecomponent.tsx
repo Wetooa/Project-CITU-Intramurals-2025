@@ -7,27 +7,45 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
   return (
     <div className="w-full h-28 bg-[#302F2E] rounded-md border-white border border-opacity-5 flex flex-col">
       <div className="w-full h-4/5  grid grid-cols-7  justify-evenly p-6">
-        <div className="w-full h-full flex items-center justify-left">
-          <span className="text-2xl font-bold align-middle text-left">
+        <div className="w-full h-full flex items-center md:col-span-1 col-span-2 justify-left">
+          <span className="md:text-2xl text-md font-bold align-middle text-left">
             {schedule.matchTime}
           </span>
         </div>
-        <div className="col-span-5  grid grid-cols-5 items-center justify-around w-full h-full">
-          <div className="flex col-start-2 items-center justify-end  mr-2 gap-2">
-            <span className="text-xl font-bold">{schedule.team1Id}</span>
+        <div className="md:col-span-5 col-start-4 col-span-3 grid-cols-3 grid md:grid-cols-5 md:col-start-2 items-center justify-around w-full h-full">
+          <div className="flex md:col-start-2 items-center justify-end  mr-2 gap-2">
+            <span className="md:text-xl text-sm md:font-bold">
+              {schedule.team1Id}
+            </span>
             <Image
               src={teamLogos[schedule.team1Id]}
               width={50}
-              height={510}
+              height={50}
               alt="team 1 logo"
             ></Image>
           </div>
 
           <div className="w-full h-full flex items-center justify-center">
-            <span className="text-lg col-start-3 items-center text-[#CCCCCC] font-bold text-opacity-25">
-              {schedule.scoreTeam1 == "" ? "0" : schedule.scoreTeam1}{" "}
+            <span className="md:text-lg text-xs col-start-4 md:col-start-3 items-center text-[#CCCCCC] font-bold text-opacity-25">
+              <span
+                className={
+                  schedule.winner == "team1"
+                    ? "text-green-500"
+                    : "text-opacity-25"
+                }
+              >
+                {schedule.scoreTeam1 == "" ? "0" : schedule.scoreTeam1}
+              </span>{" "}
               <span className="text-opacity-50">/</span>{" "}
-              {schedule.scoreTeam2 == "" ? "0" : schedule.scoreTeam2}
+              <span
+                className={
+                  schedule.winner == "team2"
+                    ? "text-green-500"
+                    : "text-opacity-25"
+                }
+              >
+                {schedule.scoreTeam2 == "" ? "0" : schedule.scoreTeam2}
+              </span>
             </span>
           </div>
 
@@ -38,12 +56,13 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
               height={510}
               alt="team 1 logo"
             ></Image>
-            <span className="md:text-xl text:md font-bold">
+            <span className="md:text-xl text-sm md:font-bold">
               {schedule.team2Id}
             </span>
           </div>
         </div>
-        <div className="w-full h-full flex items-center justify-right">
+
+        <div className="w-full h-full items-center justify-right md:flex hidden">
           <span className="w-full md:text-sm text-xs font-bold text-right">
             {schedule.category}
           </span>
@@ -51,11 +70,14 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
       </div>
 
       <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md  flex items-center justify-around">
-        <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
-          Game 1 - Finals
+        <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
+          Game {schedule.round}
         </span>
-        <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold">
-          Venue
+        <span className="text-sm text-[#CCCCCC] text-opacity-50  md:hidden">
+          Game {schedule.round} • {schedule.category} • {schedule.venue}
+        </span>
+        <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
+          {schedule.venue}
         </span>
       </div>
     </div>
