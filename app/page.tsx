@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { GAMES, gender } from "@/types/constant";
+import { GAMES, GENDER } from "@/types/constant";
 
 import { HomeRanking } from "@/components/feature/homeranking";
 import {
@@ -56,7 +56,7 @@ export default function Home() {
         ></Image>
         <p className="text-2xl font-bold self-start mt-10">CATEGORY</p>
         <div className="mt-5 flex flex-col gap-2">
-          {gender.map((game, index) => (
+          {GENDER.map((game, index) => (
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${

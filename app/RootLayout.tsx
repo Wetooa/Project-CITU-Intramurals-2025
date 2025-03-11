@@ -1,14 +1,13 @@
 "use client";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { NavBar } from "./navbar";
-import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { NavBar } from "./navbar";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -43,10 +42,8 @@ export default function RootLayout({
                 defaultTheme="dark"
                 disableTransitionOnChange
               >
-                <SessionProvider>
-                  {children}
-                  <Toaster />
-                </SessionProvider>
+                {children}
+                <Toaster />
               </ThemeProvider>
             </motion.div>
           </AnimatePresence>
