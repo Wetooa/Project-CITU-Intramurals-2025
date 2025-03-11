@@ -1,5 +1,6 @@
 import { GS } from "@/db/db";
 import { getLeaderboard } from "@/lib/utils";
+import { MatchStatus } from "@/types/types";
 import { NextResponse } from "next/server";
 
 type Props = {
@@ -15,7 +16,10 @@ export async function GET(req: Request, props: Props) {
 
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-    const leaderboard = getLeaderboard(rows)[int];
+    const filteredRows = rows.filter(
+      (row) => (row.get("status") as MatchStatus) == "Completed",
+    );
+    const leaderboard = getLeaderboard(filteredRows)[int];
 
     return NextResponse.json(
       { message: "Fetched leaderboard successfully!", leaderboard },
