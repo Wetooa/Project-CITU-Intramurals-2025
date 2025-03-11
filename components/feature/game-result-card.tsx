@@ -1,102 +1,106 @@
 "use client";
 
-import {motion} from "framer-motion";
-import {Schedule} from "@/types/types";
-import {Skeleton} from "@/components/ui/skeleton";
-import {GameResultCardContainer} from "@/components/feature/game-result-container";
-import {NoMatchFoundWithoutBackground} from "@/components/shared/no-match-found";
-
+import { motion } from "framer-motion";
+import { Schedule } from "@/types/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { GameResultCardContainer } from "@/components/feature/game-result-container";
+import { NoMatchFoundWithoutBackground } from "@/components/shared/no-match-found";
 
 interface ScheduleProps {
-    schedule: Schedule[],
-    isLoading?: boolean
+  schedule: Schedule[];
+  isLoading?: boolean;
 }
 
-export default function DayResultContainer({schedule, isLoading}: ScheduleProps) {
-    if (isLoading) {
-        return (
-            <div
-                className="flex flex-col gap-4 lg:w-[880px] w-[90%] text-white self-center font-bold justify-center items-center">
-                {[...Array(3)].map((_, index) => (
-                    <div key={index} className="flex flex-col gap-2 w-full">
-                        <Skeleton className="h-6 w-40 lg:w-48"/>
-                        <Skeleton className="h-4 w-32 lg:w-40"/>
-                        {[...Array(2)].map((_, matchIndex) => (
-                            <Skeleton key={matchIndex} className="h-48 w-full rounded-2xl "/>
-                        ))}
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
-
-    console.log("Schedule", schedule)
-    if (schedule == undefined || schedule.length === 0) {
-        return <NoMatchFoundWithoutBackground/>
-    }
-    // **Group matches by matchDate**
-    const groupedMatches: Record<string, Schedule[]> = schedule.reduce((acc, match) => {
-        const dateKey = new Date(match.matchDate).toISOString().split("T")[0]; // YYYY-MM-DD format
-
-        if (!acc[dateKey]) {
-            acc[dateKey] = [];
-        }
-        acc[dateKey].push(match);
-        return acc;
-    }, {} as Record<string, Schedule[]>);
-
+export default function DayResultContainer({
+  schedule,
+  isLoading,
+}: ScheduleProps) {
+  if (isLoading) {
     return (
-        <motion.div
-            className="flex flex-col gap-4 lg:w-[880px] text-white font-bold justify-center items-center"
-            initial={{opacity: 0, y: 20}}  // Start with opacity 0 and move slightly down
-            animate={{opacity: 1, y: 0}}   // Animate to full opacity and original position
-            exit={{opacity: 0, y: -20}}    // Animate out by fading and moving up
-            transition={{duration: 0.5, ease: "easeOut"}}  // Smooth transition
-        >
-            {Object.entries(groupedMatches).map(([date, matches], index) => {
-                const formattedDate = new Date(date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                });
-
-                const dayName = new Date(date).toLocaleDateString("en-US", {
-                    weekday: "long",
-                });
-
-                return (
-                    <div key={`${date}-${index}`} className="flex flex-col gap-2 w-full">
-                        {/* Display Date Header */}
-                        <div className='self-start flex flex-col gap-0'>
-                            <p className='self-start text-2xl'>{formattedDate}</p>
-                            <p className="self-start font-medium text-gray-400">{dayName}</p>
-                        </div>
-
-                        {/* Loop over matches for this date */}
-                        {matches.map((match) => (
-                            <GameResultCardContainer
-                                key={match.id}
-                                id={match.id}
-                                matchDate={match.matchDate}
-                                team1Id={match.team1Id}
-                                team2Id={match.team2Id}
-                                scoreTeam1={match.scoreTeam1}
-                                scoreTeam2={match.scoreTeam2}
-                                category={match.category}
-                                status={match.status}
-                                createdOn={match.createdOn}
-                                updatedOn={match.updatedOn}
-                                round={match.round}
-                                venue={match.venue}
-                                matchTime={match.matchTime}
-                                game={match.game}/>
-                        ))}
-                    </div>
-                );
-            })}
-        </motion.div>
+      <div className="flex flex-col gap-4 lg:w-[880px] w-[90%] text-white self-center font-bold justify-center items-center">
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="flex flex-col gap-2 w-full">
+            <Skeleton className="h-6 w-40 lg:w-48" />
+            <Skeleton className="h-4 w-32 lg:w-40" />
+            {[...Array(2)].map((_, matchIndex) => (
+              <Skeleton key={matchIndex} className="h-48 w-full rounded-2xl " />
+            ))}
+          </div>
+        ))}
+      </div>
     );
+  }
+
+  console.log("Schedule", schedule);
+  if (schedule == undefined || schedule.length === 0) {
+    return <NoMatchFoundWithoutBackground />;
+  }
+  // **Group matches by matchDate**
+  const groupedMatches: Record<string, Schedule[]> = schedule.reduce(
+    (acc, match) => {
+      const dateKey = new Date(match.matchDate).toISOString().split("T")[0]; // YYYY-MM-DD format
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = [];
+      }
+      acc[dateKey].push(match);
+      return acc;
+    },
+    {} as Record<string, Schedule[]>,
+  );
+
+  return (
+    <motion.div
+      className="flex flex-col gap-4 lg:w-[880px] text-white font-bold justify-center items-center"
+      initial={{ opacity: 0, y: 20 }} // Start with opacity 0 and move slightly down
+      animate={{ opacity: 1, y: 0 }} // Animate to full opacity and original position
+      exit={{ opacity: 0, y: -20 }} // Animate out by fading and moving up
+      transition={{ duration: 0.5, ease: "easeOut" }} // Smooth transition
+    >
+      {Object.entries(groupedMatches).map(([date, matches], index) => {
+        const formattedDate = new Date(date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        const dayName = new Date(date).toLocaleDateString("en-US", {
+          weekday: "long",
+        });
+
+        return (
+          <div key={`${date}-${index}`} className="flex flex-col gap-2 w-full">
+            {/* Display Date Header */}
+            <div className="self-start flex flex-col gap-0">
+              <p className="self-start text-2xl">{formattedDate}</p>
+              <p className="self-start font-medium text-gray-400">{dayName}</p>
+            </div>
+
+            {/* Loop over matches for this date */}
+            {matches.map((match) => (
+              <GameResultCardContainer
+                key={match.id}
+                id={match.id}
+                matchDate={match.matchDate}
+                team1Id={match.team1Id}
+                team2Id={match.team2Id}
+                scoreTeam1={match.scoreTeam1}
+                scoreTeam2={match.scoreTeam2}
+                category={match.category}
+                status={match.status}
+                createdOn={match.createdOn}
+                updatedOn={match.updatedOn}
+                round={match.round}
+                venue={match.venue}
+                matchTime={match.matchTime}
+                game={match.game}
+              />
+            ))}
+          </div>
+        );
+      })}
+    </motion.div>
+  );
 }
 
 // function GameResultCard(props: Schedule) {
