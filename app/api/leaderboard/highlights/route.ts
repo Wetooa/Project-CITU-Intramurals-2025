@@ -26,6 +26,8 @@ export async function GET() {
     const previousLeaderboard = getLeaderboard(previousRows);
     const todaysLeaderboard = getLeaderboard(todaysRows);
 
+    const todaysLeaderboardByLoser = getLeaderboard(todaysRows, true);
+
     const previousRanking: Record<string, number> = {};
     const todaysRanking: Record<string, number> = {};
 
@@ -49,12 +51,15 @@ export async function GET() {
       return b - a < y - x ? team : best;
     });
 
+    const biggestWinner = todaysLeaderboard[0];
+    const biggestLoser = todaysLeaderboardByLoser[0];
+
     return NextResponse.json(
       {
         message: "Fetched leaderboard highlights successfully!",
         bestMover: bestMover,
-        bestWinner: todaysLeaderboard[0],
-        bestLoser: todaysLeaderboard[todaysLeaderboard.length - 1],
+        biggestWinner: biggestWinner,
+        biggestLoser: biggestLoser,
       },
       { status: 200 },
     );

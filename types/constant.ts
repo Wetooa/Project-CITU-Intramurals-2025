@@ -36,8 +36,10 @@ export const TEAMS = [
 ] as const;
 
 export const GAMES = [
-  "Basketball (Men)",
-  "Basketball (Women)",
+  "Basketball 3x3 (Men)",
+  "Basketball 3x3 (Women)",
+  "Basketball 5x5 (Men)",
+  "Basketball 5x5 (Women)",
   "Volleyball (Men)",
   "Volleyball (Women)",
   "Badminton (Men)",
@@ -61,3 +63,28 @@ export const GAMES = [
 ] as const;
 
 export const GENDER = ["MEN", "WOMEN"] as const;
+
+export const VENUES = [
+  "Open Court 1",
+  "Open Court 2",
+  "Elem Basketball Court",
+  "Covered Court",
+  "Gymnasium",
+  "ME157",
+  "ME158",
+  "WIL",
+  "NGE Computer Labs",
+  "MassCom Theater",
+  "Covered Court",
+  "Open Court",
+  "Open Court 1 & 2",
+];
+
+export const venuesString = VENUES.join(", ");
+
+export const MATCH_DATES: Record<string, string> = {
+  "March 12, 2025": "2025-03-12",
+  "March 13, 2025": "2025-03-13",
+  "March 14, 2025": "2025-03-14",
+  "March 15, 2025": "2025-03-15",
+};
