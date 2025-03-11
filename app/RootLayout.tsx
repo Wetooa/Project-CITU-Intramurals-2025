@@ -28,7 +28,7 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       <html lang="en">
         <body
-          className={`${inter.variable} antialiased   text-white bg-charcoal_black`}
+          className={`${inter.variable} antialiased  text-white bg-charcoal_black`}
         >
           <NavBar />
           <AnimatePresence mode="wait">
