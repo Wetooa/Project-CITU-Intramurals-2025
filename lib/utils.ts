@@ -8,7 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getDateToday() {
-  return new Date().toISOString().split("T")[0];
+  const date = new Date();
+  date.setUTCHours(date.getUTCHours() + 8);
+  return date.toISOString().split("T")[0];
 }
 
 export function getLeaderboard(
