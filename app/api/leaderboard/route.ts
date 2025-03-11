@@ -1,6 +1,5 @@
 import { GS } from "@/db/db";
-import { TEAMS } from "@/types/constant";
-import { Leaderboard } from "@/types/types";
+import { getLeaderboard } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -8,44 +7,18 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category") || "";
 
+    if (!category) {
+      return NextResponse.json(
+        { error: "Missing category field" },
+        { status: 500 },
+      );
+    }
+
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-    const filteredRows = category
-      ? rows.filter((row) => row.get("category") === category)
-      : rows;
+    const filteredRows = rows.filter((row) => row.get("category") === category);
 
-    const teamsPoints: Record<string, number> = {};
-
-    TEAMS.forEach((team) => {
-      teamsPoints[team] = 0;
-    });
-
-    filteredRows.forEach((row) => {
-      const team1Id = row.get("team1Id");
-      const team2Id = row.get("team2Id");
-      const scoreTeam1 = row.get("scoreTeam1");
-      const scoreTeam2 = row.get("scoreTeam2");
-
-      if (scoreTeam1 === null || scoreTeam2 === null) return;
-
-      if (scoreTeam1 === scoreTeam2) {
-        teamsPoints[team1Id] += 0.5;
-        teamsPoints[team2Id] += 0.5;
-      } else if (scoreTeam1 > scoreTeam2) {
-        teamsPoints[team1Id] += 1;
-      } else {
-        teamsPoints[team2Id] += 1;
-      }
-    });
-
-    const leaderboard: Leaderboard[] = Object.entries(teamsPoints)
-      .sort((a, b) => b[1] - a[1])
-      .map(([teamId, points]) => {
-        return {
-          teamId,
-          points,
-        };
-      });
+    const leaderboard = getLeaderboard(filteredRows);
 
     return NextResponse.json(
       { message: "Fetched leaderboard successfully!", leaderboard },

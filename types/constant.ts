@@ -36,14 +36,22 @@ export const TEAMS = [
 ] as const;
 
 export const GAMES = [
-  "Basketball",
-  "Volleyball",
-  "Badminton",
-  "Table Tennis",
-  "Chess",
-  "Scrabble",
-  "Futsal",
-  "Sepak Takraw",
+  "Basketball (Men)",
+  "Basketball (Women)",
+  "Volleyball (Men)",
+  "Volleyball (Women)",
+  "Badminton (Men)",
+  "Badminton (Women)",
+  "Table Tennis (Men)",
+  "Table Tennis (Women)",
+  "Chess (Men)",
+  "Chess (Women)",
+  "Scrabble (Men)",
+  "Scrabble (Women)",
+  "Futsal (Men)",
+  "Futsal (Women)",
+  "Sepak Takraw (Men)",
+  "Sepak Takraw (Women)",
   "CODM",
   "MLBB",
   "Tekken 8",
@@ -52,4 +60,4 @@ export const GAMES = [
   "DOTA 2",
 ] as const;
 
-export const gender = ["MEN", "WOMEN"];
+export const GENDER = ["MEN", "WOMEN"] as const;

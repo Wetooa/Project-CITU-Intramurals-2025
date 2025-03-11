@@ -1,5 +1,5 @@
 "use client";
-"use client";
+
 import { createContext, useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import GameFiltersSchedule from "@/components/feature/game-filters";
@@ -13,18 +13,9 @@ interface ScheduleContextType {
   isError: boolean;
   filters: Filters;
   setFilters: (filters: Filters) => void;
-  data: Schedule[] | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  filters: Filters;
-  setFilters: (filters: Filters) => void;
 }
 
 interface Filters {
-  game?: string;
-  date?: string;
-  team?: string;
-  rivalTeam?: string;
   game?: string;
   date?: string;
   team?: string;
@@ -44,11 +35,6 @@ async function fetchSchedule(filters: Filters) {
 }
 
 export function useSchedule() {
-  const context = useContext(ScheduleContext);
-  if (!context) {
-    throw new Error("useSchedule must be used within a ScheduleProvider");
-  }
-  return context;
   const context = useContext(ScheduleContext);
   if (!context) {
     throw new Error("useSchedule must be used within a ScheduleProvider");
