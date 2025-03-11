@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect, usePathname } from "next/navigation";
+import { useState } from "react";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);

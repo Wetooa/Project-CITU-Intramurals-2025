@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   description: "...",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return <RootLayout>{children}</RootLayout>;
+// Create the QueryClient outside of the component to avoid re-instantiating it
+
+export default function Layout({children}: { children: React.ReactNode }) {
+    return (
+        <RootLayout>{children}</RootLayout>
+    );
 }
