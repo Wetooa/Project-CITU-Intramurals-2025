@@ -124,6 +124,7 @@ export default function LeaderBoardScreen() {
     { value: "Basketball", label: "BASKETBALL" },
     { value: "Volleyball", label: "VOLLEYBALL" },
     { value: "Badminton", label: "BADMINTON" },
+    { value: "Sepak Takraw", label: "SEPAK TAKRAW" },
     { value: "Futsal", label: "FUTSAL" },
     { value: "Table Tennis", label: "TABLE TENNIS" },
     { value: "Chess", label: "CHESS" },
