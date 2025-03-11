@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { Toaster } from "sonner";
-import "./globals.css";
 import { NavBar } from "./navbar";
+import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-geist-sans",

@@ -9,8 +9,10 @@ export async function GET(req: Request) {
     const team2Id = searchParams.get("team2Id") || "";
     const matchDate = searchParams.get("matchDate") || "";
     const category = searchParams.get("category") || "";
-    const venue = searchParams.get("veneu") || "";
+    const venue = searchParams.get("venue") || "";
     const status = searchParams.get("status") || "";
+    const round = searchParams.get("round") || "";
+    const winner = searchParams.get("winner") || "";
 
     const data = await GS.getSheetData("schedule");
     const sheet = await data.getRows();
@@ -27,7 +29,9 @@ export async function GET(req: Request) {
         (matchDate === "" || row.get("matchDate") === matchDate) &&
         (category === "" || row.get("category") === category) &&
         (venue === "" || row.get("venue") === venue) &&
-        (status === "" || row.get("status") === status)
+        (status === "" || row.get("status") === status) &&
+        (round === "" || row.get("round") === round) && 
+        (winner === "" || row.get("winner") === winner)
       );
     });
 

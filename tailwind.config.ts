@@ -1,4 +1,4 @@
-import type {Config} from "tailwindcss";
+import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
@@ -12,9 +12,11 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // put custom colors here
         coral_red: "#FF4A4A",
         mocha: "#262524",
         charcoal_black: "#1b1a18",
+        phantom_ash: "#161616",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
