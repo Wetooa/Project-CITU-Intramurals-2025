@@ -158,7 +158,7 @@ export default function LeaderBoardScreen() {
           {isLoadingHL && (
             <div
               className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-              gap-7 lg:px-20 max-h-[35rem] mb-14 mt-72"
+              gap-7 lg:px-20 max-h-[35rem] mb-14 mt-72 md:mt-20"
             >
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
               <Skeleton className="min-h-80 rounded-3xl min-w-64" />
@@ -168,8 +168,8 @@ export default function LeaderBoardScreen() {
           {isErrorHL && <h1>Error was found</h1>}
           {dataHL && (
             <div
-              className="flex flex-col lg:flex-row md:flex-wrap min-h-full justify-center  
-             gap-10 lg:px-20 max-h-[35rem] mt-72"
+              className="flex flex-col md:flex-row md:flex-wrap min-h-full justify-center  
+             gap-10 lg:px-20 max-h-[35rem] mt-72 md:mt-20"
             >
               <div className={`${highlightStyle}`}>
                 <Image
