@@ -13,7 +13,7 @@ export default function NoMatchFound() {
             >
                 <Image src="/leo_not_found.PNG" width={300} height={300} alt="Leo 404"/>
             </motion.div>
-            <p className="text-4xl animate-pulse font-bold mt-10">No matches found!</p>;
+            <p className="text-4xl animate-pulse font-bold mt-10">No matches found!</p>
         </div>
     )
 
