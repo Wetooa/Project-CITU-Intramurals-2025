@@ -25,17 +25,14 @@ import { useEffect, useState } from "react";
 
 async function getSchedule(date: string, filter: string, category: string) {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL +
-      `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`
+    `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
   );
   const result = await response.json();
   return result.schedule;
 }
 
 async function getRanking() {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + `/api/leaderboard/departmental`
-  );
+  const response = await fetch(`/api/leaderboard/departmental`);
   const result = await response.json();
   return result.leaderboard;
 }
