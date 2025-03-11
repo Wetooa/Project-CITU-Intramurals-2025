@@ -36,8 +36,10 @@ export const TEAMS = [
 ] as const;
 
 export const GAMES = [
-  "Basketball (Men)",
-  "Basketball (Women)",
+  "Basketball 3x3 (Men)",
+  "Basketball 3x3 (Women)",
+  "Basketball 5x5 (Men)",
+  "Basketball 5x5 (Women)",
   "Volleyball (Men)",
   "Volleyball (Women)",
   "Badminton (Men)",
