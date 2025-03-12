@@ -43,7 +43,7 @@ export default function Home() {
   const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   const dateToday = getDateToday();
-  const [selectSport, setSelectedSport] = useState("Basketball 3x3 (Men)");
+  const [selectSport, setSelectedSport] = useState("Basketball 3x3");
   const [filter, setFilter] = useState("Ongoing");
 
   // console.log(dateToday);
@@ -110,10 +110,7 @@ export default function Home() {
             MATCH TODAY
           </span>
 
-          <Select
-            defaultValue="Basketball 3x3 (Men)"
-            onValueChange={setSelectedSport}
-          >
+          <Select value={selectSport} onValueChange={setSelectedSport}>
             <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3 md:text-xl md:hidden text-sm font-bold">
               <SelectValue />
             </SelectTrigger>
