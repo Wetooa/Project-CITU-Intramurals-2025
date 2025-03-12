@@ -8,18 +8,13 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category") || "";
 
-    if (!category) {
-      return NextResponse.json(
-        { error: "Missing category field" },
-        { status: 500 },
-      );
-    }
-
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
     const filteredRows = rows.filter(
       (row) =>
-        row.get("category") === category &&
+        (!category ||
+          category === "Overall" ||
+          row.get("category") === category) &&
         (row.get("status") as MatchStatus) == "Completed",
     );
 
