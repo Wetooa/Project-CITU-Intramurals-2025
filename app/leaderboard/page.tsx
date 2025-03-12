@@ -4,6 +4,8 @@ import { Leaderboard } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { createContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import type { Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
@@ -72,7 +74,7 @@ const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
 
 export default function LeaderBoardScreen() {
   const [selectedSport, setSelectedSport] = useState<string>("Overall");
-  const [selectedGender, setSelectedGender] = useState<string>("(men)");
+  const [selectedGender, setSelectedGender] = useState<string>("(Men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
 
   function hasGender() {
@@ -106,13 +108,38 @@ export default function LeaderBoardScreen() {
     queryFn: fetchLeaderboardHighlights,
   });
 
-  console.log("Data i will be changing: ", dataHL);
-
   function handleSportChange(sportSelected: string) {
     setSelectedSport(sportSelected);
     const isSelected = Sports.some((sport) => sport.value === sportSelected);
     setIsSportsSelected(isSelected);
   }
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  // Animation variants for individual items
+  const itemVariants = {
+    hidden: {
+      y: 50,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        y: { type: "spring", stiffness: 300, damping: 20 },
+        opacity: { duration: 0.4 },
+      },
+    },
+  };
 
   const Sports = [
     { value: "Basketball 3x3", label: "BASKETBALL 3x3" },
@@ -160,8 +187,8 @@ export default function LeaderBoardScreen() {
           </p>
         </div>
         <div className="text-center text-white ">
-          <p className=" pb-20p lg:py-10 text-2xl lg:text-4xl font-bold mb-24 lg:mb-14">
-            Highlights
+          <p className=" pb-20p lg:py-10 text-3xl lg:text-5xl text-[#FFDB58]  font-bold mb-24 lg:mb-14">
+            HIGHLIGHTS
           </p>
 
           {isLoadingHL && (
@@ -176,11 +203,17 @@ export default function LeaderBoardScreen() {
           )}
           {isErrorHL && <h1>Error was found</h1>}
           {dataHL && (
-            <div
+            <motion.div
               className="flex flex-col md:flex-row md:flex-wrap min-h-full justify-center
              gap-10 lg:px-20 max-h-[35rem] mt-72 md:mt-20"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <div className={`${highlightStyle}`}>
+              <motion.div
+                className={`${highlightStyle}`}
+                variants={itemVariants}
+              >
                 <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
@@ -197,8 +230,12 @@ export default function LeaderBoardScreen() {
                     <p>{dataHL.biggestWinner.points} Wins</p>
                   </div>
                 </div>
-              </div>
-              <div className={`${highlightStyle}`}>
+              </motion.div>
+
+              <motion.div
+                className={`${highlightStyle}`}
+                variants={itemVariants}
+              >
                 <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
@@ -215,8 +252,11 @@ export default function LeaderBoardScreen() {
                     <p>{dataHL.biggestLoser.points} Losses </p>
                   </div>
                 </div>
-              </div>
-              <div className={`${highlightStyle}`}>
+              </motion.div>
+              <motion.div
+                className={`${highlightStyle}`}
+                variants={itemVariants}
+              >
                 <Image
                   className={`${highlightImage}`}
                   src={`/team_logo/${dataHL.bestMover[0]}.png`}
@@ -233,12 +273,12 @@ export default function LeaderBoardScreen() {
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           )}
         </div>
       </div>
-      <div className="flex flex-col text-white gap-3 text-center mt-60 px-10">
+      <div className="flex flex-col text-white gap-3 mb-10 text-center mt-40 px-10">
         <div className="flex flex-col justify-center items-center mt-10 gap-5 lg:hidden">
           <Button
             variant="link"
@@ -260,7 +300,7 @@ export default function LeaderBoardScreen() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Sports</SelectLabel>
+                  <SelectLabel>SPORTS</SelectLabel>
                   {Sports.map((sport) => (
                     <SelectItem key={sport.value} value={sport.value}>
                       {sport.label}
@@ -268,7 +308,7 @@ export default function LeaderBoardScreen() {
                   ))}
                 </SelectGroup>
                 <SelectGroup>
-                  <SelectLabel>Esports</SelectLabel>
+                  <SelectLabel>ESPORTS</SelectLabel>
                   {Esports.map((sport) => (
                     <SelectItem key={sport.value} value={sport.value}>
                       {sport.label}
@@ -296,7 +336,7 @@ export default function LeaderBoardScreen() {
             )}
           </div>
         </div>
-        <div className="flex w-full flex-row lg:gap-5 lg:px-10">
+        <div className="flex w-full flex-row lg:gap-5 lg:px-10 h-fit">
           <div className="lg:flex flex-col w-1/4 gap-5 items-start pl-10 hidden">
             <Button
               variant="link"
@@ -305,38 +345,43 @@ export default function LeaderBoardScreen() {
               }`}
               onClick={() => handleSportChange("Overall")}
             >
-              Overall
+              OVERALL
             </Button>
-            <p className="text-4xl font-bold pl-5">Sports</p>
-            {Sports.map((sport) => (
-              <Button
-                variant="link"
-                key={sport.value}
-                value={sport.value}
-                className={`text-2xl font-bold ${
-                  selectedSport === sport.value ? "text-[#FF4747]" : ""
-                }`}
-                onClick={() => handleSportChange(sport.value)}
-              >
-                {sport.label}
-              </Button>
-            ))}
-            <p className="text-4xl font-bold pl-5 mt-7">Esports</p>
-            {Esports.map((sport) => (
-              <Button
-                variant="link"
-                key={sport.value}
-                value={sport.value}
-                className={`text-2xl font-bold ${
-                  selectedSport === sport.value ? "text-[#FF4747]" : ""
-                }`}
-                onClick={() => handleSportChange(sport.value)}
-              >
-                {sport.label}
-              </Button>
-            ))}
+            <p className="text-5xl font-bold pl-4">SPORTS</p>
+            <div className="flex flex-col gap-2 items-start">
+              {Sports.map((sport) => (
+                <Button
+                  variant="link"
+                  key={sport.value}
+                  value={sport.value}
+                  className={`text-2xl font-bold ${
+                    selectedSport === sport.value ? "text-[#FF4747]" : ""
+                  }`}
+                  onClick={() => handleSportChange(sport.value)}
+                >
+                  {sport.label}
+                </Button>
+              ))}
+            </div>
+            <p className="text-5xl font-bold pl-4 mt-7">ESPORTS</p>
+            <div className="flex flex-col gap-2 items-start">
+              {Esports.map((sport) => (
+                <Button
+                  variant="link"
+                  key={sport.value}
+                  value={sport.value}
+                  className={`text-2xl font-bold ${
+                    selectedSport === sport.value ? "text-[#FF4747]" : ""
+                  }`}
+                  onClick={() => handleSportChange(sport.value)}
+                >
+                  {sport.label}
+                </Button>
+              ))}
+            </div>
           </div>
-          <div className="w-full px-0 bg-[#242322] rounded-3xl py-7">
+
+          <div className="w-full h-fit lg:sticky lg:top-80 px-0 bg-[#242322] rounded-3xl py-7">
             <div className="block lg:flex lg:flex-row ">
               <p className="font-bold pb-5 lg:text-left lg:text-3xl lg:pl-5">
                 Team Rankings
@@ -363,24 +408,25 @@ export default function LeaderBoardScreen() {
             <Table>
               <TableHeader className="text-lg lg:text-2xl font-bold bg-[#393837]">
                 <TableRow>
-                  <TableHead className="w-[100px]">Rank</TableHead>
+                  <TableHead className="w-16">Rank</TableHead>
                   <TableHead>Team</TableHead>
-                  <TableHead className="text-right lg:pr-10">
-                    Win/Loss
+                  <TableHead className="text-right ">Wins</TableHead>
+                  <TableHead className="text-right w-20 lg:w-24 md:pr-10">
+                    Losses
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoadingLB && (
                   <TableRow>
-                    <TableCell colSpan={3}>
+                    <TableCell colSpan={4}>
                       <Skeleton className="h-4 w-[250px]" />
                     </TableCell>
                   </TableRow>
                 )}
                 {isErrorLB && (
                   <TableRow>
-                    <TableCell colSpan={3}>Error fetching dataLB</TableCell>
+                    <TableCell colSpan={4}>Error fetching dataLB</TableCell>
                   </TableRow>
                 )}
                 {dataLB &&
@@ -390,19 +436,41 @@ export default function LeaderBoardScreen() {
                         Number(b.points) - Number(a.points)
                     )
                     .map((item: Leaderboard, index: number) => (
-                      <TableRow key={item.teamId}>
-                        <TableCell className="font-medium">
+                      <TableRow key={item.teamId} className="text-lg">
+                        <TableCell
+                          className={`font-medium text-xl ${
+                            index === 0
+                              ? "text-yellow-500"
+                              : index === 1
+                              ? "text-gray-400"
+                              : index === 2
+                              ? "text-yellow-700"
+                              : ""
+                          }`}
+                        >
                           {index + 1}
                         </TableCell>
-                        <TableCell className="text-left">
+                        <TableCell
+                          className={`text-left ${
+                            index === 0
+                              ? "text-yellow-500"
+                              : index === 1
+                              ? "text-gray-400"
+                              : index === 2
+                              ? "text-yellow-700"
+                              : ""
+                          }`}
+                        >
                           {item.teamId}
                         </TableCell>
-                        <TableCell className="text-right pr-10">
+                        <TableCell className="text-right pr-3  lg:pr-7 text-green-600">
                           {item.points}
+                        </TableCell>
+                        <TableCell className="text-right pr-6  lg:pr-14 text-red-700">
+                          1
                         </TableCell>
                       </TableRow>
                     ))}
-                <TableRow className="h-96"></TableRow>
               </TableBody>
             </Table>
           </div>
