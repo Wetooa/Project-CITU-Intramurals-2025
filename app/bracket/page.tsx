@@ -2,18 +2,18 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import CustomizedSelect from "@/components/shared/customized-select";
-import { TEAMS, GAMES } from "@/types/constant";
+// import CustomizedSelect from "@/components/shared/customized-select";
+// import { TEAMS, GAMES } from "@/types/constant";
 
 export default function BracketScreen() {
-  const [selectedBracket, setSelectedBracket] = useState("Basketball (Men)");
+  const [selectedBracket] = useState("Basketball (Men)");
 
   useEffect(() => {
     console.log(selectedBracket);
   }, [selectedBracket]);
 
   return (
-    <div className="p-6 flex flex-col items-center justify-center">
+    <div className="p-6 flex flex-col items-center justify-center w-screen h-screen">
       <span className="md:text-4xl text-xl font-bold align-middle text-center">
         There are no bracket matches scheduled for today. Round-robin matches
         are still in progress.
