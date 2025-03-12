@@ -136,7 +136,7 @@ export default function Home() {
             </SelectContent>
           </Select>
 
-          <Select defaultValue="Ongoing" onValueChange={setFilter}>
+          <Select value={filter} onValueChange={setFilter}>
             <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3  md:text-xl text-sm  font-bold">
               <SelectValue />
             </SelectTrigger>

@@ -15,19 +15,9 @@ export default function GameFiltersSchedule({
   setFilters: React.Dispatch<SetStateAction<Filters>>;
 }) {
   const handleFilterChange = (filterKey: string, value: string) => {
-    // Map component filter keys to context filter keys
-    const contextKeyMap: Record<string, string> = {
-      category: "",
-      matchDate: "",
-      team1Id: "",
-      team2Id: "",
-      venue: "",
-    };
-
-    const contextKey = contextKeyMap[filterKey];
     setFilters({
       ...filters,
-      [contextKey]: value,
+      [filterKey]: value,
     });
   };
 
