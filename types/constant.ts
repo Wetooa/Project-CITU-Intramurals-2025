@@ -1,3 +1,5 @@
+import { Matches } from "./types";
+
 export const zodiacSignsAcronym: Record<string, string> = {
   Aries: "AR",
   Taurus: "TA",
@@ -97,3 +99,129 @@ export const TEAMS_COLORS: Record<string, string> = {
   Taurus: "brown",
   Leo: "orange",
 };
+
+export const tournamentMatches = {
+  rounds: [
+    {
+      roundId: "Round 1 - Round Robin",
+      seeds: [
+        {
+          gameNo: 1,
+          team1Name: "Virgo",
+          team2Name: "Pisces",
+          winner: "Virgo",
+          team1Score: 21,
+          team2Score: 18,
+        },
+        {
+          gameNo: 2,
+          team1Name: "Sagittarius",
+          team2Name: "Capricorn",
+          winner: "Capricorn",
+          team1Score: 15,
+          team2Score: 22,
+        },
+        {
+          gameNo: 3,
+          team1Name: "Libra",
+          team2Name: "Scorpio",
+          winner: "Libra",
+          team1Score: 19,
+          team2Score: 17,
+        },
+        {
+          gameNo: 4,
+          team1Name: "Taurus",
+          team2Name: "Leo",
+          winner: "Leo",
+          team1Score: 16,
+          team2Score: 20,
+        },
+      ],
+    },
+    {
+      roundId: "Round 2 - Round Robin",
+      seeds: [
+        {
+          gameNo: 5,
+          team1Name: "Virgo",
+          team2Name: "Sagittarius",
+          winner: "Virgo",
+          team1Score: 23,
+          team2Score: 19,
+        },
+        {
+          gameNo: 6,
+          team1Name: "Pisces",
+          team2Name: "Capricorn",
+          winner: "Capricorn",
+          team1Score: 14,
+          team2Score: 21,
+        },
+        {
+          gameNo: 7,
+          team1Name: "Libra",
+          team2Name: "Taurus",
+          winner: "Libra",
+          team1Score: 22,
+          team2Score: 20,
+        },
+        {
+          gameNo: 8,
+          team1Name: "Scorpio",
+          team2Name: "Leo",
+          winner: "Leo",
+          team1Score: 17,
+          team2Score: 25,
+        },
+      ],
+    },
+    {
+      roundId: "Round 3 - Semifinals",
+      seeds: [
+        {
+          gameNo: 9,
+          team1Name: "Virgo",
+          team2Name: "Leo",
+          winner: "Virgo",
+          team1Score: 27,
+          team2Score: 24,
+        },
+        {
+          gameNo: 10,
+          team1Name: "Capricorn",
+          team2Name: "Libra",
+          winner: "Capricorn",
+          team1Score: 22,
+          team2Score: 20,
+        },
+      ],
+    },
+    {
+      roundId: "Round 4 - Finals",
+      seeds: [
+        {
+          gameNo: 11,
+          team1Name: "Virgo",
+          team2Name: "Capricorn",
+          winner: "Virgo",
+          team1Score: 30,
+          team2Score: 28,
+        },
+      ],
+    },
+    {
+      roundId: "Round 4 - Third Place Match",
+      seeds: [
+        {
+          gameNo: 12,
+          team1Name: "Leo",
+          team2Name: "Libra",
+          winner: "Leo",
+          team1Score: 25,
+          team2Score: 23,
+        },
+      ],
+    },
+  ],
+} as Matches;
