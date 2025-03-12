@@ -86,3 +86,14 @@ export const MATCH_DATES: Record<string, string> = {
   "March 14, 2025": "2025-03-14",
   "March 15, 2025": "2025-03-15",
 };
+
+export const TEAMS_COLORS: Record<string, string> = {
+  Virgo: "green",
+  Pisces: "blue",
+  Sagittarius: "pink",
+  Capricorn: "red",
+  Libra: "purple",
+  Scorpio: "black",
+  Taurus: "brown",
+  Leo: "orange",
+};

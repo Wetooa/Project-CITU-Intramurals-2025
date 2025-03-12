@@ -11,8 +11,8 @@ export default function BracketScreen() {
   }, [selectBracket]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <span className="text-4xl font-bold align-middle text-center">
+    <div className="p-6 flex flex-col items-center justify-center w-screen h-screen">
+      <span className="md:text-4xl text-xl font-bold align-middle text-center">
         There are no bracket matches scheduled for today. Round-robin matches
         are still in progress.
       </span>
