@@ -41,7 +41,7 @@ const fetchLeaderboard = async (category?: string) => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard: ${response.status} ${response.statusText}`,
+      `Error fetching leaderboard: ${response.status} ${response.statusText}`
     );
   }
 
@@ -54,7 +54,7 @@ const fetchLeaderboardHighlights = async () => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
     );
   }
 
@@ -67,7 +67,7 @@ const fetchLeaderboardHighlights = async () => {
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export default function LeaderBoardScreen() {
@@ -387,7 +387,7 @@ export default function LeaderBoardScreen() {
                   dataLB
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
-                        Number(b.points) - Number(a.points),
+                        Number(b.points) - Number(a.points)
                     )
                     .map((item: Leaderboard, index: number) => (
                       <TableRow key={item.teamId}>

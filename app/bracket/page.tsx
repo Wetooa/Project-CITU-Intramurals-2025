@@ -6,7 +6,7 @@ import CustomizedSelect from "@/components/shared/customized-select";
 import { TEAMS, GAMES } from "@/types/constant";
 
 export default function BracketScreen() {
-  const [selectedBracket, setSelectedBracket] = useState("Basketball (Men)");
+  const [selectedBracket, setSelectedBracket] = useState("Basketball 3x3");
 
   useEffect(() => {
     console.log(selectedBracket);
@@ -33,7 +33,7 @@ export default function BracketScreen() {
   // );
 
   return (
-    <div className="flex items-center pl-12 pr-12 h-screen w-full gap-6 ">
+    <div className="flex items-center pl-12 pr-12 h-screen w-full ">
       <div className="md:hidden">
         <CustomizedSelect
           title={"Brackets"}
@@ -77,24 +77,7 @@ export default function BracketScreen() {
           ))}
         </div>
       </div>
-
-      <section className="flex w-full gap-4">
-        <div className="flex-1 flex flex-col gap-4 h-full">
-          <div className="bg-[#242322] rounded-br-lg rounded-bl-lg w-full flex gap-2 justify-between items-center md:p-6 p-2 h-24">
-            <span className="hidden md:block md:text-3xl text-md font-bold">
-              ROUND ROBIN
-            </span>
-          </div>
-        </div>
-
-        <div className="flex-1 flex flex-col gap-4 h-full">
-          <div className="bg-[#242322] rounded-br-lg rounded-bl-lg w-full flex gap-2 justify-between items-center md:p-6 p-2 h-24">
-            <span className="hidden md:block md:text-3xl text-sm font-bold">
-              SINGLE ELIMINATION
-            </span>
-          </div>
-        </div>
-      </section>
+      <div className="w-full h-full bg-white"></div>
     </div>
   );
 }
