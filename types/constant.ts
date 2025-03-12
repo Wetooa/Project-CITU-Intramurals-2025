@@ -67,7 +67,6 @@ export const VENUES = [
   "Open Court 1",
   "Open Court 2",
   "Elem Basketball Court",
-  "Covered Court",
   "Gymnasium",
   "ME157",
   "ME158",
