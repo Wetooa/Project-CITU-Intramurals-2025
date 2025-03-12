@@ -4,8 +4,6 @@ import Image from "next/image";
 import { Skeleton } from "../ui/skeleton";
 
 export function HomeComponent({ schedule }: { schedule: Schedule }) {
-  console.log(schedule);
-
   return (
     <div className="w-full h-28 bg-[#302F2E] rounded-md border-white border border-opacity-5 flex flex-col">
       <div className="w-full h-4/5  grid grid-cols-7  justify-evenly p-6">
@@ -77,11 +75,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
         </div>
       </div>
 
-      <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md  flex items-center justify-around">
+      <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md flex items-center justify-around">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
           Game {schedule.game} - Round {schedule.round}
         </span>
-        <span className="text-sm text-[#CCCCCC] text-opacity-50  md:hidden">
+        <span className="text-xs text-[#CCCCCC] text-opacity-50  md:hidden">
           Game {schedule.game} - Round {schedule.round} • {schedule.category} •{" "}
           {schedule.venue}
         </span>
