@@ -72,7 +72,7 @@ const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
 
 export default function LeaderBoardScreen() {
   const [selectedSport, setSelectedSport] = useState<string>("Overall");
-  const [selectedGender, setSelectedGender] = useState<string>("(men)");
+  const [selectedGender, setSelectedGender] = useState<string>("(Men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
 
   function hasGender() {

@@ -3,11 +3,11 @@ import { Skeleton } from "../ui/skeleton";
 import { HomeComponent, HomeComponentSkeleton } from "./homecomponent";
 import NoMatchFound from "@/components/shared/no-match-found";
 
-export default function HomeMatches({ Schedules }: { Schedules: Schedule[] }) {
-  if (!Schedules) return <NoMatchFound />;
+export default function HomeMatches({ schedules }: { schedules: Schedule[] }) {
+  if (schedules.length === 0) return <NoMatchFound />;
   return (
     <div className="bg-[#242322] flex flex-col rounded-tr-lg rounded-tl-lg p-2 w-full h-full gap-6 overflow-y-auto">
-      {Schedules.map((schedule, index) => (
+      {schedules.map((schedule, index) => (
         <HomeComponent key={index} schedule={schedule}></HomeComponent>
       ))}
     </div>

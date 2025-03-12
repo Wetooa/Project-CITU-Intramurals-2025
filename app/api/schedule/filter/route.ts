@@ -23,29 +23,19 @@ export async function GET(req: Request) {
     const matches = sheet.filter((row) => {
       const teams = [row.get("team1Id"), row.get("team2Id")];
 
-      return (
+      const condition =
         (team1Id === "" || teams.includes(team1Id)) &&
         (team2Id === "" || teams.includes(team2Id)) &&
-        (team2Id === "" ||
-          team1Id === "" ||
-          (teams.includes(team1Id) && teams.includes(team2Id))) &&
         (matchDate === "" || row.get("matchDate") === matchDate) &&
         (category === "" || row.get("category") === category) &&
         (venue === "" || row.get("venue") === venue) &&
         (status === "" || row.get("status") === status) &&
         (round === "" || row.get("round") === round) &&
-        (winner === "" || row.get("winner") === winner)
-      );
+        (winner === "" || row.get("winner") === winner);
+
+      return condition;
     });
 
-    if (matches.length === 0) {
-      return NextResponse.json(
-        { message: "No matches found" },
-        { status: 404 },
-      );
-    }
-
-    // Sort by matchDate (latest to earliest)
     matches.sort(
       (a, b) =>
         new Date(b.get("matchDate")).getTime() -

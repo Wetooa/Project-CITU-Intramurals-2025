@@ -27,26 +27,29 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       <html lang="en">
         <body
-          className={`${inter.variable} antialiased min-w-screen min-h-screen text-white bg-charcoal_black mt-20`}
+          className={`${inter.variable} antialiased flex flex-col min-w-screen min-h-screen text-white bg-charcoal_black mt-20`}
         >
           <NavBar />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: "easeIn" }}
-            >
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                disableTransitionOnChange
+
+          <div className="flex-1">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeIn" }}
               >
-                {children}
-                <Toaster />
-              </ThemeProvider>
-            </motion.div>
-          </AnimatePresence>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  disableTransitionOnChange
+                >
+                  {children}
+                  <Toaster />
+                </ThemeProvider>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </body>
       </html>
     </QueryClientProvider>
