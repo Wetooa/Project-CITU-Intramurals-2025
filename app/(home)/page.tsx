@@ -32,21 +32,20 @@ async function getSchedule(date: string, filter: string, category: string) {
 }
 
 async function getRanking(category: string) {
-  const response = await fetch(
-    `/api/leaderboard/departmental?category=${category}`,
-  );
+  const response = await fetch(`/api/leaderboard?category=${category}`);
   const result = await response.json();
   return result.leaderboard;
 }
 
 export default function Home() {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [isLoading, setLoading] = useState(true);
-  const [ranking, setRanking] = useState<Leaderboard[]>([]);
-
   const dateToday = getDateToday();
-  const [selectSport, setSelectedSport] = useState("Basketball 3x3");
+
+  const [isLoading, setLoading] = useState(true);
+  const [selectedSport, setSelectedSport] = useState("Basketball 3x3");
   const [filter, setFilter] = useState("Ongoing");
+
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [ranking, setRanking] = useState<Leaderboard[]>([]);
 
   // console.log(dateToday);
 
@@ -54,15 +53,15 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setSchedules(await getSchedule(dateToday, filter, selectSport));
-        setRanking(await getRanking(selectSport));
+        setSchedules(await getSchedule(dateToday, filter, selectedSport));
+        setRanking(await getRanking(selectedSport));
         setLoading(false);
       } catch (error) {
         console.log("lol -> ", error);
       }
     };
     fetchData();
-  }, [selectSport, filter, dateToday]);
+  }, [selectedSport, filter, dateToday]);
 
   console.log(schedules);
 
@@ -82,7 +81,7 @@ export default function Home() {
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
-                selectSport === game ? "text-red-500" : "text-gray-200"
+                selectedSport === game ? "text-red-500" : "text-gray-200"
               }`}
               onClick={() => setSelectedSport(game)}
             >
@@ -96,7 +95,7 @@ export default function Home() {
             <p
               key={index}
               className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
-                selectSport === game ? "text-red-500" : "text-gray-200"
+                selectedSport === game ? "text-red-500" : "text-gray-200"
               }`}
               onClick={() => setSelectedSport(game)}
             >
@@ -112,7 +111,7 @@ export default function Home() {
             MATCH TODAY
           </span>
 
-          <Select value={selectSport} onValueChange={setSelectedSport}>
+          <Select value={selectedSport} onValueChange={setSelectedSport}>
             <SelectTrigger className="border-0 bg-[#302F2E] h-16 md:w-48 w-1/3 md:text-xl md:hidden text-sm font-bold">
               <SelectValue />
             </SelectTrigger>
