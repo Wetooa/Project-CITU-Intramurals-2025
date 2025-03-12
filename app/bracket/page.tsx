@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
+// import Image from "next/image";
+// import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import CustomizedSelect from "@/components/shared/customized-select";
 import { TEAMS, GAMES, teamLogos } from "@/types/constant";
