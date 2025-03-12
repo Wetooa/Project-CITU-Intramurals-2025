@@ -32,7 +32,8 @@ export async function GET() {
     const todaysRanking: Record<string, number> = {};
 
     previousLeaderboard.forEach((player, index) => {
-      previousRanking[player.teamId] = index + 1;
+      previousRanking[player.teamId] =
+        dateToday === "2025-03-12" ? 8 : index + 1;
     });
 
     todaysLeaderboard.forEach((player, index) => {
