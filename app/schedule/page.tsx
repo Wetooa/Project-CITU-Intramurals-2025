@@ -44,7 +44,13 @@ async function fetchSchedule(filters: Filters) {
 // }
 
 export default function ScheduleScreen() {
-  const [filters, setFilters] = useState<Filters>({});
+  const [filters, setFilters] = useState<Filters>({
+    category: "",
+    matchDate: "",
+    team1Id: "",
+    team2Id: "",
+    venue: "",
+  });
   const { data, isLoading, isError } = useQuery({
     queryKey: ["schedule", JSON.stringify(filters)],
     queryFn: () => fetchSchedule(filters),

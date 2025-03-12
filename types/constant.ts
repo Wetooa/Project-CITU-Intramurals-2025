@@ -22,6 +22,7 @@ export const teamLogos: Record<string, string> = {
   Scorpio: "/team_logo/Scorpio.png",
   Taurus: "/team_logo/Taurus.png",
   Virgo: "/team_logo/Virgo.png",
+  TBD: "/team_logo/TBD.png",
 };
 
 export const TEAMS = [

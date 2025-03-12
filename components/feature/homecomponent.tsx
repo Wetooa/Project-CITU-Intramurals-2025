@@ -57,7 +57,7 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
               src={teamLogos[schedule.team2Id as string]}
               width={50}
               height={50}
-              alt="team 1 logo"
+              alt="team 2 logo"
             ></Image>
             <span className="md:text-xl hidden md:block text-sm md:font-bold">
               {schedule.team2Id}
@@ -75,11 +75,11 @@ export function HomeComponent({ schedule }: { schedule: Schedule }) {
         </div>
       </div>
 
-      <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md  flex items-center justify-around">
+      <div className="w-full h-1/5 bg-[#2B2A29] rounded-b-md flex items-center justify-around">
         <span className="text-sm text-[#CCCCCC] text-opacity-50 font-bold hidden md:block">
           Game {schedule.game} - Round {schedule.round}
         </span>
-        <span className="text-sm text-[#CCCCCC] text-opacity-50  md:hidden">
+        <span className="text-xs text-[#CCCCCC] text-opacity-50  md:hidden">
           Game {schedule.game} - Round {schedule.round} • {schedule.category} •{" "}
           {schedule.venue}
         </span>
