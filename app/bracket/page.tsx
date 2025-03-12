@@ -2,13 +2,15 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import CustomizedSelect from "@/components/shared/customized-select";
+import { TEAMS, GAMES } from "@/types/constant";
 
 export default function BracketScreen() {
-  const [selectBracket] = useState("Basketball (Men)");
+  const [selectedBracket, setSelectedBracket] = useState("Basketball (Men)");
 
   useEffect(() => {
-    console.log(selectBracket);
-  }, [selectBracket]);
+    console.log(selectedBracket);
+  }, [selectedBracket]);
 
   return (
     <div className="p-6 flex flex-col items-center justify-center">
@@ -39,20 +41,20 @@ export default function BracketScreen() {
   //           label: team,
   //           value: team,
   //         }))}
-  //         value={selectBracket}
+  //         value={selectedBracket}
   //         onChange={(value) => setSelectedBracket(value)}
   //       />
   //     </div>
   //     <div className="h-screen w-[400px] md:flex  p-6  pl-10  justify-start bg-phantom_ash flex-col hidden mb-6 mt-6 overflow-y-auto">
   //       <p className="text-6xl font-bold self-start ">BRACKET</p>
-
+  //
   //       <p className="text-2xl font-bold self-start mt-10">SPORTS</p>
   //       <div className="mt-5 flex flex-col gap-2">
   //         {GAMES.slice(0, 16).map((game, index) => (
   //           <p
   //             key={index}
   //             className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
-  //               selectBracket === game ? "text-red-500" : "text-gray-200"
+  //               selectedBracket === game ? "text-red-500" : "text-gray-200"
   //             }`}
   //             onClick={() => setSelectedBracket(game)}
   //           >
@@ -66,7 +68,7 @@ export default function BracketScreen() {
   //           <p
   //             key={index}
   //             className={`text-xl  cursor-pointer hover:scale-105 transition-all font-bold ${
-  //               selectBracket === game ? "text-red-500" : "text-gray-200"
+  //               selectedBracket === game ? "text-red-500" : "text-gray-200"
   //             }`}
   //             onClick={() => setSelectedBracket(game)}
   //           >
@@ -76,4 +78,5 @@ export default function BracketScreen() {
   //       </div>
   //     </div>
   //   </div>
+  // );
 }

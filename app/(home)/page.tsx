@@ -31,8 +31,10 @@ async function getSchedule(date: string, filter: string, category: string) {
   return result.schedule;
 }
 
-async function getRanking() {
-  const response = await fetch(`/api/leaderboard/departmental`);
+async function getRanking(category: string) {
+  const response = await fetch(
+    `/api/leaderboard/departmental?category=${category}`,
+  );
   const result = await response.json();
   return result.leaderboard;
 }
@@ -53,7 +55,7 @@ export default function Home() {
       try {
         setLoading(true);
         setSchedules(await getSchedule(dateToday, filter, selectSport));
-        setRanking(await getRanking());
+        setRanking(await getRanking(selectSport));
         setLoading(false);
       } catch (error) {
         console.log("lol -> ", error);
