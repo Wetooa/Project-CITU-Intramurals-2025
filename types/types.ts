@@ -57,7 +57,7 @@ export type AdminUser = {
 };
 
 export type Leaderboard = {
-  teamId: TeamType;
+  teamId: string;
   points: number;
 };
 

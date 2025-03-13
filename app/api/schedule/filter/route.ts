@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+
     const team1Id = searchParams.get("team1Id") || "";
     const team2Id = searchParams.get("team2Id") || "";
 

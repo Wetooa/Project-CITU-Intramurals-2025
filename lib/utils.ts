@@ -1,4 +1,5 @@
 import { TEAMS } from "@/types/constant";
+import { TeamType } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { twMerge } from "tailwind-merge";
