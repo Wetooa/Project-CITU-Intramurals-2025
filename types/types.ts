@@ -24,8 +24,8 @@ export type Team = {
 
 export type Schedule = {
   id: string;
-  team1Id?: string;
-  team2Id?: string;
+  team1Id: string;
+  team2Id: string;
 
   matchDate: string;
   matchTime: string;
@@ -33,14 +33,14 @@ export type Schedule = {
   category: Games;
   venue: string;
 
-  round?: string;
+  round: string;
   game: string;
 
   status: MatchStatus;
   winner?: Winner | null;
 
-  scoreTeam1?: number | null;
-  scoreTeam2?: number | null;
+  scoreTeam1: number;
+  scoreTeam2: number;
 
   createdOn: Date;
   updatedOn: Date;
