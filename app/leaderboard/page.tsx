@@ -181,7 +181,7 @@ export default function LeaderBoardScreen() {
     { value: "MLBB", label: "MOBILE LEGENDS" },
     { value: "Tekken 8", label: "TEKKEN 8" },
     { value: "Marvel Rivals", label: "MARVEL RIVALS" },
-    { value: "Dota 2", label: "DOTA 2" },
+    { value: "DOTA 2", label: "DOTA 2" },
   ];
 
   const Genders = [
@@ -538,7 +538,7 @@ export default function LeaderBoardScreen() {
               </div>
               <div className="relative">
                 <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                  Biggest Mover
+                  Most Improved
                 </p>
                 <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-purple-500/20 py-8 min-w-64 shadow-lg">
                   <p className="font-bold text-3xl text-purple-400">
