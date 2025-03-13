@@ -23,16 +23,17 @@ export function getLeaderboard(
   });
 
   rows.forEach((row) => {
-    const team1Id = row.get("team1Id");
-    const team2Id = row.get("team2Id");
+    const team1Id = row.get("team1Id") as string;
+    const team2Id = row.get("team2Id") as string;
     const scoreTeam1 = row.get("scoreTeam1");
     const scoreTeam2 = row.get("scoreTeam2");
 
-    if (scoreTeam1 === null || scoreTeam2 === null) return;
+    if (!scoreTeam1 || !scoreTeam2) return;
 
-    if (team1Id.include("&")) {
-      const [a, b] = team1Id.split(" & ");
-      const [x, y] = team1Id.split(" & ");
+    if (team1Id.includes("&")) {
+      const [a, b] = team1Id.trim().split(" & ");
+      const [x, y] = team2Id.trim().split(" & ");
+
       if (scoreTeam1 === scoreTeam2) {
         teamsPoints[a][0] += 0.5;
         teamsPoints[b][0] += 0.5;
