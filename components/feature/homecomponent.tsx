@@ -1,27 +1,27 @@
-import {teamLogos, zodiacSignsAcronym} from "@/types/constant";
-import {Schedule} from "@/types/types";
-import Image from "next/image";
-import {Skeleton} from "../ui/skeleton";
-import {cn} from "@/lib/utils";
+import {zodiacSignsAcronym} from "@/types/constant"
+import type {Schedule} from "@/types/types"
+import {Skeleton} from "../ui/skeleton"
+import {cn} from "@/lib/utils"
+import {TeamLogo} from "./team-logo"
 
 export function HomeComponent({schedule}: { schedule: Schedule }) {
     const getStatusColor = () => {
         switch (schedule.status) {
             case "Ongoing":
-                return "bg-green-500";
+                return "bg-green-500"
             case "Completed":
-                return "bg-blue-500";
+                return "bg-blue-500"
             case "Scheduled":
-                return "bg-amber-500";
+                return "bg-amber-500"
             default:
-                return "bg-gray-500";
+                return "bg-gray-500"
         }
-    };
+    }
 
     const getWinnerStyle = (team: string) => {
-        if (schedule.status !== "Completed") return "";
-        return schedule.winner === team ? "text-green-500 font-bold" : "text-opacity-60";
-    };
+        if (schedule.status !== "Completed") return ""
+        return schedule.winner === team ? "text-green-500 font-bold" : "text-opacity-60"
+    }
 
     return (
         <div
@@ -31,9 +31,7 @@ export function HomeComponent({schedule}: { schedule: Schedule }) {
 
                 <div className="w-full grid grid-cols-7 items-center p-5 pl-6">
                     <div className="w-full flex items-center md:col-span-1 col-span-2 justify-left">
-            <span className="md:text-xl text-base font-bold text-left">
-              {schedule.matchTime}
-            </span>
+                        <span className="md:text-xl text-base font-bold text-left">{schedule.matchTime}</span>
                     </div>
 
                     <div
@@ -45,21 +43,11 @@ export function HomeComponent({schedule}: { schedule: Schedule }) {
                             <span className={cn("md:hidden text-base font-bold", getWinnerStyle("team1"))}>
                 {zodiacSignsAcronym[schedule.team1Id as string]}
               </span>
-                            <div className="relative">
-                                <Image
-                                    src={teamLogos[schedule.team1Id as string] || "/placeholder.svg"}
-                                    width={50}
-                                    height={50}
-                                    alt="team 1 logo"
-                                    className="transition-transform duration-300 hover:scale-110"
-                                />
-                                {schedule.winner === "team1" && schedule.status === "Completed" && (
-                                    <div
-                                        className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                                        <span className="text-xs text-white font-bold">W</span>
-                                    </div>
-                                )}
-                            </div>
+                            <TeamLogo
+                                teamId={schedule.team1Id}
+                                showWinner={schedule.status === "Completed"}
+                                isWinner={schedule.winner === "team1"}
+                            />
                         </div>
 
                         <div className="w-full h-full flex items-center justify-center">
@@ -75,21 +63,11 @@ export function HomeComponent({schedule}: { schedule: Schedule }) {
                         </div>
 
                         <div className="flex items-center justify-start gap-2">
-                            <div className="relative">
-                                <Image
-                                    src={teamLogos[schedule.team2Id as string] || "/placeholder.svg"}
-                                    width={50}
-                                    height={50}
-                                    alt="team 2 logo"
-                                    className="transition-transform duration-300 hover:scale-110"
-                                />
-                                {schedule.winner === "team2" && schedule.status === "Completed" && (
-                                    <div
-                                        className="absolute -top-1 -left-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                                        <span className="text-xs text-white font-bold">W</span>
-                                    </div>
-                                )}
-                            </div>
+                            <TeamLogo
+                                teamId={schedule.team2Id}
+                                showWinner={schedule.status === "Completed"}
+                                isWinner={schedule.winner === "team2"}
+                            />
                             <span className={cn("md:text-base hidden md:block font-bold", getWinnerStyle("team2"))}>
                 {schedule.team2Id}
               </span>
@@ -100,29 +78,22 @@ export function HomeComponent({schedule}: { schedule: Schedule }) {
                     </div>
 
                     <div className="w-full h-full items-center justify-right md:flex hidden">
-            <span className="w-full md:text-sm text-xs font-bold text-right text-white/80">
-              {schedule.category}
-            </span>
+                        <span
+                            className="w-full md:text-sm text-xs font-bold text-right text-white/80">{schedule.category}</span>
                     </div>
                 </div>
             </div>
 
             <div className="w-full bg-[#242322] py-3 px-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-          <span className="text-sm text-white/70 font-medium">
-            Game {schedule.game}
-          </span>
+                    <span className="text-sm text-white/70 font-medium">Game {schedule.game}</span>
                     <span className="h-1 w-1 rounded-full bg-white/30"></span>
-                    <span className="text-sm text-white/70 font-medium md:hidden">
-            {schedule.category}
-          </span>
+                    <span className="text-sm text-white/70 font-medium md:hidden">{schedule.category}</span>
                 </div>
-                <span className="text-sm text-white/70 font-medium">
-          {schedule.venue}
-        </span>
+                <span className="text-sm text-white/70 font-medium">{schedule.venue}</span>
             </div>
         </div>
-    );
+    )
 }
 
 export function HomeComponentSkeleton() {
@@ -134,11 +105,11 @@ export function HomeComponentSkeleton() {
                     <div className="flex-1 flex justify-center items-center gap-4">
                         <div className="flex items-center gap-2 justify-end">
                             <Skeleton className="h-4 w-20 bg-[#242322] hidden md:block"/>
-                            <Skeleton className="h-12 w-12 rounded-full bg-[#242322]"/>
+                            <Skeleton className="h-10 w-10 rounded-full bg-[#242322]"/>
                         </div>
                         <Skeleton className="h-6 w-16 bg-[#242322]"/>
                         <div className="flex items-center gap-2">
-                            <Skeleton className="h-12 w-12 rounded-full bg-[#242322]"/>
+                            <Skeleton className="h-10 w-10 rounded-full bg-[#242322]"/>
                             <Skeleton className="h-4 w-20 bg-[#242322] hidden md:block"/>
                         </div>
                     </div>
@@ -150,5 +121,6 @@ export function HomeComponentSkeleton() {
                 <Skeleton className="h-4 w-24 bg-[#302F2E]"/>
             </div>
         </div>
-    );
+    )
 }
+
