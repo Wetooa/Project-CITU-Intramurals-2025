@@ -1,11 +1,6 @@
 import { GAMES, GENDER, TEAMS } from "./constant";
 
-export const GoogleSheetsTitle = [
-  "team",
-  "category",
-  "schedule",
-  "adminUser",
-] as const;
+export const GoogleSheetsTitle = ["team", "schedule", "adminUser"] as const;
 export type GoogleSheetsTitleType = (typeof GoogleSheetsTitle)[number];
 
 export type Games = (typeof GAMES)[number];
