@@ -2,11 +2,11 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export async function fetchBracket() {
-  const response = await fetch(`/api/bracket`);
-  const data = await response.json();
-  return data.matches;
-}
+// async function fetchBracket() {
+//   const response = await fetch(`/api/bracket`);
+//   const data = await response.json();
+//   return data.matches;
+// }
 
 export default function BracketScreen() {
   // const [selectedBracket, setSelectedBracket] = useState("Basketball 3x3");

@@ -3,6 +3,7 @@ import {
   getBestESports,
   getBestMover,
   getBestSports,
+  getBiggestLoser,
   getBiggestWinner,
 } from "@/lib/leaderboard";
 import { getCleanedRows } from "@/lib/utils";
@@ -19,9 +20,9 @@ export async function GET() {
         message: "Fetched leaderboard highlights successfully!",
         bestMover: getBestMover(cleanedData),
         biggestWinner: getBiggestWinner(cleanedData),
-        biggestLoser: getBiggestWinner(cleanedData),
+        biggestLoser: getBiggestLoser(cleanedData),
         bestSports: getBestSports(cleanedData),
-        getBestESports: getBestESports(cleanedData),
+        bestESports: getBestESports(cleanedData),
       },
       { status: 200 },
     );

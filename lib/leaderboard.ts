@@ -72,12 +72,9 @@ export function getBestMover(rows: Schedule[]) {
       new Date(row.matchDate).getDate() < new Date(dateToday).getDate() &&
       row.status == "Completed",
   );
-  const todaysRows = rows.filter(
-    (row) => row.matchDate === dateToday && row.status == "Completed",
-  );
 
   const previousLeaderboard = getLeaderboard(previousRows);
-  const todaysLeaderboard = getLeaderboard(todaysRows);
+  const allLeaderboard = getLeaderboard(rows);
 
   const previousRanking: Record<string, number> = {};
   const todaysRanking: Record<string, number> = {};
@@ -86,7 +83,7 @@ export function getBestMover(rows: Schedule[]) {
     previousRanking[player.teamId] = dateToday === "2025-03-12" ? 8 : index + 1;
   });
 
-  todaysLeaderboard.forEach((player, index) => {
+  allLeaderboard.forEach((player, index) => {
     todaysRanking[player.teamId] = index + 1;
   });
 
@@ -132,13 +129,11 @@ export function getBiggestLoser(rows: Schedule[]) {
 export function getBestSports(rows: Schedule[]) {
   const sports = rows.filter((row) => SPORTS.includes(row.category));
   const leaderboard = getLeaderboard(sports);
-
   return leaderboard[0];
 }
 
 export function getBestESports(rows: Schedule[]) {
   const sports = rows.filter((row) => SPORTS.includes(row.category));
   const leaderboard = getLeaderboard(sports);
-
   return leaderboard[0];
 }
