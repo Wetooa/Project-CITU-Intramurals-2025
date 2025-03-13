@@ -172,14 +172,14 @@ export default function LeaderBoardScreen() {
         <LeaderboardContext.Provider
             value={{dataLB, isLoadingLB, isErrorLB, fetchLeaderboard}}
         >
-            <div className="w-full  h-full flex  flex-col justify-center items-center px-5p ">
+            <div className="w-full  h-full flex  flex-col justify-center items-center px-5 ">
                 <div className="w-full text-center lg:text-left">
                     <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-14 text-white font-bold pt-10 px-10">
                         LEADERBOARD
                     </p>
                 </div>
                 <div className="text-center text-white ">
-                    <p className=" pb-20p lg:py-10 text-3xl lg:text-5xl text-[#FFDB58]  font-bold mb-24 lg:mb-14">
+                    <p className=" text-3xl pb-20p lg:py-10  lg:text-7xl animate-pulse  text-[#FFDB58]  font-bold mb-24 lg:mb-14">
                         HIGHLIGHTS
                     </p>
 
@@ -216,7 +216,7 @@ export default function LeaderBoardScreen() {
                                 <div className="relative">
                                     <p className={`${highlightTitle}`}>Biggest Winner Today</p>
                                     <div className={`${highlightTeam}`}>
-                                        <p className="font-bold text-xl">
+                                        <p className="font-bold text-3xl">
                                             {dataHL.biggestWinner.teamId}
                                         </p>
                                         <p>{dataHL.biggestWinner.points} Wins</p>
@@ -238,7 +238,7 @@ export default function LeaderBoardScreen() {
                                 <div className="relative">
                                     <p className={`${highlightTitle}`}>Most Losses Today</p>
                                     <div className={`${highlightTeam}`}>
-                                        <p className="font-bold text-xl">
+                                        <p className="font-bold text-3xl">
                                             {dataHL.biggestLoser.teamId}
                                         </p>
                                         <p>{dataHL.biggestLoser.points} Losses </p>
@@ -259,7 +259,7 @@ export default function LeaderBoardScreen() {
                                 <div className="relative">
                                     <p className={`${highlightTitle}`}>Biggest Mover</p>
                                     <div className={`${highlightTeam}`}>
-                                        <p className="font-bold text-xl">{dataHL.bestMover[0]}</p>
+                                        <p className="font-bold text-3xl">{dataHL.bestMover[0]}</p>
                                         <p>
                                             #{dataHL.bestMover[1][0]} → #{dataHL.bestMover[1][1]}
                                         </p>
@@ -270,7 +270,7 @@ export default function LeaderBoardScreen() {
                     )}
                 </div>
             </div>
-            <div className="flex flex-col text-white gap-3 mb-10 text-center mt-40 px-10">
+            <div className="flex flex-col text-white gap-3 mb-10  text-center mt-40 px-10">
                 <div className="flex flex-col justify-center items-center mt-10 gap-5 lg:hidden">
                     <Button
                         variant="link"
