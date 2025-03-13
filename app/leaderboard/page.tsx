@@ -43,7 +43,7 @@ const fetchLeaderboardHighlights = async () => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -67,7 +67,7 @@ export default function LeaderBoardScreen() {
   const filterLeaderboard = (
     leaderboard: Record<string, Leaderboard[]> | undefined,
     sport: string,
-    gender?: string
+    gender?: string,
   ) => {
     if (!leaderboard) return;
 
@@ -79,7 +79,7 @@ export default function LeaderBoardScreen() {
 
   const renderedLeaderboard = useMemo(
     () => filterLeaderboard(leaderboardData, selectedSport, selectedGender),
-    [leaderboardData, selectedSport, selectedGender]
+    [leaderboardData, selectedSport, selectedGender],
   );
 
   useEffect(() => {
@@ -893,7 +893,7 @@ export default function LeaderBoardScreen() {
                     renderedLeaderboard
                       .sort(
                         (a: Leaderboard, b: Leaderboard) =>
-                          Number(b.points.wins) - Number(a.points.wins)
+                          Number(b.points.wins) - Number(a.points.wins),
                       )
                       .map((item: Leaderboard, index: number) => (
                         <TableRow
@@ -904,10 +904,10 @@ export default function LeaderBoardScreen() {
                               index === 0
                                 ? "bg-gradient-to-r from-yellow-300/10 to-yellow-500/5 hover:from-yellow-300/15 hover:to-yellow-500/10"
                                 : index === 1
-                                ? "bg-gradient-to-r from-gray-300/10 to-gray-400/5 hover:from-gray-300/15 hover:to-gray-400/10"
-                                : index === 2
-                                ? "bg-gradient-to-r from-yellow-700/10 to-yellow-900/5 hover:from-yellow-700/15 hover:to-yellow-900/10"
-                                : ""
+                                  ? "bg-gradient-to-r from-gray-300/10 to-gray-400/5 hover:from-gray-300/15 hover:to-gray-400/10"
+                                  : index === 2
+                                    ? "bg-gradient-to-r from-yellow-700/10 to-yellow-900/5 hover:from-yellow-700/15 hover:to-yellow-900/10"
+                                    : ""
                             }
                           `}
                         >

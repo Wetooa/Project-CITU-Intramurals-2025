@@ -78,7 +78,7 @@ export default function ScheduleScreen() {
   const [schedule, setSchedule] = useState<Schedule[]>([]);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || !data?.schedule) return;
 
     const filteredSchedule = (data?.schedule as Schedule[]).filter((row) => {
       return (
@@ -93,9 +93,6 @@ export default function ScheduleScreen() {
     setSchedule(filteredSchedule);
   }, [filters, data]);
 
-  useEffect(() => {
-    console.log("Data: ", data);
-  }, [data]);
   return (
     <>
       <div className="2xl:relative w-full h-full flex flex-col gap-5 justify-center items-center p-10">
