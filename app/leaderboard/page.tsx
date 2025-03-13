@@ -498,12 +498,12 @@ export default function LeaderBoardScreen() {
               <div className="relative overflow-hidden">
                 <motion.div
                   className="flex gap-10"
-                  animate={{ x: ["0%", "-50%"] }}
+                  animate={{ x: ["0%", "-45%"] }}
                   transition={{
                     x: {
                       repeat: Number.POSITIVE_INFINITY,
                       repeatType: "loop",
-                      duration: 60, // Slower speed (60 seconds to complete one cycle)
+                      duration: 30, // Slower speed (60 seconds to complete one cycle)
                       ease: "linear",
                     },
                   }}
@@ -819,50 +819,69 @@ export default function LeaderBoardScreen() {
                       </div>
                     </motion.div>
 
-                    {/* Duplicate of BEST ESPORTS TEAM */}
+                    {/* Biggest Winner Card */}
                     <motion.div
                       className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
                       variants={itemVariants}
                     >
                       <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
                         <Image
-                          className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-green-500 shadow-lg shadow-green-500/20"
-                          src={`/team_logo/${dataHL.bestESports.teamId}.png`}
-                          alt="Team image of the Best ESports Team"
+                          className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-yellow-400 shadow-lg shadow-yellow-400/20"
+                          src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
+                          alt="Team image of the Best Winner"
                           width={160}
                           height={160}
                         />
-                        <div className="absolute -top-4 -right-4 bg-green-500 rounded-full p-2 shadow-lg">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 text-white"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M6 11h4" />
-                            <path d="M8 9v4" />
-                            <path d="M15 12h.01" />
-                            <path d="M18 10h.01" />
-                            <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
-                          </svg>
+                        <div className="absolute -top-4 -right-4 bg-yellow-400 rounded-full p-2 shadow-lg">
+                          <Trophy className="w-6 h-6 text-black" />
                         </div>
                       </div>
                       <div className="relative">
-                        <p className="absolute top-[-1rem] left-1/2 whitespace-nowrap transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-green-500 to-green-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                          Best Esports Team
+                        <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white whitespace-nowrap bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                          Biggest Winner Today
                         </p>
-                        <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-green-500/20 py-8 min-w-64 shadow-lg">
-                          <p className="font-bold text-3xl text-green-400">
-                            {dataHL.bestESports.teamId}
+                        <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-yellow-500/20 py-8 min-w-64 shadow-lg">
+                          <p className="font-bold text-3xl text-yellow-400">
+                            {dataHL.biggestWinner.teamId}
                           </p>
                           <p className="flex items-center justify-center gap-1 text-green-400">
-                            <Trophy className="w-4 h-4" />
-                            {dataHL.bestESports.points.wins} Wins
+                            <ChevronUp className="w-4 h-4" />
+                            {dataHL.biggestWinner.points.wins} Wins
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Biggest Loser Card */}
+                    <motion.div
+                      className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                      variants={itemVariants}
+                    >
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                        <Image
+                          className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                          src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
+                          alt="Team image of the Best Loser"
+                          width={160}
+                          height={160}
+                        />
+                        <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                          <ChevronDown className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <p className="absolute top-[-1rem] left-1/2 whitespace-nowrap transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                          Most Losses Today
+                        </p>
+                        <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                          <p className="font-bold text-3xl text-red-400">
+                            {dataHL.biggestLoser.teamId}
+                          </p>
+                          <p className="flex items-center justify-center gap-1 text-red-400">
+                            <ChevronDown className="w-4 h-4" />
+                            {dataHL.biggestLoser.points.losses} Losses
                           </p>
                         </div>
                       </div>
