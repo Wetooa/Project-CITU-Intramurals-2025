@@ -4,6 +4,8 @@ import DayResultContainer from "@/components/feature/game-result-card";
 import {Schedule} from "@/types/types";
 import {useQuery} from "@tanstack/react-query";
 import {createContext, useEffect, useState} from "react";
+import {Button} from "@/components/ui/button";
+import {ArrowUpToLine} from "lucide-react";
 
 // Context Type
 interface ScheduleContextType {
@@ -34,6 +36,43 @@ async function fetchSchedule(filters: Filters) {
     console.log("fetching data");
     return response.json();
 }
+
+
+const ScrollToTop = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 500) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({top: 0, behavior: "smooth"});
+    };
+
+    return (
+        <Button
+            className={`fixed bottom-6 h-12 w-12 md:h-auto md:w-auto md:bottom-12 md:right-12 right-6 text-xl rounded-full transition-opacity duration-300 animate-fade-in ${
+                isVisible ? "opacity-100 pointer-events-auto " : "opacity-0 pointer-events-none"
+            }`}
+            onClick={scrollToTop}
+        >
+            <p className="hidden md:block font-medium text-xs   ">Scroll to Top</p>
+            <ArrowUpToLine/>
+        </Button>
+
+    );
+};
 
 // export function useSchedule() {
 //   const context = useContext(ScheduleContext);
@@ -76,6 +115,7 @@ export default function ScheduleScreen() {
                     isLoading={isLoading}
                 />
             </div>
+            <ScrollToTop/>
         </ScheduleContext.Provider>
     );
 }
