@@ -1,27 +1,27 @@
 import { GS } from "@/db/db";
-import { getLeaderboard } from "@/lib/utils";
+import { getLeaderboard } from "@/lib/leaderboard";
+import { getCleanedRows } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
-import { Leaderboard, MatchStatus } from "@/types/types";
+import { Leaderboard } from "@/types/types";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-
+    const cleanedRows = getCleanedRows(rows);
     const leaderboard: Record<string, Leaderboard[]> = {};
 
     GAMES.forEach((game) => {
-      const filteredRows = rows.filter(
-        (row) =>
-          (!game || row.get("category") === game) &&
-          (row.get("status") as MatchStatus) == "Completed",
+      const filteredRows = cleanedRows.filter(
+        (row) => (!game || row.category === game) && row.status === "Completed",
       );
+
       leaderboard[game as string] = getLeaderboard(filteredRows);
     });
 
-    const allCompleted = rows.filter(
-      (row) => (row.get("status") as MatchStatus) == "Completed",
+    const allCompleted = cleanedRows.filter(
+      (row) => row.status === "Completed",
     );
     leaderboard["Overall"] = getLeaderboard(allCompleted);
 

@@ -181,13 +181,238 @@ export default function LeaderBoardScreen() {
     { value: "MLBB", label: "MOBILE LEGENDS" },
     { value: "Tekken 8", label: "TEKKEN 8" },
     { value: "Marvel Rivals", label: "MARVEL RIVALS" },
-    { value: "Dota 2", label: "DOTA 2" },
+    { value: "DOTA 2", label: "DOTA 2" },
   ];
 
   const Genders = [
     { value: "(Men)", label: "MEN" },
     { value: "(Women)", label: "WOMEN" },
   ];
+
+  // Function to get appropriate icon for each sport
+  const getSportIcon = (sportName: string) => {
+    const iconClass = "mr-3 h-5 w-5";
+
+    switch (sportName) {
+      case "Basketball 3x3":
+      case "Basketball 5x5":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M4.93 4.93c4.08 4.08 6.1 9.4 6.1 14.14M19.07 4.93c-4.08 4.08-6.1 9.4-6.1 14.14" />
+            <path d="M2 12h20M12 2v20" />
+          </svg>
+        );
+
+      case "Volleyball":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a8.5 8.5 0 0 0 8.5 8.5" />
+            <path d="M12 2a8.5 8.5 0 0 1 0 17" />
+            <path d="M12 2a8.5 8.5 0 0 1-8.5 8.5" />
+            <path d="M15.5 19.5A8.5 8.5 0 0 1 12 2" />
+          </svg>
+        );
+
+      case "Badminton":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M13.7 2.3a2.43 2.43 0 0 0-3.4 0L2.3 10.3a2.43 2.43 0 0 0 0 3.4l8 8a2.43 2.43 0 0 0 3.4 0l8-8a2.43 2.43 0 0 0 0-3.4Z" />
+            <path d="m19 5-7 7" />
+            <path d="M12 12 5 19" />
+          </svg>
+        );
+
+      case "Futsal":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a4.2 4.2 0 0 1 4 4" />
+            <path d="M12 22a4.2 4.2 0 0 0 4-4" />
+            <path d="M12 22a4.2 4.2 0 0 1-4-4" />
+            <path d="M12 2a4.2 4.2 0 0 0-4 4" />
+            <path d="m6.3 17.7 3.4-3.4" />
+            <path d="m14.3 9.7 3.4-3.4" />
+            <path d="m6.3 6.3 3.4 3.4" />
+            <path d="m14.3 14.3 3.4 3.4" />
+          </svg>
+        );
+
+      case "Table Tennis":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" />
+            <path d="M15 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+            <path d="m16 9-3.5 3.5" />
+            <path d="M4 14a1 1 0 1 0 2 0 1 1 0 0 0-2 0Z" />
+            <path d="m6 14 3.5-3.5" />
+          </svg>
+        );
+
+      case "Chess":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M8 16v-5a2 2 0 0 1 4 0v5" />
+            <path d="M10 16h4" />
+            <path d="M2 16h2" />
+            <path d="M14 16h8" />
+            <path d="M18 16v-5a2 2 0 0 0-4 0v5" />
+            <path d="M10 11V9a2 2 0 0 1 4 0v2" />
+            <path d="M8 8v1" />
+            <path d="M16 8v1" />
+            <path d="M9 6.2A6 6 0 0 1 12 6a6 6 0 0 1 3 .2" />
+            <path d="M12 16v4" />
+            <path d="M22 22H2" />
+          </svg>
+        );
+
+      case "Scrabble":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M7 20h10" />
+            <path d="M10 20c5.5-2.5.8-6.4 3-10" />
+            <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z" />
+            <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z" />
+          </svg>
+        );
+
+      case "Sepak Takraw":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a4.2 4.2 0 0 1 4 4" />
+            <path d="M12 22a4.2 4.2 0 0 0 4-4" />
+            <path d="M12 22a4.2 4.2 0 0 1-4-4" />
+            <path d="M12 2a4.2 4.2 0 0 0-4 4" />
+          </svg>
+        );
+
+      // Esports icons
+      case "Valorant":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+            <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+            <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+            <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+            <path d="M8 7v10" />
+            <path d="M12 7v10" />
+            <path d="M17 11h-2" />
+            <path d="M17 15h-2" />
+            <path d="M16 7v10" />
+          </svg>
+        );
+
+      case "CODM":
+      case "MLBB":
+      case "Tekken 8":
+      case "Marvel Rivals":
+      case "Dota 2":
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={iconClass}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 11h4" />
+            <path d="M8 9v4" />
+            <path d="M15 12h.01" />
+            <path d="M18 10h.01" />
+            <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+          </svg>
+        );
+
+      default:
+        return <Trophy className={iconClass} />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#121212] to-[#1a1a1a] text-white">
@@ -244,7 +469,7 @@ export default function LeaderBoardScreen() {
                 </div>
               </div>
               <div className="relative">
-                <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center whitespace-nowrap text-sm font-bold pt-1 px-6 text-white bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center whitespace-nowrap text-white font-bold pt-1 px-6  bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
                   Biggest Winner Today
                 </p>
                 <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-yellow-500/20 py-8 min-w-64 shadow-lg">
@@ -313,7 +538,7 @@ export default function LeaderBoardScreen() {
               </div>
               <div className="relative">
                 <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                  Biggest Mover
+                  Most Improved
                 </p>
                 <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-purple-500/20 py-8 min-w-64 shadow-lg">
                   <p className="font-bold text-3xl text-purple-400">
@@ -335,39 +560,81 @@ export default function LeaderBoardScreen() {
         {/* Mobile Filters */}
         <div className="flex flex-col justify-center items-center mt-10 gap-5 lg:hidden">
           <Button
-            variant="link"
-            className={`text-3xl font-bold transition-colors duration-300 ${
+            variant="ghost"
+            className={`text-2xl font-bold px-6 py-3 rounded-xl transition-all duration-300 ${
               selectedSport === "Overall"
-                ? "text-[#FF4747] underline decoration-2 underline-offset-8"
-                : "hover:text-[#FF4747]/70"
+                ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747]"
+                : "hover:bg-[#FF4747]/10 hover:text-[#FF4747]"
             }`}
             onClick={() => handleSportChange("Overall")}
           >
+            <Trophy className="mr-2 h-5 w-5" />
             Overall
           </Button>
-          <div className="flex flex-row justify-between gap-5">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 w-full max-w-md">
             <Select onValueChange={(value) => handleSportChange(value)}>
               <SelectTrigger
-                className={`${
-                  isSportSelected ? "w-[240px]" : "w-[400px]"
-                } px-3 bg-[#2a2a2a] border-[#3a3a3a] focus:ring-[#FF4747] focus:ring-opacity-50`}
+                className={`
+                  w-full h-12 px-4
+                  bg-gradient-to-br from-[#2a2a2a] to-[#222222]
+                  border-[#3a3a3a] hover:border-[#FF4747]/50
+                  focus:ring-[#FF4747] focus:ring-opacity-50
+                  rounded-xl shadow-md transition-all duration-300
+                  text-white font-medium
+                `}
               >
-                <SelectValue placeholder="Select A Sport" />
+                <div className="flex items-center gap-2">
+                  {selectedSport !== "Overall" && getSportIcon(selectedSport)}
+                  <SelectValue placeholder="Select Sport" />
+                </div>
               </SelectTrigger>
-              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a]">
+              <SelectContent className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-[#3a3a3a] rounded-xl shadow-xl p-1 animate-in fade-in-80 zoom-in-95">
                 <SelectGroup>
-                  <SelectLabel className="text-[#FF4747]">SPORTS</SelectLabel>
+                  <SelectLabel className="text-[#FF4747] font-bold px-3 py-2 flex items-center gap-2">
+                    <Trophy className="h-4 w-4" />
+                    SPORTS
+                  </SelectLabel>
                   {Sports.map((sport) => (
-                    <SelectItem key={sport.value} value={sport.value}>
-                      {sport.label}
+                    <SelectItem
+                      key={sport.value}
+                      value={sport.value}
+                      className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {sport.label}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectGroup>
                 <SelectGroup>
-                  <SelectLabel className="text-[#FF4747]">ESPORTS</SelectLabel>
+                  <SelectLabel className="text-[#FF4747] font-bold px-3 py-2 mt-2 flex items-center gap-2 border-t border-gray-700">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M6 11h4" />
+                      <path d="M8 9v4" />
+                      <path d="M15 12h.01" />
+                      <path d="M18 10h.01" />
+                      <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+                    </svg>
+                    ESPORTS
+                  </SelectLabel>
                   {Esports.map((sport) => (
-                    <SelectItem key={sport.value} value={sport.value}>
-                      {sport.label}
+                    <SelectItem
+                      key={sport.value}
+                      value={sport.value}
+                      className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
+                    >
+                      <div className="flex items-center gap-2">
+                        {sport.label}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectGroup>
@@ -375,15 +642,62 @@ export default function LeaderBoardScreen() {
             </Select>
             {hasGender() && (
               <Select onValueChange={(value) => setSelectedGender(value)}>
-                <SelectTrigger className="w-[240px] px-5 bg-[#2a2a2a] border-[#3a3a3a] focus:ring-[#FF4747] focus:ring-opacity-50">
-                  <SelectValue placeholder="Men" />
+                <SelectTrigger
+                  className={`
+                    w-full sm:w-[240px] h-12 px-4
+                    bg-gradient-to-br from-[#2a2a2a] to-[#222222]
+                    border-[#3a3a3a] hover:border-[#FF4747]/50
+                    focus:ring-[#FF4747] focus:ring-opacity-50
+                    rounded-xl shadow-md transition-all duration-300
+                    text-white font-medium
+                  `}
+                >
+                  <div className="flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {selectedGender === "(Men)" ? (
+                        <path d="M10 21v-4a2 2 0 1 1 4 0v4M4 16v-4a6 6 0 1 1 12 0v4" />
+                      ) : (
+                        <path d="M12 9a6 6 0 1 0 0 12 6 6 0 0 0 0-12ZM12 14l-2-2 2-2 2 2-2 2Z" />
+                      )}
+                    </svg>
+                    <SelectValue placeholder="Select Gender" />
+                  </div>
                 </SelectTrigger>
-                <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a]">
+                <SelectContent className="bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border-[#3a3a3a] rounded-xl shadow-xl p-1 animate-in fade-in-80 zoom-in-95">
                   <SelectGroup>
-                    <SelectLabel className="text-[#FF4747]">Gender</SelectLabel>
+                    <SelectLabel className="text-[#FF4747] font-bold px-3 py-2 flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M12 3a6 6 0 0 0-6 6c0 2.14 1.25 4.27 2.42 6.12 1.6 2.54 3.58 4.88 3.58 4.88s1.97-2.34 3.58-4.88c1.17-1.85 2.42-3.98 2.42-6.12a6 6 0 0 0-6-6Z" />
+                      </svg>
+                      GENDER
+                    </SelectLabel>
                     {Genders.map((gender) => (
-                      <SelectItem key={gender.value} value={gender.value}>
-                        {gender.label}
+                      <SelectItem
+                        key={gender.value}
+                        value={gender.value}
+                        className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
+                      >
+                        <div className="flex items-center gap-2">
+                          {gender.label}
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -395,58 +709,86 @@ export default function LeaderBoardScreen() {
 
         <div className="flex w-full flex-row lg:gap-5 h-fit mt-10">
           {/* Desktop Sidebar */}
-          <div className="lg:flex flex-col w-1/4 gap-5 items-start pl-10 hidden">
-            <Button
-              variant="link"
-              className={`text-4xl font-bold transition-colors duration-300 ${
-                selectedSport === "Overall"
-                  ? "text-[#FF4747] underline decoration-2 underline-offset-8"
-                  : "hover:text-[#FF4747]/70"
-              }`}
-              onClick={() => handleSportChange("Overall")}
-            >
-              OVERALL
-            </Button>
-            <p className="text-5xl lg:text-3xl xl:text-5xl font-bold pl-4 mt-7 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-              SPORTS
-            </p>
+          <div className="lg:flex flex-col w-1/4 gap-2 hidden">
+            <div className="sticky top-36 bg-gradient-to-br from-[#1e1e1e] to-[#121212] rounded-2xl p-6 border border-gray-800/30 shadow-lg">
+              <Button
+                variant="ghost"
+                className={`w-full justify-start text-2xl font-bold mb-4 rounded-xl h-14 transition-all duration-300 ${
+                  selectedSport === "Overall"
+                    ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747] border-l-4 border-[#FF4747] pl-4"
+                    : "hover:bg-[#FF4747]/10 hover:text-[#FF4747] pl-2"
+                }`}
+                onClick={() => handleSportChange("Overall")}
+              >
+                <Trophy
+                  className={`mr-3 h-6 w-6 ${
+                    selectedSport === "Overall"
+                      ? "text-[#FF4747]"
+                      : "text-gray-400"
+                  }`}
+                />
+                OVERALL
+              </Button>
 
-            <div className="flex flex-col gap-2 items-start">
-              {Sports.map((sport) => (
-                <Button
-                  variant="link"
-                  key={sport.value}
-                  value={sport.value}
-                  className={`xl:text-2xl md:text-xl transition-colors duration-300 ${
-                    selectedSport === sport.value
-                      ? "text-[#FF4747] underline decoration-2 underline-offset-4"
-                      : "hover:text-[#FF4747]/70"
-                  }`}
-                  onClick={() => handleSportChange(sport.value)}
-                >
-                  {sport.label}
-                </Button>
-              ))}
-            </div>
-            <p className="text-5xl lg:text-3xl xl:text-5xl font-bold pl-4 mt-7 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-              ESPORTS
-            </p>
-            <div className="flex flex-col gap-2 items-start">
-              {Esports.map((sport) => (
-                <Button
-                  variant="link"
-                  key={sport.value}
-                  value={sport.value}
-                  className={`xl:text-2xl md:text-xl transition-colors duration-300 ${
-                    selectedSport === sport.value
-                      ? "text-[#FF4747] underline decoration-2 underline-offset-4"
-                      : "hover:text-[#FF4747]/70"
-                  }`}
-                  onClick={() => handleSportChange(sport.value)}
-                >
-                  {sport.label}
-                </Button>
-              ))}
+              <div className="space-y-6">
+                {/* Sports Section */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 px-2">
+                    <div className="h-1 w-1 rounded-full bg-[#FF4747]"></div>
+                    <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                      SPORTS
+                    </h3>
+                  </div>
+
+                  <div className="space-y-1">
+                    {Sports.map((sport) => (
+                      <Button
+                        variant="ghost"
+                        key={sport.value}
+                        value={sport.value}
+                        className={`w-full justify-start rounded-lg transition-all duration-300 ${
+                          selectedSport === sport.value
+                            ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747] border-l-4 border-[#FF4747] pl-4"
+                            : "hover:bg-[#FF4747]/10 hover:text-[#FF4747] text-gray-300 pl-2"
+                        }`}
+                        onClick={() => handleSportChange(sport.value)}
+                      >
+                        {getSportIcon(sport.value)}
+                        {sport.label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Esports Section */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3 px-2">
+                    <div className="h-1 w-1 rounded-full bg-[#FF4747]"></div>
+                    <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                      ESPORTS
+                    </h3>
+                  </div>
+
+                  <div className="space-y-1">
+                    {Esports.map((sport) => (
+                      <Button
+                        variant="ghost"
+                        key={sport.value}
+                        value={sport.value}
+                        className={`w-full justify-start rounded-lg transition-all duration-300 ${
+                          selectedSport === sport.value
+                            ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747] border-l-4 border-[#FF4747] pl-4"
+                            : "hover:bg-[#FF4747]/10 hover:text-[#FF4747] text-gray-300 pl-2"
+                        }`}
+                        onClick={() => handleSportChange(sport.value)}
+                      >
+                        {getSportIcon(sport.value)}
+                        {sport.label}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -466,13 +808,29 @@ export default function LeaderBoardScreen() {
                       variant="outline"
                       value={gender.value}
                       key={gender.value}
-                      className={`font-bold transition-colors duration-300 ${
+                      className={`font-bold transition-all duration-300 rounded-xl ${
                         selectedGender === gender.value
-                          ? "bg-[#FF4747] text-white border-[#FF4747]"
-                          : "bg-transparent hover:bg-[#FF4747]/10 hover:text-[#FF4747] border-gray-700"
+                          ? "bg-gradient-to-r from-[#FF4747] to-[#FF2222] text-white border-[#FF4747] shadow-md shadow-[#FF4747]/20"
+                          : "bg-gradient-to-br from-[#2a2a2a] to-[#222222] hover:bg-[#FF4747]/10 hover:text-[#FF4747] border-gray-700"
                       }`}
                       onClick={() => setSelectedGender(gender.value)}
                     >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-2"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        {gender.value === "(Men)" ? (
+                          <path d="M10 21v-4a2 2 0 1 1 4 0v4M4 16v-4a6 6 0 1 1 12 0v4" />
+                        ) : (
+                          <path d="M12 9a6 6 0 1 0 0 12 6 6 0 0 0 0-12ZM12 14l-2-2 2-2 2 2-2 2Z" />
+                        )}
+                      </svg>
                       {gender.label}
                     </Button>
                   ))}

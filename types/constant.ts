@@ -27,6 +27,7 @@ export const teamLogos: Record<string, string> = {
   Scorpio: "/team_logo/Scorpio.png",
   Taurus: "/team_logo/Taurus.png",
   Virgo: "/team_logo/Virgo.png",
+  TBD: "/team_logo/TBD.png",
   "Pisces & Capricorn": "/team_logo/Pisces & Capricorn.png",
   "Libra & Capricorn": "/team_logo/Libra & Capricorn.png",
   "Taurus & Scorpio": "/team_logo/Taurus & Scorpio.png",
@@ -69,6 +70,9 @@ export const GAMES = [
   "Marvel Rivals",
   "DOTA 2",
 ] as const;
+
+export const SPORTS = GAMES.slice(0, 16);
+export const E_SPORTS = GAMES.slice(16);
 
 export const GENDER = ["MEN", "WOMEN"] as const;
 

@@ -1,15 +1,15 @@
 import { GS } from "@/db/db";
-import { getLeaderboard } from "@/lib/utils";
-import { MatchStatus } from "@/types/types";
 import { NextResponse } from "next/server";
+
+import { getLeaderboard } from "@/lib/leaderboard";
+import { getCleanedRows } from "@/lib/utils";
 
 export async function GET() {
   try {
     const data = await GS.getSheetData("schedule");
     const rows = await data.getRows();
-    const filteredRows = rows.filter(
-      (row) => (row.get("status") as MatchStatus) == "Completed",
-    );
+    const cleanedData = getCleanedRows(rows);
+    const filteredRows = cleanedData.filter((row) => row.status == "Completed");
     const leaderboard = getLeaderboard(filteredRows);
 
     return NextResponse.json(
