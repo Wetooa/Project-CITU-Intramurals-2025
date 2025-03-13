@@ -3,7 +3,7 @@ import {useState, useEffect} from "react"
 import {motion} from "framer-motion"
 import Image from "next/image"
 import {Trophy, ChevronDown, ChevronUp} from "lucide-react"
-import {zodiacSignsAcronym, teamLogos} from "@/types/constant"; // Adjust the import path as needed
+import {zodiacSignsAcronym, teamLogos} from "./constants" // Adjust the import path as needed
 
 // Types for our bracket data
 type Team = {
@@ -405,52 +405,11 @@ function MatchCard({seed, isLast}: { seed: Seed; isLast?: boolean }) {
     )
 }
 
-// Round component
-function BracketRound({round, isLastRound}: { round: Round; isLastRound: boolean }) {
-    // Calculate spacing based on number of seeds
-    const getSpacingClass = () => {
-        if (round.seeds.length === 4) return "" // Quarterfinals - normal spacing
-        if (round.seeds.length === 2) return "pt-[80px]" // Semifinals - push down to align with connectors
-        if (round.seeds.length === 1) return "pt-[240px]" // Finals - push down to align with connectors
-        return ""
-    }
-
-    return (
-        <div className="flex flex-col items-center">
-            <div className="bg-mocha rounded-md w-[280px] p-3 mb-6 text-center">
-                <h3 className="font-bold">{round.name}</h3>
-            </div>
-
-            <div className={`flex flex-col ${getSpacingClass()}`}>
-                {round.seeds.map((seed, idx) => (
-                    <div key={seed.id} className={`relative ${idx > 0 ? "mt-8 md:mt-16" : ""}`}>
-                        <MatchCard seed={seed} isLast={isLastRound && round.seeds.length === 1}/>
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}
-
-// Bracket generator component
-function BracketGenerator({matches}: { matches: { rounds: Round[] } }) {
-    return (
-        <div className="flex space-x-12 p-6 overflow-x-auto min-w-max">
-            {matches.rounds.map((round, index) => (
-                <div key={round.id} className="flex flex-col relative">
-                    <BracketRound round={round} isLastRound={index === matches.rounds.length - 1}/>
-                </div>
-            ))}
-        </div>
-    )
-}
-
-// Main component
+// Completely new bracket implementation with proper triangle layout
 export default function BracketScreen() {
     const [selectedBracket, setSelectedBracket] = useState("Basketball 3x3")
     const [data, setData] = useState<BracketData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [showPlaceholder, setShowPlaceholder] = useState(false) // Toggle this to show/hide placeholder
 
     useEffect(() => {
         const loadData = async () => {
@@ -467,6 +426,15 @@ export default function BracketScreen() {
 
         loadData()
     }, [])
+
+    // If loading, show a loading indicator
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-coral_red"></div>
+            </div>
+        )
+    }
 
     // UNCOMMENT THIS SECTION TO SHOW THE PLACEHOLDER SCREEN INSTEAD OF THE BRACKET
     // return (
@@ -488,15 +456,6 @@ export default function BracketScreen() {
     //     </motion.div>
     //   </div>
     // );
-
-    // If loading, show a loading indicator
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-coral_red"></div>
-            </div>
-        )
-    }
 
     return (
         <div className="flex flex-col md:flex-row h-screen bg-night_black text-white">
@@ -557,7 +516,64 @@ export default function BracketScreen() {
 
                     {data && data[selectedBracket] ? (
                         <div className="overflow-x-auto">
-                            <BracketGenerator matches={data[selectedBracket]}/>
+                            {/* New symmetrical bracket layout */}
+                            <div className="relative min-w-max">
+                                <div className="flex">
+                                    {data[selectedBracket].rounds.map((round, roundIndex) => (
+                                        <div key={round.id} className="flex flex-col mx-6 first:ml-0">
+                                            <div className="bg-mocha rounded-md w-[280px] p-3 mb-6 text-center">
+                                                <h3 className="font-bold">{round.name}</h3>
+                                            </div>
+
+                                            <div className="flex flex-col">
+                                                {round.seeds.map((seed, seedIndex) => {
+                                                    // Calculate vertical spacing based on round
+                                                    const spacingMultiplier = Math.pow(2, roundIndex)
+                                                    const baseSpacing = 160 // Base spacing between matches
+
+                                                    return (
+                                                        <div
+                                                            key={seed.id}
+                                                            className="mb-4"
+                                                            style={{
+                                                                marginTop:
+                                                                    seedIndex === 0
+                                                                        ? ((spacingMultiplier - 1) * baseSpacing) / 2
+                                                                        : baseSpacing * spacingMultiplier - 4,
+                                                            }}
+                                                        >
+                                                            <MatchCard seed={seed}
+                                                                       isLast={roundIndex === data[selectedBracket].rounds.length - 1}/>
+
+                                                            {/* Draw connector lines */}
+                                                            {roundIndex < data[selectedBracket].rounds.length - 1 && seed.winner && (
+                                                                <div
+                                                                    className="absolute"
+                                                                    style={{
+                                                                        left: 280 + roundIndex * 340, // Position after the match card
+                                                                        top:
+                                                                            seedIndex % 2 === 0
+                                                                                ? seedIndex * spacingMultiplier * baseSpacing + 80
+                                                                                : // Top match
+                                                                                (seedIndex - 1) * spacingMultiplier * baseSpacing +
+                                                                                80 +
+                                                                                (baseSpacing * spacingMultiplier) / 2, // Bottom match
+                                                                        width: 60,
+                                                                        height: seedIndex % 2 === 0 ? (baseSpacing * spacingMultiplier) / 2 : 0,
+                                                                        borderRight: "2px solid #4A4A4A",
+                                                                        borderTop: seedIndex % 2 === 0 ? "none" : "2px solid #4A4A4A",
+                                                                        borderBottom: seedIndex % 2 === 0 ? "2px solid #4A4A4A" : "none",
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center p-8 text-center">
