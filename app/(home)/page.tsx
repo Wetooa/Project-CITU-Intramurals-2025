@@ -80,7 +80,7 @@ export default function Home() {
           sched.matchDate === date &&
           sched.status === filter
         );
-      }),
+      })
     );
   }, [date, filter, schedulesData, selectedSport]);
 
@@ -120,7 +120,7 @@ export default function Home() {
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white",
+                          : "text-gray-300 hover:text-white"
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -140,7 +140,7 @@ export default function Home() {
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white",
+                          : "text-gray-300 hover:text-white"
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -185,7 +185,7 @@ export default function Home() {
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white",
+                    : "text-gray-300 hover:text-white"
                 )}
                 onClick={() => setSelectedSport(game)}
               >
@@ -203,7 +203,7 @@ export default function Home() {
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white",
+                    : "text-gray-300 hover:text-white"
                 )}
                 onClick={() => setSelectedSport(game)}
               >
@@ -227,7 +227,7 @@ export default function Home() {
 
             <div className="flex gap-3">
               <Select value={selectedSport} onValueChange={setSelectedSport}>
-                <SelectTrigger className="border-0 bg-[#302F2E] h-12 md:w-48 w-[120px] md:text-base text-sm font-bold">
+                <SelectTrigger className="border-0 bg-[#302F2E] h-12 md:w-48 w-[120px] hidden xl:flex md:text-base text-sm font-bold">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-[#582424] font-bold text-base text-white">
