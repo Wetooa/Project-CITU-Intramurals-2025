@@ -13,6 +13,7 @@ export const zodiacSignsAcronym: Record<string, string> = {
   Capricorn: "CP",
   Aquarius: "AQ",
   Pisces: "PI",
+  TBD: "TBD",
 };
 
 export const teamLogos: Record<string, string> = {
