@@ -1,7 +1,6 @@
-import { TEAMS } from "@/types/constant";
-import { WinsLosses } from "@/types/types";
+import { SPORTS, TEAMS } from "@/types/constant";
+import { Schedule, WinsLosses } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
-import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,9 +13,7 @@ export function getDateToday() {
   return date.toISOString().split("T")[0];
 }
 
-export function getLeaderboard(
-  rows: GoogleSpreadsheetRow<Record<string, unknown>>[],
-) {
+export function getLeaderboard(rows: Schedule[]) {
   const teamsPoints: Record<string, WinsLosses> = {};
 
   TEAMS.forEach((team) => {
@@ -24,10 +21,11 @@ export function getLeaderboard(
   });
 
   rows.forEach((row) => {
-    const team1Id = row.get("team1Id") as string;
-    const team2Id = row.get("team2Id") as string;
-    const scoreTeam1 = row.get("scoreTeam1");
-    const scoreTeam2 = row.get("scoreTeam2");
+    const team1Id = row.team1Id!;
+    const team2Id = row.team2Id!;
+    const scoreTeam1 = row.scoreTeam1;
+    const scoreTeam2 = row.scoreTeam2;
+    const winner = row.winner;
 
     if (!scoreTeam1 || !scoreTeam2) return;
 
@@ -75,4 +73,83 @@ export function getLeaderboard(
     });
 
   return leaderboard;
+}
+
+export function getBestMover(rows: Schedule[]) {
+  const dateToday = getDateToday();
+
+  const previousRows = rows.filter(
+    (row) =>
+      new Date(row.matchDate).getDate() < new Date(dateToday).getDate() &&
+      row.status == "Completed",
+  );
+  const todaysRows = rows.filter(
+    (row) => row.matchDate === dateToday && row.status == "Completed",
+  );
+
+  const previousLeaderboard = getLeaderboard(previousRows);
+  const todaysLeaderboard = getLeaderboard(todaysRows);
+
+  const previousRanking: Record<string, number> = {};
+  const todaysRanking: Record<string, number> = {};
+
+  previousLeaderboard.forEach((player, index) => {
+    previousRanking[player.teamId] = dateToday === "2025-03-12" ? 8 : index + 1;
+  });
+
+  todaysLeaderboard.forEach((player, index) => {
+    todaysRanking[player.teamId] = index + 1;
+  });
+
+  const rankDifference: Record<string, [number, number]> = {};
+
+  TEAMS.forEach((team) => {
+    rankDifference[team] = [previousRanking[team], todaysRanking[team]];
+  });
+
+  const bestMover = Object.entries(rankDifference).reduce((team, best) => {
+    const [a, b] = team[1];
+    const [x, y] = best[1];
+    return b - a < y - x ? team : best;
+  });
+  return bestMover;
+}
+
+export function getBiggestWinner(rows: Schedule[]) {
+  const dateToday = getDateToday();
+  const todaysRows = rows.filter(
+    (row) => row.matchDate === dateToday && row.status == "Completed",
+  );
+  const todaysLeaderboard = getLeaderboard(todaysRows);
+
+  const biggestWinner = todaysLeaderboard[0];
+  return biggestWinner;
+}
+
+export function getBiggestLoser(rows: Schedule[]) {
+  const dateToday = getDateToday();
+  const todaysRows = rows.filter(
+    (row) => row.matchDate === dateToday && row.status == "Completed",
+  );
+  const todaysLeaderboard = getLeaderboard(todaysRows);
+
+  const biggestLoser = todaysLeaderboard.sort(
+    (a, b) => b.points.losses - a.points.losses,
+  )[0];
+
+  return biggestLoser;
+}
+
+export function getBestSports(rows: Schedule[]) {
+  const sports = rows.filter((row) => SPORTS.includes(row.category));
+  const leaderboard = getLeaderboard(sports);
+
+  return leaderboard[0];
+}
+
+export function getBestESports(rows: Schedule[]) {
+  const sports = rows.filter((row) => SPORTS.includes(row.category));
+  const leaderboard = getLeaderboard(sports);
+
+  return leaderboard[0];
 }
