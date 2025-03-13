@@ -63,7 +63,7 @@ export type AdminUser = {
 
 export type Leaderboard = {
   teamId: string;
-  points: WinsLosses;
+  points: { wins: number; losses: number };
 };
 
 export type Bracket = {
