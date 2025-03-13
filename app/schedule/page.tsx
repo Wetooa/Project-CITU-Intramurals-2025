@@ -8,12 +8,12 @@ import { ArrowUpToLine } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export interface Filters {
-  category?: string;
-  matchDate?: string;
-  team1Id?: string;
-  team2Id?: string;
-  venue?: string;
-  gender?: string;
+  category: string;
+  matchDate: string;
+  team1Id: string;
+  team2Id: string;
+  venue: string;
+  gender: string;
 }
 
 async function fetchSchedule() {
@@ -64,23 +64,33 @@ export default function ScheduleScreen() {
     team1Id: "",
     team2Id: "",
     venue: "",
+    gender: "",
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["schedule", JSON.stringify(filters)],
+    queryKey: ["schedule"],
     queryFn: () => fetchSchedule(),
     refetchIntervalInBackground: false,
     refetchOnMount: false,
-    enabled: !!filters,
     refetchOnWindowFocus: false,
   });
 
-  const [schedule, setSchedule] = useState();
+  const [schedule, setSchedule] = useState<Schedule[]>([]);
 
   useEffect(() => {
-    const schedule = data?.schedule as Schedule[];
+    if (!data) return;
 
-    setSchedule();
+    const filteredSchedule = (data?.schedule as Schedule[]).filter((row) => {
+      return (
+        (filters.category === "" || filters.category === row.category) &&
+        (filters.matchDate === "" || filters.matchDate === row.matchDate) &&
+        (filters.team1Id === "" || row.team1Id?.includes(filters.team1Id)) &&
+        (filters.team2Id === "" || row.team1Id?.includes(filters.team1Id)) &&
+        (filters.venue === "" || filters.venue === row.venue)
+      );
+    });
+
+    setSchedule(filteredSchedule);
   }, [filters, data]);
 
   useEffect(() => {
@@ -93,10 +103,7 @@ export default function ScheduleScreen() {
           Schedule
         </p>
         <GameFiltersSchedule filters={filters} setFilters={setFilters} />
-        <DayResultContainer
-          schedule={data ? data.schedule : []}
-          isLoading={isLoading}
-        />
+        <DayResultContainer schedule={schedule} isLoading={isLoading} />
       </div>
       <ScrollToTop />
     </>

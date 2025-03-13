@@ -12,6 +12,11 @@ export type Games = (typeof GAMES)[number];
 export type TeamType = (typeof TEAMS)[number];
 export type GenderType = (typeof GENDER)[number];
 
+export type WinsLosses = {
+  wins: number;
+  losses: number;
+};
+
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
 
 export type Winner = "team1" | "team2" | "draw";
@@ -58,7 +63,7 @@ export type AdminUser = {
 
 export type Leaderboard = {
   teamId: string;
-  points: [number, number];
+  points: WinsLosses;
 };
 
 export type Bracket = {
@@ -76,11 +81,11 @@ export type Matches = {
     roundId: string;
     seeds: {
       gameNo: number;
-      team1Name: string;
-      team2Name: string;
+      team1Id: string;
+      team2Id: string;
       winner: string;
-      team1Score: number;
-      team2Score: number;
+      scoreTeam1: number;
+      scoreTeam2: number;
     }[];
   }[];
 };

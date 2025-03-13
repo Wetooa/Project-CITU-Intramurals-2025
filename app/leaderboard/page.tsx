@@ -32,17 +32,14 @@ interface LeaderboardContextType {
   fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
 }
 
-const fetchLeaderboard = async (category?: string) => {
-  const url = category
-    ? `/api/leaderboard?category=${category}`
-    : "/api/leaderboard";
-  console.log("The url being used: ", url);
+const fetchLeaderboard = async () => {
+  const url = `/api/leaderboard`;
 
   const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -55,7 +52,7 @@ const fetchLeaderboardHighlights = async () => {
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -68,7 +65,7 @@ const fetchLeaderboardHighlights = async () => {
 };
 
 const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export default function LeaderBoardScreen() {
@@ -90,11 +87,9 @@ export default function LeaderBoardScreen() {
     isLoading: isLoadingLB,
     isError: isErrorLB,
   } = useQuery({
-    queryKey: ["leaderboard", selectedSport, selectedGender],
+    queryKey: ["leaderboard"],
     queryFn: () => {
-      return hasGender()
-        ? fetchLeaderboard(selectedSport + " " + selectedGender)
-        : fetchLeaderboard(selectedSport);
+      return fetchLeaderboard();
     },
   });
 
@@ -109,8 +104,7 @@ export default function LeaderBoardScreen() {
 
   function handleSportChange(sportSelected: string) {
     setSelectedSport(sportSelected);
-    const isSelected = Sports.some((sport) => sport.value === sportSelected);
-    setIsSportsSelected(isSelected);
+    setIsSportsSelected(Sports.some((sport) => sport.value === sportSelected));
   }
 
   const containerVariants = {
@@ -437,7 +431,7 @@ export default function LeaderBoardScreen() {
                   dataLB
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
-                        Number(b.points) - Number(a.points)
+                        Number(b.points) - Number(a.points),
                     )
                     .map((item: Leaderboard, index: number) => (
                       <TableRow key={item.teamId} className="text-lg">
@@ -446,10 +440,10 @@ export default function LeaderBoardScreen() {
                             index === 0
                               ? "text-yellow-300"
                               : index === 1
-                              ? "text-gray-200"
-                              : index === 2
-                              ? "text-yellow-900"
-                              : ""
+                                ? "text-gray-200"
+                                : index === 2
+                                  ? "text-yellow-900"
+                                  : ""
                           }`}
                         >
                           {index + 1}
@@ -459,10 +453,10 @@ export default function LeaderBoardScreen() {
                             index === 0
                               ? "text-yellow-300"
                               : index === 1
-                              ? "text-gray-200"
-                              : index === 2
-                              ? "text-yellow-900"
-                              : ""
+                                ? "text-gray-200"
+                                : index === 2
+                                  ? "text-yellow-900"
+                                  : ""
                           }`}
                         >
                           {item.teamId}
