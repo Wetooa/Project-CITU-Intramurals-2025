@@ -24,8 +24,8 @@ export type Team = {
 
 export type Schedule = {
   id: string;
-  team1Id?: TeamType;
-  team2Id?: TeamType;
+  team1Id?: string;
+  team2Id?: string;
 
   matchDate: string;
   matchTime: string;
@@ -58,7 +58,7 @@ export type AdminUser = {
 
 export type Leaderboard = {
   teamId: string;
-  points: number;
+  points: [number, number];
 };
 
 export type Bracket = {

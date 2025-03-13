@@ -17,10 +17,18 @@ export async function GET() {
           (!game || row.get("category") === game) &&
           (row.get("status") as MatchStatus) == "Completed",
       );
+      console.log(game, filteredRows.length);
       leaderboard[game as string] = getLeaderboard(filteredRows);
     });
 
-    leaderboard["Overall"] = getLeaderboard(rows);
+    console.log(leaderboard);
+
+    const allCompleted = rows.filter(
+      (row) => (row.get("status") as MatchStatus) == "Completed",
+    );
+    console.log(allCompleted);
+    console.log(leaderboard["Overall"]);
+    leaderboard["Overall"] = getLeaderboard(allCompleted);
 
     return NextResponse.json(
       { message: "Fetched leaderboard successfully!", leaderboard },

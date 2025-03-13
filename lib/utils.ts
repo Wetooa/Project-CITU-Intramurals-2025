@@ -1,5 +1,4 @@
 import { TEAMS } from "@/types/constant";
-import { TeamType } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { twMerge } from "tailwind-merge";
@@ -16,12 +15,11 @@ export function getDateToday() {
 
 export function getLeaderboard(
   rows: GoogleSpreadsheetRow<Record<string, unknown>>[],
-  byLosses: boolean = false,
 ) {
-  const teamsPoints: Record<string, number> = {};
+  const teamsPoints: Record<string, [number, number]> = {};
 
   TEAMS.forEach((team) => {
-    teamsPoints[team] = 0;
+    teamsPoints[team] = [0, 0];
   });
 
   rows.forEach((row) => {
@@ -32,22 +30,41 @@ export function getLeaderboard(
 
     if (scoreTeam1 === null || scoreTeam2 === null) return;
 
-    if (!byLosses) {
+    if (team1Id.include("&")) {
+      const [a, b] = team1Id.split(" & ");
+      const [x, y] = team1Id.split(" & ");
       if (scoreTeam1 === scoreTeam2) {
-        teamsPoints[team1Id] += 0.5;
-        teamsPoints[team2Id] += 0.5;
+        teamsPoints[a][0] += 0.5;
+        teamsPoints[b][0] += 0.5;
+        teamsPoints[x][0] += 0.5;
+        teamsPoints[y][0] += 0.5;
       } else if (scoreTeam1 > scoreTeam2) {
-        teamsPoints[team1Id] += 1;
+        teamsPoints[a][0] += 1;
+        teamsPoints[b][0] += 1;
+        teamsPoints[x][1] += 1;
+        teamsPoints[y][1] += 1;
       } else {
-        teamsPoints[team2Id] += 1;
+        teamsPoints[a][1] += 1;
+        teamsPoints[b][1] += 1;
+        teamsPoints[x][0] += 1;
+        teamsPoints[y][0] += 1;
       }
     } else {
-      teamsPoints[team1Id] += 1;
+      if (scoreTeam1 === scoreTeam2) {
+        teamsPoints[team1Id][0] += 0.5;
+        teamsPoints[team2Id][0] += 0.5;
+      } else if (scoreTeam1 > scoreTeam2) {
+        teamsPoints[team1Id][0] += 1;
+        teamsPoints[team2Id][1] += 1;
+      } else {
+        teamsPoints[team1Id][1] += 1;
+        teamsPoints[team2Id][0] += 1;
+      }
     }
   });
 
   const leaderboard = Object.entries(teamsPoints)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => b[1][0] - a[1][0])
     .map(([teamId, points]) => {
       return {
         teamId,
