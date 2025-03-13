@@ -28,6 +28,7 @@ export function getLeaderboard(
     const team2Id = row.get("team2Id") as string;
     const scoreTeam1 = row.get("scoreTeam1");
     const scoreTeam2 = row.get("scoreTeam2");
+    const winner = row.get("winner");
 
     if (!scoreTeam1 || !scoreTeam2) return;
 
@@ -35,12 +36,12 @@ export function getLeaderboard(
       const [a, b] = team1Id.trim().split(" & ");
       const [x, y] = team2Id.trim().split(" & ");
 
-      if (scoreTeam1 === scoreTeam2) {
+      if (winner === "draw") {
         teamsPoints[a].wins += 0.5;
         teamsPoints[b].wins += 0.5;
         teamsPoints[x].wins += 0.5;
         teamsPoints[y].wins += 0.5;
-      } else if (scoreTeam1 > scoreTeam2) {
+      } else if (winner == "team1") {
         teamsPoints[a].wins += 1;
         teamsPoints[b].wins += 1;
         teamsPoints[x].losses += 1;
@@ -52,10 +53,10 @@ export function getLeaderboard(
         teamsPoints[y].wins += 1;
       }
     } else {
-      if (scoreTeam1 === scoreTeam2) {
+      if (winner === "draw") {
         teamsPoints[team1Id].wins += 0.5;
         teamsPoints[team2Id].wins += 0.5;
-      } else if (scoreTeam1 > scoreTeam2) {
+      } else if (winner === "team1") {
         teamsPoints[team1Id].wins += 1;
         teamsPoints[team2Id].losses += 1;
       } else {
