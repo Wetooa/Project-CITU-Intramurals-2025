@@ -1,10 +1,5 @@
 "use client";
-import type { Leaderboard } from "@/types/types";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -14,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -22,21 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+import type { Leaderboard } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import {
-  Trophy,
+  ChevronDown,
+  ChevronUp,
   Medal,
   TrendingUp,
-  ChevronUp,
-  ChevronDown,
+  Trophy,
 } from "lucide-react";
-
-interface LeaderboardContextType {
-  dataLB: Leaderboard[] | undefined;
-  isLoadingLB: boolean;
-  isErrorLB: boolean;
-  fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
-}
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const fetchLeaderboardHighlights = async () => {
   const response = await fetch("/api/leaderboard/highlights");
@@ -77,9 +70,10 @@ export default function LeaderBoardScreen() {
     return leaderboard[params];
   };
 
-  const renderedLeaderboard = useMemo(
-    () => filterLeaderboard(leaderboardData, selectedSport, selectedGender),
-    [filterLeaderboard, leaderboardData, selectedSport, selectedGender],
+  const renderedLeaderboard = filterLeaderboard(
+    leaderboardData,
+    selectedSport,
+    selectedGender,
   );
 
   useEffect(() => {
