@@ -106,7 +106,10 @@ export default function ScheduleScreen() {
         </h1>
 
         <div className="space-y-8 max-w-6xl mx-auto">
-          <GameFiltersSchedule filters={filters} setFilters={setFilters} />
+          <GameFiltersSchedule
+            filters={filters}
+            setFiltersAction={setFilters}
+          />
           <DayResultContainer schedule={schedule} isLoading={isLoading} />
         </div>
       </div>
