@@ -22,7 +22,7 @@ export async function GET() {
         biggestWinner: getBiggestWinner(cleanedData),
         biggestLoser: getBiggestLoser(cleanedData),
         bestSports: getBestSports(cleanedData),
-        getBestESports: getBestESports(cleanedData),
+        bestESports: getBestESports(cleanedData),
       },
       { status: 200 },
     );
