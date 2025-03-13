@@ -79,7 +79,7 @@ export default function LeaderBoardScreen() {
 
   const renderedLeaderboard = useMemo(
     () => filterLeaderboard(leaderboardData, selectedSport, selectedGender),
-    [leaderboardData, selectedSport, selectedGender],
+    [filterLeaderboard, leaderboardData, selectedSport, selectedGender],
   );
 
   useEffect(() => {
