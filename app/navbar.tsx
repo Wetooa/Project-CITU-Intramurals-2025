@@ -12,7 +12,7 @@ export function NavBar() {
 
     return (
         <nav
-            className="w-full fixed top-0 z-50 h-16 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">      {/* Logo */}
+            className="w-full px-10 fixed top-0 z-50 h-16 bg-mocha flex justify-between items-center shadow-[0px_9px_0px_0px_rgba(46,_45,_44,_0.1)] p-4 box-border">      {/* Logo */}
             <Image
                 className="h-auto cursor-pointer max-w-full"
                 src="/thetechnologian_logo.svg"

@@ -70,3 +70,17 @@ export type Bracket = {
   scoreTeam2?: number | null;
   winner?: Winner | null;
 };
+
+export type Matches = {
+  rounds: {
+    roundId: string;
+    seeds: {
+      gameNo: number;
+      team1Name: string;
+      team2Name: string;
+      winner: string;
+      team1Score: number;
+      team2Score: number;
+    }[];
+  }[];
+};

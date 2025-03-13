@@ -42,3 +42,8 @@ next-env.d.ts
 
 
 project-citu*
+
+#idea
+.idea
+/.idea
+.idea/git_toolbox_blame.xml
