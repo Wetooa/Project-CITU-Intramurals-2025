@@ -1,55 +1,48 @@
 "use client";
-import type { Leaderboard } from "@/types/types";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+import type { Leaderboard } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import {
-  Trophy,
-  Medal,
-  TrendingUp,
-  ChevronUp,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Volume2,
-  Mic,
-  Music4,
-  Users,
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    ChevronUp,
+    Medal,
+    Mic,
+    Music4,
+    TrendingUp,
+    Trophy,
+    Users,
+    Volume2,
 } from "lucide-react";
-
-interface LeaderboardContextType {
-  dataLB: Leaderboard[] | undefined;
-  isLoadingLB: boolean;
-  isErrorLB: boolean;
-  fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
-}
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const fetchLeaderboardHighlights = async () => {
   const response = await fetch("/api/leaderboard/highlights");
 
   if (!response.ok) {
     throw new Error(
-      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`
+      `Error fetching leaderboard highlights: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -77,7 +70,7 @@ export default function LeaderBoardScreen() {
   const filterLeaderboard = (
     leaderboard: Record<string, Leaderboard[]> | undefined,
     sport: string,
-    gender?: string
+    gender?: string,
   ) => {
     if (!leaderboard) return;
 
@@ -87,9 +80,10 @@ export default function LeaderBoardScreen() {
     return leaderboard[params];
   };
 
-  const renderedLeaderboard = useMemo(
-    () => filterLeaderboard(leaderboardData, selectedSport, selectedGender),
-    [leaderboardData, selectedSport, selectedGender]
+  const renderedLeaderboard = filterLeaderboard(
+    leaderboardData,
+    selectedSport,
+    selectedGender,
   );
 
   useEffect(() => {
@@ -1638,7 +1632,7 @@ export default function LeaderBoardScreen() {
                     renderedLeaderboard
                       .sort(
                         (a: Leaderboard, b: Leaderboard) =>
-                          Number(b.points.wins) - Number(a.points.wins)
+                          Number(b.points.wins) - Number(a.points.wins),
                       )
                       .map((item: Leaderboard, index: number) => (
                         <TableRow
@@ -1649,10 +1643,10 @@ export default function LeaderBoardScreen() {
                               index === 0
                                 ? "bg-gradient-to-r from-yellow-300/10 to-yellow-500/5 hover:from-yellow-300/15 hover:to-yellow-500/10"
                                 : index === 1
-                                ? "bg-gradient-to-r from-gray-300/10 to-gray-400/5 hover:from-gray-300/15 hover:to-gray-400/10"
-                                : index === 2
-                                ? "bg-gradient-to-r from-yellow-700/10 to-yellow-900/5 hover:from-yellow-700/15 hover:to-yellow-900/10"
-                                : ""
+                                  ? "bg-gradient-to-r from-gray-300/10 to-gray-400/5 hover:from-gray-300/15 hover:to-gray-400/10"
+                                  : index === 2
+                                    ? "bg-gradient-to-r from-yellow-700/10 to-yellow-900/5 hover:from-yellow-700/15 hover:to-yellow-900/10"
+                                    : ""
                             }
                           `}
                         >
