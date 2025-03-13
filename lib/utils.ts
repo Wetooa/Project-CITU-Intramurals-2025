@@ -1,4 +1,5 @@
 import { TEAMS } from "@/types/constant";
+import { WinsLosses } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { GoogleSpreadsheetRow } from "google-spreadsheet";
 import { twMerge } from "tailwind-merge";
@@ -16,10 +17,10 @@ export function getDateToday() {
 export function getLeaderboard(
   rows: GoogleSpreadsheetRow<Record<string, unknown>>[],
 ) {
-  const teamsPoints: Record<string, [number, number]> = {};
+  const teamsPoints: Record<string, WinsLosses> = {};
 
   TEAMS.forEach((team) => {
-    teamsPoints[team] = [0, 0];
+    teamsPoints[team] = { wins: 0, losses: 0 };
   });
 
   rows.forEach((row) => {
@@ -35,37 +36,37 @@ export function getLeaderboard(
       const [x, y] = team2Id.trim().split(" & ");
 
       if (scoreTeam1 === scoreTeam2) {
-        teamsPoints[a][0] += 0.5;
-        teamsPoints[b][0] += 0.5;
-        teamsPoints[x][0] += 0.5;
-        teamsPoints[y][0] += 0.5;
+        teamsPoints[a].wins += 0.5;
+        teamsPoints[b].wins += 0.5;
+        teamsPoints[x].wins += 0.5;
+        teamsPoints[y].wins += 0.5;
       } else if (scoreTeam1 > scoreTeam2) {
-        teamsPoints[a][0] += 1;
-        teamsPoints[b][0] += 1;
-        teamsPoints[x][1] += 1;
-        teamsPoints[y][1] += 1;
+        teamsPoints[a].wins += 1;
+        teamsPoints[b].wins += 1;
+        teamsPoints[x].losses += 1;
+        teamsPoints[y].losses += 1;
       } else {
-        teamsPoints[a][1] += 1;
-        teamsPoints[b][1] += 1;
-        teamsPoints[x][0] += 1;
-        teamsPoints[y][0] += 1;
+        teamsPoints[a].losses += 1;
+        teamsPoints[b].losses += 1;
+        teamsPoints[x].wins += 1;
+        teamsPoints[y].wins += 1;
       }
     } else {
       if (scoreTeam1 === scoreTeam2) {
-        teamsPoints[team1Id][0] += 0.5;
-        teamsPoints[team2Id][0] += 0.5;
+        teamsPoints[team1Id].wins += 0.5;
+        teamsPoints[team2Id].wins += 0.5;
       } else if (scoreTeam1 > scoreTeam2) {
-        teamsPoints[team1Id][0] += 1;
-        teamsPoints[team2Id][1] += 1;
+        teamsPoints[team1Id].wins += 1;
+        teamsPoints[team2Id].losses += 1;
       } else {
-        teamsPoints[team1Id][1] += 1;
-        teamsPoints[team2Id][0] += 1;
+        teamsPoints[team1Id].losses += 1;
+        teamsPoints[team2Id].wins += 1;
       }
     }
   });
 
   const leaderboard = Object.entries(teamsPoints)
-    .sort((a, b) => b[1][0] - a[1][0])
+    .sort((a, b) => b[1].wins - a[1].wins)
     .map(([teamId, points]) => {
       return {
         teamId,

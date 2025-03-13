@@ -19,45 +19,65 @@ import {
 } from "@/components/ui/select";
 import { getDateToday } from "@/lib/utils";
 import { GAMES } from "@/types/constant";
+import { Leaderboard, Schedule } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-async function getSchedule(filter: string, category: string) {
-  const date = getDateToday();
-  const response = await fetch(
-    `/api/schedule/filter?matchDate=${date}&status=${filter}&category=${category}`,
-    {
-      cache: "reload",
-      next: { revalidate: 300 },
-    },
-  );
-  const result = await response.json();
-  return result.schedule;
-}
-
-async function getRanking(category: string) {
-  const response = await fetch(`/api/leaderboard?category=${category}`, {
+async function getSchedule() {
+  const response = await fetch(`/api/schedule/`, {
     cache: "reload",
     next: { revalidate: 300 },
   });
   const result = await response.json();
-  return result.leaderboard;
+  return result.schedule as Schedule[];
+}
+
+async function getRanking() {
+  const response = await fetch(`/api/leaderboard/`, {
+    cache: "reload",
+    next: { revalidate: 300 },
+  });
+  const result = await response.json();
+  return result.leaderboard as Record<string, Leaderboard[]>;
 }
 
 export default function Home() {
+  const date = getDateToday();
   const [selectedSport, setSelectedSport] = useState("Basketball 3x3");
   const [filter, setFilter] = useState("Ongoing");
 
-  const { data: ranking, isLoading: isLoadingRanking } = useQuery({
-    queryKey: ["ranking", selectedSport],
-    queryFn: () => getRanking(selectedSport),
+  const { data: rankingData, isLoading: isLoadingRanking } = useQuery({
+    queryKey: ["ranking"],
+    queryFn: () => getRanking(),
   });
 
-  const { data: schedules, isLoading: isLoadingSched } = useQuery({
-    queryKey: ["schedule", selectedSport, filter],
-    queryFn: () => getSchedule(filter, selectedSport),
+  const { data: schedulesData, isLoading: isLoadingSched } = useQuery({
+    queryKey: ["schedule"],
+    queryFn: () => getSchedule(),
   });
+
+  const [ranking, setRanking] = useState<Leaderboard[]>([]);
+  const [schedule, setSchedule] = useState<Schedule[]>([]);
+
+  useEffect(() => {
+    if (!rankingData) return;
+
+    setRanking(rankingData[selectedSport]);
+  }, [rankingData, selectedSport]);
+
+  useEffect(() => {
+    if (!schedulesData) return;
+    setSchedule(
+      schedulesData.filter((sched) => {
+        return (
+          sched.category === selectedSport &&
+          sched.matchDate === date &&
+          sched.status === filter
+        );
+      }),
+    );
+  }, [date, filter, schedulesData, selectedSport]);
 
   return (
     <div className="flex md:pl-12 md:pr-12 pl-6 pr-6 gap-6 w-full h-full ">
@@ -150,11 +170,11 @@ export default function Home() {
         {isLoadingSched ? (
           <HomeMatchesSkeleton />
         ) : (
-          <HomeMatches schedules={schedules} />
+          <HomeMatches schedule={schedule} />
         )}
       </div>
 
-      {isLoadingRanking || !ranking ? (
+      {isLoadingRanking || ranking.length === 0 ? (
         <HomeRankingSkeleton />
       ) : (
         <HomeRanking

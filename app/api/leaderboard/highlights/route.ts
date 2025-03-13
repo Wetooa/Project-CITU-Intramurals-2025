@@ -26,8 +26,6 @@ export async function GET() {
     const previousLeaderboard = getLeaderboard(previousRows);
     const todaysLeaderboard = getLeaderboard(todaysRows);
 
-    const todaysLeaderboardByLoser = getLeaderboard(todaysRows, true);
-
     const previousRanking: Record<string, number> = {};
     const todaysRanking: Record<string, number> = {};
 
@@ -53,7 +51,9 @@ export async function GET() {
     });
 
     const biggestWinner = todaysLeaderboard[0];
-    const biggestLoser = todaysLeaderboardByLoser[0];
+    const biggestLoser = todaysLeaderboard.sort(
+      (a, b) => b.points.losses - a.points.losses,
+    )[0];
 
     return NextResponse.json(
       {
