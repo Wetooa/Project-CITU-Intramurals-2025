@@ -2,7 +2,7 @@
 "use client";
 import { Leaderboard } from "@/types/types";
 import { Button } from "@/components/ui/button";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,24 +32,6 @@ interface LeaderboardContextType {
   fetchLeaderboard: (category: string) => Promise<Leaderboard[]>;
 }
 
-const fetchLeaderboard = async (category?: string) => {
-  const url = category
-    ? `/api/leaderboard?category=${category}`
-    : "/api/leaderboard";
-  console.log("The url being used: ", url);
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(
-      `Error fetching leaderboard: ${response.status} ${response.statusText}`
-    );
-  }
-
-  const dataLB = await response.json();
-  return dataLB.leaderboard;
-};
-
 const fetchLeaderboardHighlights = async () => {
   const response = await fetch("/api/leaderboard/highlights");
 
@@ -67,14 +49,76 @@ const fetchLeaderboardHighlights = async () => {
   };
 };
 
-const LeaderboardContext = createContext<LeaderboardContextType | undefined>(
-  undefined
-);
-
 export default function LeaderBoardScreen() {
   const [selectedSport, setSelectedSport] = useState<string>("Overall");
   const [selectedGender, setSelectedGender] = useState<string>("(Men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
+  const [leaderboardData, setLeaderboardData] =
+    useState<Record<string, Leaderboard[]>>();
+  const [isLoadingLB, setIsLoadingLB] = useState<boolean>(true);
+  const [isErrorLB, setIsErrorLB] = useState<boolean>(false);
+
+  const filterLeaderboard = (
+    leaderboard: Record<string, Leaderboard[]> | undefined,
+    sport: string,
+    gender?: string
+  ) => {
+    if (!leaderboard) return;
+
+    const isGenderful = hasGender();
+    const params = gender && isGenderful ? `${sport} ${gender}` : `${sport}`;
+
+    console.log("Params: " + params);
+    console.log(leaderboard[params]);
+    console.log(leaderboard);
+    return leaderboard[params];
+  };
+
+  const renderedLeaderboard = useMemo(
+    () => filterLeaderboard(leaderboardData, selectedSport, selectedGender),
+    [leaderboardData, selectedSport, selectedGender]
+  );
+
+  useEffect(() => {
+    console.log(selectedGender);
+    console.log(selectedSport);
+  }, [selectedSport, selectedGender]);
+
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        const response = await fetch("/api/leaderboard", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch leaderboard");
+        }
+
+        const data = await response.json();
+
+        if (data) {
+          setLeaderboardData(data.leaderboard);
+          setIsLoadingLB(false);
+        }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        setIsErrorLB(true);
+        return null;
+      }
+    };
+
+    if (!leaderboardData) {
+      fetchLeaderboardData();
+    }
+  }, [leaderboardData]);
+
+  useEffect(() => {
+    console.log(leaderboardData);
+  }, [leaderboardData]);
 
   function hasGender() {
     return (
@@ -84,19 +128,6 @@ export default function LeaderBoardScreen() {
       )
     );
   }
-
-  const {
-    data: dataLB,
-    isLoading: isLoadingLB,
-    isError: isErrorLB,
-  } = useQuery({
-    queryKey: ["leaderboard", selectedSport, selectedGender],
-    queryFn: () => {
-      return hasGender()
-        ? fetchLeaderboard(selectedSport + " " + selectedGender)
-        : fetchLeaderboard(selectedSport);
-    },
-  });
 
   const {
     data: dataHL,
@@ -176,9 +207,7 @@ export default function LeaderBoardScreen() {
     "rounded-full w-40 h-40 object-cover hover:scale-125 transition-all duration-300 lg:mb-5 flex justify-center items-center";
 
   return (
-    <LeaderboardContext.Provider
-      value={{ dataLB, isLoadingLB, isErrorLB, fetchLeaderboard }}
-    >
+    <>
       <div className="w-full  h-full flex  flex-col justify-center items-center px-5 ">
         <div className="w-full text-center lg:text-left">
           <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-14 text-white font-bold pt-10 px-10">
@@ -433,8 +462,8 @@ export default function LeaderBoardScreen() {
                     <TableCell colSpan={4}>Error fetching dataLB</TableCell>
                   </TableRow>
                 )}
-                {dataLB &&
-                  dataLB
+                {renderedLeaderboard &&
+                  renderedLeaderboard
                     .sort(
                       (a: Leaderboard, b: Leaderboard) =>
                         Number(b.points) - Number(a.points)
@@ -480,6 +509,6 @@ export default function LeaderBoardScreen() {
           </div>
         </div>
       </div>
-    </LeaderboardContext.Provider>
+    </>
   );
 }
