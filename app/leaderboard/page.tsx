@@ -1,7 +1,7 @@
 "use client";
 import type { Leaderboard } from "@/types/types";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,6 +29,8 @@ import {
   TrendingUp,
   ChevronUp,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 interface LeaderboardContextType {
@@ -52,6 +54,8 @@ const fetchLeaderboardHighlights = async () => {
     bestMover: data.bestMover,
     biggestWinner: data.biggestWinner,
     biggestLoser: data.biggestLoser,
+    bestSports: data.bestSports,
+    bestESports: data.bestESports,
   };
 };
 
@@ -63,6 +67,8 @@ export default function LeaderBoardScreen() {
     useState<Record<string, Leaderboard[]>>();
   const [isLoadingLB, setIsLoadingLB] = useState<boolean>(true);
   const [isErrorLB, setIsErrorLB] = useState<boolean>(false);
+  const [activeHighlight, setActiveHighlight] = useState<number>(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const filterLeaderboard = (
     leaderboard: Record<string, Leaderboard[]> | undefined,
@@ -113,6 +119,39 @@ export default function LeaderBoardScreen() {
       fetchLeaderboardData();
     }
   }, [leaderboardData]);
+
+  // Handle carousel scroll events to update active highlight
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!carouselRef.current) return;
+
+      const scrollPosition = carouselRef.current.scrollLeft;
+      const itemWidth = carouselRef.current.offsetWidth;
+      const newActiveIndex = Math.round(scrollPosition / itemWidth);
+
+      if (newActiveIndex !== activeHighlight) {
+        setActiveHighlight(newActiveIndex);
+      }
+    };
+
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener("scroll", handleScroll);
+      return () => carousel.removeEventListener("scroll", handleScroll);
+    }
+  }, [activeHighlight]);
+
+  // Function to scroll to a specific highlight
+  const scrollToHighlight = (index: number) => {
+    if (!carouselRef.current) return;
+
+    const itemWidth = carouselRef.current.offsetWidth;
+    carouselRef.current.scrollTo({
+      left: index * itemWidth,
+      behavior: "smooth",
+    });
+    setActiveHighlight(index);
+  };
 
   function hasGender() {
     return (
@@ -444,114 +483,452 @@ export default function LeaderBoardScreen() {
         )}
 
         {dataHL && (
-          <motion.div
-            className="flex flex-col md:flex-row md:flex-wrap justify-center gap-10 lg:px-20 mt-20"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Biggest Winner Card */}
+          <>
+            {/* Desktop View - Flex Row */}
             <motion.div
-              className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
-              variants={itemVariants}
+              className="hidden lg:flex flex-row flex-wrap justify-center gap-10 px-20 mt-20"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
-                <Image
-                  className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-yellow-400 shadow-lg shadow-yellow-400/20"
-                  src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
-                  alt="Team image of the Best Winner"
-                  width={160}
-                  height={160}
-                />
-                <div className="absolute -top-4 -right-4 bg-yellow-400 rounded-full p-2 shadow-lg">
-                  <Trophy className="w-6 h-6 text-black" />
+              {/* Biggest Winner Card */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-yellow-400 shadow-lg shadow-yellow-400/20"
+                    src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
+                    alt="Team image of the Best Winner"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-yellow-400 rounded-full p-2 shadow-lg">
+                    <Trophy className="w-6 h-6 text-black" />
+                  </div>
                 </div>
-              </div>
-              <div className="relative">
-                <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center whitespace-nowrap text-white font-bold pt-1 px-6  bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                  Biggest Winner Today
-                </p>
-                <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-yellow-500/20 py-8 min-w-64 shadow-lg">
-                  <p className="font-bold text-3xl text-yellow-400">
-                    {dataHL.biggestWinner.teamId}
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white whitespace-nowrap bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Biggest Winner Today
                   </p>
-                  <p className="flex items-center justify-center gap-1 text-green-400">
-                    <ChevronUp className="w-4 h-4" />
-                    {dataHL.biggestWinner.points.wins} Wins
-                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-yellow-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-yellow-400">
+                      {dataHL.biggestWinner.teamId}
+                    </p>
+                    <p className="flex items-center justify-center gap-1 text-green-400">
+                      <ChevronUp className="w-4 h-4" />
+                      {dataHL.biggestWinner.points.wins} Wins
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
+
+              {/* Biggest Loser Card */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Most Losses Today
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">
+                      {dataHL.biggestLoser.teamId}
+                    </p>
+                    <p className="flex items-center justify-center gap-1 text-red-400">
+                      <ChevronDown className="w-4 h-4" />
+                      {dataHL.biggestLoser.points.losses} Losses
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Biggest Mover Card */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-purple-500 shadow-lg shadow-purple-500/20"
+                    src={`/team_logo/${dataHL.bestMover[0]}.png`}
+                    alt="Team image of the Best Mover"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-purple-500 rounded-full p-2 shadow-lg">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Biggest Mover
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-purple-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-purple-400">
+                      {dataHL.bestMover[0]}
+                    </p>
+                    <p className="flex items-center justify-center gap-1 text-purple-400">
+                      <TrendingUp className="w-4 h-4" />#
+                      {dataHL.bestMover[1][0]} → #{dataHL.bestMover[1][1]}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* BEST SPORTS TEAM */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/${dataHL.bestSports.teamId}.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    {dataHL.bestSports.teamId}
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">
+                      {dataHL.bestSports.points.wins}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* BEST ESPORTS TEAM */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/${dataHL.bestESports.teamId}.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    {dataHL.bestESports.teamId}
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">
+                      {dataHL.bestESports.points.wins}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* VOCAL SOLO CHAMPION */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/Capricorn.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Vocal Solo Champion
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">Capricorn</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* VOCAL DUET CHAMPION */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/Capricorn.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Vocal Duet Champion
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">Capricorn</p>
+                  </div>
+                </div>
+              </motion.div>
+              {/* DANCE PALABAS CHAMPION */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/Capricorn.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Dance Palabas Champion
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">Capricorn</p>
+                  </div>
+                </div>
+              </motion.div>
+              {/* BENCH YELLING CHAMPION */}
+              <motion.div
+                className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
+                variants={itemVariants}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                  <Image
+                    className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                    src={`/team_logo/Capricorn.png`}
+                    alt="Team image of the Best Loser"
+                    width={160}
+                    height={160}
+                  />
+                  <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                    <ChevronDown className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="relative">
+                  <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                    Bench Yelling Champion
+                  </p>
+                  <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
+                    <p className="font-bold text-3xl text-red-400">Capricorn</p>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Biggest Loser Card */}
-            <motion.div
-              className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
-              variants={itemVariants}
-            >
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
-                <Image
-                  className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
-                  src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
-                  alt="Team image of the Best Loser"
-                  width={160}
-                  height={160}
-                />
-                <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
-                  <ChevronDown className="w-6 h-6 text-white" />
+            {/* Mobile/Tablet View - Carousel */}
+            <div className="lg:hidden relative mt-20 px-4">
+              {/* Carousel Container */}
+              <div
+                ref={carouselRef}
+                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
+              >
+                {/* Biggest Winner Card */}
+                <div className="flex-shrink-0 w-full snap-center px-4">
+                  <motion.div
+                    className="flex flex-col gap-5 pt-5 rounded-3xl items-center mx-auto max-w-xs"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                      <Image
+                        className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-yellow-400 shadow-lg shadow-yellow-400/20"
+                        src={`/team_logo/${dataHL.biggestWinner.teamId}.png`}
+                        alt="Team image of the Best Winner"
+                        width={160}
+                        height={160}
+                      />
+                      <div className="absolute -top-4 -right-4 bg-yellow-400 rounded-full p-2 shadow-lg">
+                        <Trophy className="w-6 h-6 text-black" />
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-black bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                        Biggest Winner Today
+                      </p>
+                      <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-yellow-500/20 py-8 w-full shadow-lg">
+                        <p className="font-bold text-3xl text-yellow-400">
+                          {dataHL.biggestWinner.teamId}
+                        </p>
+                        <p className="flex items-center justify-center gap-1 text-green-400">
+                          <ChevronUp className="w-4 h-4" />
+                          {dataHL.biggestWinner.points.wins} Wins
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-              <div className="relative">
-                <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                  Most Losses Today
-                </p>
-                <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 min-w-64 shadow-lg">
-                  <p className="font-bold text-3xl text-red-400">
-                    {dataHL.biggestLoser.teamId}
-                  </p>
-                  <p className="flex items-center justify-center gap-1 text-red-400">
-                    <ChevronDown className="w-4 h-4" />
-                    {dataHL.biggestLoser.points.losses} Losses
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            {/* Biggest Mover Card */}
-            <motion.div
-              className="flex flex-col gap-5 pt-5 rounded-3xl min-w-64 items-center"
-              variants={itemVariants}
-            >
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
-                <Image
-                  className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-purple-500 shadow-lg shadow-purple-500/20"
-                  src={`/team_logo/${dataHL.bestMover[0]}.png`}
-                  alt="Team image of the Best Mover"
-                  width={160}
-                  height={160}
-                />
-                <div className="absolute -top-4 -right-4 bg-purple-500 rounded-full p-2 shadow-lg">
-                  <TrendingUp className="w-6 h-6 text-white" />
+                {/* Biggest Loser Card */}
+                <div className="flex-shrink-0 w-full snap-center px-4">
+                  <motion.div
+                    className="flex flex-col gap-5 pt-5 rounded-3xl items-center mx-auto max-w-xs"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                  >
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                      <Image
+                        className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-red-500 shadow-lg shadow-red-500/20"
+                        src={`/team_logo/${dataHL.biggestLoser.teamId}.png`}
+                        alt="Team image of the Best Loser"
+                        width={160}
+                        height={160}
+                      />
+                      <div className="absolute -top-4 -right-4 bg-red-500 rounded-full p-2 shadow-lg">
+                        <ChevronDown className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                        Most Losses Today
+                      </p>
+                      <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-red-500/20 py-8 w-full shadow-lg">
+                        <p className="font-bold text-3xl text-red-400">
+                          {dataHL.biggestLoser.teamId}
+                        </p>
+                        <p className="flex items-center justify-center gap-1 text-red-400">
+                          <ChevronDown className="w-4 h-4" />
+                          {dataHL.biggestLoser.points.losses} Losses
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Biggest Mover Card */}
+                <div className="flex-shrink-0 w-full snap-center px-4">
+                  <motion.div
+                    className="flex flex-col gap-5 pt-5 rounded-3xl items-center mx-auto max-w-xs"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full opacity-20 group-hover:opacity-30 transition-opacity duration-300 blur-md"></div>
+                      <Image
+                        className="rounded-full w-40 h-40 object-cover hover:scale-110 transition-all duration-300 mb-5 border-4 border-purple-500 shadow-lg shadow-purple-500/20"
+                        src={`/team_logo/${dataHL.bestMover[0]}.png`}
+                        alt="Team image of the Best Mover"
+                        width={160}
+                        height={160}
+                      />
+                      <div className="absolute -top-4 -right-4 bg-purple-500 rounded-full p-2 shadow-lg">
+                        <TrendingUp className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
+                        Biggest Mover
+                      </p>
+                      <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-purple-500/20 py-8 w-full shadow-lg">
+                        <p className="font-bold text-3xl text-purple-400">
+                          {dataHL.bestMover[0]}
+                        </p>
+                        <p className="flex items-center justify-center gap-1 text-purple-400">
+                          <TrendingUp className="w-4 h-4" />#
+                          {dataHL.bestMover[1][0]} → #{dataHL.bestMover[1][1]}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
-              <div className="relative">
-                <p className="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-center font-bold pt-1 px-6 text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-full w-48 h-10 flex items-center justify-center shadow-lg">
-                  Most Improved
-                </p>
-                <div className="rounded-xl bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-purple-500/20 py-8 min-w-64 shadow-lg">
-                  <p className="font-bold text-3xl text-purple-400">
-                    {dataHL.bestMover[0]}
-                  </p>
-                  <p className="flex items-center justify-center gap-1 text-purple-400">
-                    <TrendingUp className="w-4 h-4" />#{dataHL.bestMover[1][0]}{" "}
-                    → #{dataHL.bestMover[1][1]}
-                  </p>
-                </div>
+
+              {/* Navigation Arrows */}
+              <button
+                onClick={() =>
+                  scrollToHighlight(Math.max(0, activeHighlight - 1))
+                }
+                className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 backdrop-blur-sm z-10"
+                aria-label="Previous highlight"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+
+              <button
+                onClick={() =>
+                  scrollToHighlight(Math.min(2, activeHighlight + 1))
+                }
+                className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 backdrop-blur-sm z-10"
+                aria-label="Next highlight"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+
+              {/* Pagination Dots */}
+              <div className="flex justify-center gap-2 mt-6">
+                {[0, 1, 2].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => scrollToHighlight(index)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      activeHighlight === index
+                        ? "w-8 bg-[#FF4747]"
+                        : "w-2.5 bg-gray-600 hover:bg-gray-500"
+                    }`}
+                    aria-label={`Go to highlight ${index + 1}`}
+                  />
+                ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </>
         )}
       </div>
 
@@ -575,7 +952,7 @@ export default function LeaderBoardScreen() {
             <Select onValueChange={(value) => handleSportChange(value)}>
               <SelectTrigger
                 className={`
-                  w-full h-12 px-4
+                  w-full sm:w-[240px] h-12 px-4
                   bg-gradient-to-br from-[#2a2a2a] to-[#222222]
                   border-[#3a3a3a] hover:border-[#FF4747]/50
                   focus:ring-[#FF4747] focus:ring-opacity-50
@@ -601,6 +978,7 @@ export default function LeaderBoardScreen() {
                       className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
                     >
                       <div className="flex items-center gap-2">
+                        {getSportIcon(sport.value)}
                         {sport.label}
                       </div>
                     </SelectItem>
@@ -633,6 +1011,7 @@ export default function LeaderBoardScreen() {
                       className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
                     >
                       <div className="flex items-center gap-2">
+                        {getSportIcon(sport.value)}
                         {sport.label}
                       </div>
                     </SelectItem>
@@ -696,6 +1075,22 @@ export default function LeaderBoardScreen() {
                         className="rounded-lg my-1 focus:bg-[#FF4747]/20 focus:text-[#FF4747] data-[selected]:bg-[#FF4747]/20 data-[selected]:text-[#FF4747]"
                       >
                         <div className="flex items-center gap-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            {gender.value === "(Men)" ? (
+                              <path d="M10 21v-4a2 2 0 1 1 4 0v4M4 16v-4a6 6 0 1 1 12 0v4" />
+                            ) : (
+                              <path d="M12 9a6 6 0 1 0 0 12 6 6 0 0 0 0-12ZM12 14l-2-2 2-2 2 2-2 2Z" />
+                            )}
+                          </svg>
                           {gender.label}
                         </div>
                       </SelectItem>
