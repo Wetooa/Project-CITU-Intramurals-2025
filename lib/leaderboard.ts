@@ -22,12 +22,12 @@ export function getLeaderboard(rows: Schedule[]) {
       const [a, b] = team1Id.trim().split(" & ");
       const [x, y] = team2Id.trim().split(" & ");
 
-      if (scoreTeam1 === scoreTeam2) {
+      if (winner === "draw") {
         teamsPoints[a].wins += 0.5;
         teamsPoints[b].wins += 0.5;
         teamsPoints[x].wins += 0.5;
         teamsPoints[y].wins += 0.5;
-      } else if (scoreTeam1 > scoreTeam2) {
+      } else if (winner === "team1") {
         teamsPoints[a].wins += 1;
         teamsPoints[b].wins += 1;
         teamsPoints[x].losses += 1;
@@ -39,10 +39,10 @@ export function getLeaderboard(rows: Schedule[]) {
         teamsPoints[y].wins += 1;
       }
     } else {
-      if (scoreTeam1 === scoreTeam2) {
+      if (winner === "draw") {
         teamsPoints[team1Id].wins += 0.5;
         teamsPoints[team2Id].wins += 0.5;
-      } else if (scoreTeam1 > scoreTeam2) {
+      } else if (winner === "team1") {
         teamsPoints[team1Id].wins += 1;
         teamsPoints[team2Id].losses += 1;
       } else {
