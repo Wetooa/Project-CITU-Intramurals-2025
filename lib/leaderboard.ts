@@ -1,4 +1,4 @@
-import { TEAMS, SPORTS } from "@/types/constant";
+import { TEAMS, SPORTS, E_SPORTS } from "@/types/constant";
 import { Schedule, WinsLosses } from "@/types/types";
 import { getDateToday } from "./utils";
 
@@ -127,7 +127,7 @@ export function getBiggestLoser(rows: Schedule[]) {
 }
 
 export function getBestSports(rows: Schedule[]) {
-  const sports = rows.filter((row) => SPORTS.includes(row.category));
+  const sports = rows.filter((row) => E_SPORTS.includes(row.category));
   const leaderboard = getLeaderboard(sports);
   return leaderboard[0];
 }
