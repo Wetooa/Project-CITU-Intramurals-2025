@@ -80,7 +80,7 @@ export default function Home() {
           sched.matchDate === date &&
           sched.status === filter
         );
-      }),
+      })
     );
   }, [date, filter, schedulesData, selectedSport]);
 
@@ -113,14 +113,14 @@ export default function Home() {
               <div className="p-6">
                 <p className="text-xl font-bold text-white mb-4">SPORTS</p>
                 <div className="space-y-3">
-                  {GAMES.slice(0, 16).map((game, index) => (
+                  {GAMES.slice(0, 15).map((game, index) => (
                     <p
                       key={index}
                       className={cn(
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white",
+                          : "text-gray-300 hover:text-white"
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -133,14 +133,14 @@ export default function Home() {
                   ESPORTS
                 </p>
                 <div className="space-y-3">
-                  {GAMES.slice(16).map((game, index) => (
+                  {GAMES.slice(15).map((game, index) => (
                     <p
                       key={index}
                       className={cn(
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white",
+                          : "text-gray-300 hover:text-white"
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -178,14 +178,14 @@ export default function Home() {
 
           <p className="text-xl font-bold text-white mb-4">SPORTS</p>
           <div className="space-y-3">
-            {GAMES.slice(0, 16).map((game, index) => (
+            {GAMES.slice(0, 15).map((game, index) => (
               <p
                 key={index}
                 className={cn(
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white",
+                    : "text-gray-300 hover:text-white"
                 )}
                 onClick={() => setSelectedSport(game)}
               >
@@ -196,14 +196,14 @@ export default function Home() {
 
           <p className="text-xl font-bold text-white mt-8 mb-4">ESPORTS</p>
           <div className="space-y-3">
-            {GAMES.slice(16).map((game, index) => (
+            {GAMES.slice(15).map((game, index) => (
               <p
                 key={index}
                 className={cn(
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white",
+                    : "text-gray-300 hover:text-white"
                 )}
                 onClick={() => setSelectedSport(game)}
               >
