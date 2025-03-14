@@ -127,13 +127,13 @@ export function getBiggestLoser(rows: Schedule[]) {
 }
 
 export function getBestSports(rows: Schedule[]) {
-  const sports = rows.filter((row) => E_SPORTS.includes(row.category));
+  const sports = rows.filter((row) => SPORTS.includes(row.category));
   const leaderboard = getLeaderboard(sports);
   return leaderboard[0];
 }
 
 export function getBestESports(rows: Schedule[]) {
-  const sports = rows.filter((row) => SPORTS.includes(row.category));
+  const sports = rows.filter((row) => E_SPORTS.includes(row.category));
   const leaderboard = getLeaderboard(sports);
   return leaderboard[0];
 }
