@@ -26,7 +26,7 @@ export async function GET() {
 
     return NextResponse.json({
       message: "Schedule fetched successfully!",
-      cleanedRows,
+      schedule: cleanedRows,
     });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

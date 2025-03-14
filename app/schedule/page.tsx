@@ -17,7 +17,7 @@ export interface Filters {
 }
 
 async function fetchSchedule() {
-  const response = await fetch(`/api/schedule/filter`);
+  const response = await fetch(`/api/schedule`);
   return response.json();
 }
 
