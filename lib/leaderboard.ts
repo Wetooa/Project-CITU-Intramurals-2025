@@ -72,9 +72,10 @@ export function getBestMover(rows: Schedule[]) {
       new Date(row.matchDate).getDate() < new Date(dateToday).getDate() &&
       row.status == "Completed",
   );
+  const currentRows = rows.filter((row) => row.status == "Completed");
 
   const previousLeaderboard = getLeaderboard(previousRows);
-  const allLeaderboard = getLeaderboard(rows);
+  const allLeaderboard = getLeaderboard(currentRows);
 
   const previousRanking: Record<string, number> = {};
   const todaysRanking: Record<string, number> = {};
