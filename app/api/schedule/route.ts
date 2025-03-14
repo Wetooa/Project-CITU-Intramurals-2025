@@ -1,4 +1,5 @@
 import { GS } from "@/db/db";
+import { getCleanedRows } from "@/lib/utils";
 import { Schedule } from "@/types/types";
 import { NextResponse } from "next/server";
 
@@ -10,46 +11,22 @@ export async function GET() {
     // const offset = (page - 1) * limit;
 
     const data = await GS.getSheetData("schedule");
-    const sheet = await data.getRows();
+    const rows = await data.getRows();
+    const cleanedRows = getCleanedRows(rows);
 
     // Sort by matchDate (latest to earliest)
-    sheet.sort(
+    cleanedRows.sort(
       (a, b) =>
-        new Date(b.get("matchDate")).getTime() -
-        new Date(a.get("matchDate")).getTime(),
+        new Date(b.matchDate + " " + b.matchTime).getTime() -
+        new Date(a.matchDate + " " + a.matchTime).getTime(),
     );
 
     // Sort by matchDate (earliest to latest)
     // sheet.sort((a, b) => new Date(a.get("matchDate")).getTime() - new Date(b.get("matchDate")).getTime());
 
-    const schedule: Schedule[] = sheet.map((row) => {
-      return {
-        id: row.get("id"),
-        team1Id: row.get("team1Id"),
-        team2Id: row.get("team2Id"),
-
-        matchDate: row.get("matchDate"),
-        matchTime: row.get("matchTime"),
-
-        category: row.get("category"),
-        venue: row.get("venue"),
-        round: row.get("round"),
-        game: row.get("game"),
-
-        status: row.get("status"),
-        winner: row.get("winner"),
-
-        scoreTeam1: row.get("scoreTeam1"),
-        scoreTeam2: row.get("scoreTeam2"),
-
-        createdOn: new Date(row.get("createdOn")),
-        updatedOn: new Date(row.get("updatedOn")),
-      };
-    });
-
     return NextResponse.json({
       message: "Schedule fetched successfully!",
-      schedule,
+      cleanedRows,
     });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

@@ -1,5 +1,5 @@
 import { GS } from "@/db/db";
-import { Schedule } from "@/types/types";
+import { getCleanedRows } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -19,58 +19,34 @@ export async function GET(req: Request) {
     const winner = searchParams.get("winner") || "";
 
     const data = await GS.getSheetData("schedule");
-    const sheet = await data.getRows();
+    const rows = await data.getRows();
+    const cleanedRows = getCleanedRows(rows);
 
-    const matches = sheet.filter((row) => {
-      const teams = [row.get("team1Id"), row.get("team2Id")];
+    const matches = cleanedRows.filter((row) => {
+      const teams = [row.team1Id, row.team2Id];
 
       const condition =
         (team1Id === "" || teams.includes(team1Id)) &&
         (team2Id === "" || teams.includes(team2Id)) &&
-        (matchDate === "" || row.get("matchDate") === matchDate) &&
-        (category === "" || row.get("category") === category) &&
-        (venue === "" || row.get("venue") === venue) &&
-        (status === "" || row.get("status") === status) &&
-        (round === "" || row.get("round") === round) &&
-        (winner === "" || row.get("winner") === winner);
+        (matchDate === "" || row.matchDate === matchDate) &&
+        (category === "" || row.category === category) &&
+        (venue === "" || row.venue === venue) &&
+        (status === "" || row.status === status) &&
+        (round === "" || row.round === round) &&
+        (winner === "" || row.winner === winner);
 
       return condition;
     });
 
     matches.sort(
       (a, b) =>
-        new Date(b.get("matchDate")).getTime() -
-        new Date(a.get("matchDate")).getTime(),
+        new Date(b.matchDate + " " + b.matchTime).getTime() -
+        new Date(a.matchDate + " " + a.matchTime).getTime(),
     );
-
-    const returnMatches: Schedule[] = matches.map((row) => {
-      return {
-        id: row.get("id"),
-        team1Id: row.get("team1Id"),
-        team2Id: row.get("team2Id"),
-
-        matchDate: row.get("matchDate"),
-        matchTime: row.get("matchTime"),
-
-        category: row.get("category"),
-        gender: row.get("gender"),
-        venue: row.get("venue"),
-        round: row.get("round"),
-        game: row.get("game"),
-
-        status: row.get("status"),
-        winner: row.get("winner"),
-
-        scoreTeam1: row.get("scoreTeam1"),
-        scoreTeam2: row.get("scoreTeam2"),
-        createdOn: new Date(row.get("createdOn")),
-        updatedOn: new Date(row.get("updatedOn")),
-      };
-    });
 
     return NextResponse.json({
       message: "Matches fetched successfully!",
-      schedule: returnMatches,
+      schedule: matches,
     });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
