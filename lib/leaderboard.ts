@@ -53,7 +53,7 @@ export function getLeaderboard(rows: Schedule[]) {
   });
 
   const leaderboard = Object.entries(teamsPoints)
-    .sort((a, b) => b[1].wins - a[1].wins)
+    .sort((a, b) => (b[1].wins - a[1].wins, a[1].losses - b[1].losses))
     .map(([teamId, points]) => {
       return {
         teamId,
