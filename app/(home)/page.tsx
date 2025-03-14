@@ -80,7 +80,7 @@ export default function Home() {
           sched.matchDate === date &&
           sched.status === filter
         );
-      })
+      }),
     );
   }, [date, filter, schedulesData, selectedSport]);
 
@@ -120,7 +120,7 @@ export default function Home() {
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white"
+                          : "text-gray-300 hover:text-white",
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -140,7 +140,7 @@ export default function Home() {
                         "text-base cursor-pointer transition-all duration-200 font-bold",
                         selectedSport === game
                           ? "text-red-500"
-                          : "text-gray-300 hover:text-white"
+                          : "text-gray-300 hover:text-white",
                       )}
                       onClick={() => setSelectedSport(game)}
                     >
@@ -185,7 +185,7 @@ export default function Home() {
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white"
+                    : "text-gray-300 hover:text-white",
                 )}
                 onClick={() => setSelectedSport(game)}
               >
@@ -203,7 +203,7 @@ export default function Home() {
                   "text-base cursor-pointer transition-all duration-200 font-bold",
                   selectedSport === game
                     ? "text-red-500"
-                    : "text-gray-300 hover:text-white"
+                    : "text-gray-300 hover:text-white",
                 )}
                 onClick={() => setSelectedSport(game)}
               >
