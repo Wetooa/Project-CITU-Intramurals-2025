@@ -53,7 +53,12 @@ export function getLeaderboard(rows: Schedule[]) {
   });
 
   const leaderboard = Object.entries(teamsPoints)
-    .sort((a, b) => (b[1].wins - a[1].wins, a[1].losses - b[1].losses))
+    .sort((a, b) => {
+      if (a[1].wins !== b[1].wins) {
+        return b[1].wins - a[1].wins;
+      }
+      return a[1].losses - b[1].losses;
+    })
     .map(([teamId, points]) => {
       return {
         teamId,
@@ -70,9 +75,16 @@ export function getBestMover(rows: Schedule[]) {
   const previousRows = rows.filter(
     (row) =>
       new Date(row.matchDate).getDate() < new Date(dateToday).getDate() &&
-      row.status == "Completed",
+      row.status === "Completed",
   );
-  const currentRows = rows.filter((row) => row.status == "Completed");
+  const currentRows = rows.filter((row) => row.status === "Completed");
+
+  // previousRows.forEach((row) => {
+  //   console.log(row.matchDate);
+  // });
+  // currentRows.forEach((row) => {
+  //   console.log(row.matchDate);
+  // });
 
   const previousLeaderboard = getLeaderboard(previousRows);
   const allLeaderboard = getLeaderboard(currentRows);
