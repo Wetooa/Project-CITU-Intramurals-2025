@@ -110,13 +110,24 @@ export const TEAMS_COLORS: Record<string, string> = {
   Leo: "orange",
 };
 
+// export const OFFICIAL_SCORES: Record<string, number> = {
+//   Virgo: 617,
+//   Capricorn: 638,
+//   Taurus: 480,
+//   Scorpio: 685,
+//   Sagittarius: 591,
+//   Leo: 535,
+//   Libra: 524,
+//   Pisces: 408,
+// };
+
 export const OFFICIAL_SCORES: Record<string, number> = {
-  Virgo: 617,
-  Capricorn: 638,
-  Taurus: 480,
-  Scorpio: 685,
-  Sagittarius: 591,
-  Leo: 535,
-  Libra: 524,
-  Pisces: 408,
+  Virgo: 751,
+  Capricorn: 768,
+  Taurus: 593,
+  Scorpio: 808,
+  Sagittarius: 657,
+  Leo: 649,
+  Libra: 567,
+  Pisces: 502,
 };
