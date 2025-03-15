@@ -1,4 +1,4 @@
-import { TEAMS, SPORTS, E_SPORTS } from "@/types/constant";
+import { TEAMS, SPORTS, E_SPORTS, OFFICIAL_SCORES } from "@/types/constant";
 import { Schedule, WinsLosses } from "@/types/types";
 import { getDateToday } from "./utils";
 
@@ -6,7 +6,7 @@ export function getLeaderboard(rows: Schedule[]) {
   const teamsPoints: Record<string, WinsLosses> = {};
 
   TEAMS.forEach((team) => {
-    teamsPoints[team] = { wins: 0, losses: 0 };
+    teamsPoints[team] = { wins: 0, losses: 0, official: OFFICIAL_SCORES[team] };
   });
 
   rows.forEach((row) => {

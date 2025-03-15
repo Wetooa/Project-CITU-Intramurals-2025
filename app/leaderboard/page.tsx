@@ -1,38 +1,38 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import type { Leaderboard } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
-    ChevronDown,
-    ChevronLeft,
-    ChevronRight,
-    ChevronUp,
-    Medal,
-    Mic,
-    Music4,
-    TrendingUp,
-    Trophy,
-    Users,
-    Volume2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Medal,
+  Mic,
+  Music4,
+  TrendingUp,
+  Trophy,
+  Users,
+  Volume2,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -57,7 +57,7 @@ const fetchLeaderboardHighlights = async () => {
 };
 
 export default function LeaderBoardScreen() {
-  const [selectedSport, setSelectedSport] = useState<string>("Overall");
+  const [selectedSport, setSelectedSport] = useState<string>("Official");
   const [selectedGender, setSelectedGender] = useState<string>("(Men)");
   const [isSportSelected, setIsSportsSelected] = useState<boolean>(false);
   const [leaderboardData, setLeaderboardData] =
@@ -139,6 +139,8 @@ export default function LeaderBoardScreen() {
     }
   }, [activeHighlight]);
 
+  console.log("renderedLeaderboard", renderedLeaderboard);
+
   // Function to scroll to a specific highlight
   const scrollToHighlight = (index: number) => {
     if (!carouselRef.current) return;
@@ -155,7 +157,10 @@ export default function LeaderBoardScreen() {
     return (
       isSportSelected &&
       !(
-        selectedSport === "Basketball 3x3" || selectedSport === "Basketball 5x5"
+        selectedSport === "Basketball 3x3" ||
+        selectedSport === "Basketball 5x5" ||
+        selectedSport === "Official" ||
+        selectedSport === "Sports"
       )
     );
   }
@@ -1283,15 +1288,29 @@ export default function LeaderBoardScreen() {
           <Button
             variant="ghost"
             className={`text-2xl font-bold px-6 py-3 rounded-xl transition-all duration-300 ${
-              selectedSport === "Overall"
+              selectedSport === "Official"
                 ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747]"
                 : "hover:bg-[#FF4747]/10 hover:text-[#FF4747]"
             }`}
-            onClick={() => handleSportChange("Overall")}
+            onClick={() => handleSportChange("Official")}
           >
             <Trophy className="mr-2 h-5 w-5" />
-            Overall
+            Official
           </Button>
+
+          <Button
+            variant="ghost"
+            className={`text-2xl font-bold px-6 py-3 rounded-xl transition-all duration-300 ${
+              selectedSport === "Sports"
+                ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747]"
+                : "hover:bg-[#FF4747]/10 hover:text-[#FF4747]"
+            }`}
+            onClick={() => handleSportChange("Sports")}
+          >
+            <Trophy className="mr-2 h-5 w-5" />
+            Sports
+          </Button>
+
           <div className="flex flex-col sm:flex-row justify-between gap-3 w-full max-w-md">
             <Select onValueChange={(value) => handleSportChange(value)}>
               <SelectTrigger
@@ -1457,7 +1476,26 @@ export default function LeaderBoardScreen() {
                     ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747] border-l-4 border-[#FF4747] pl-4"
                     : "hover:bg-[#FF4747]/10 hover:text-[#FF4747] pl-2"
                 }`}
-                onClick={() => handleSportChange("Overall")}
+                onClick={() => handleSportChange("Official")}
+              >
+                <Trophy
+                  className={`mr-3 h-6 w-6 ${
+                    selectedSport === "Official"
+                      ? "text-[#FF4747]"
+                      : "text-gray-400"
+                  }`}
+                />
+                OFFICIAL
+              </Button>
+
+              <Button
+                variant="ghost"
+                className={`w-full justify-start text-2xl font-bold mb-4 rounded-xl h-14 transition-all duration-300 ${
+                  selectedSport === "Sports"
+                    ? "bg-gradient-to-r from-[#FF4747]/20 to-[#FF4747]/5 text-[#FF4747] border-l-4 border-[#FF4747] pl-4"
+                    : "hover:bg-[#FF4747]/10 hover:text-[#FF4747] pl-2"
+                }`}
+                onClick={() => handleSportChange("Sports")}
               >
                 <Trophy
                   className={`mr-3 h-6 w-6 ${
@@ -1466,7 +1504,7 @@ export default function LeaderBoardScreen() {
                       : "text-gray-400"
                   }`}
                 />
-                OVERALL
+                SPORTS
               </Button>
 
               <div className="space-y-6">
@@ -1593,6 +1631,11 @@ export default function LeaderBoardScreen() {
                     <TableHead className="text-right w-20 lg:w-24 md:pr-10 text-white font-bold text-lg">
                       Losses
                     </TableHead>
+                    {selectedSport === "Official" && (
+                      <TableHead className="text-right w-20 lg:w-24 md:pr-10 text-white font-bold text-lg">
+                        Score
+                      </TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -1629,12 +1672,8 @@ export default function LeaderBoardScreen() {
                     </TableRow>
                   )}
                   {renderedLeaderboard &&
-                    renderedLeaderboard
-                      .sort(
-                        (a: Leaderboard, b: Leaderboard) =>
-                          Number(b.points.wins) - Number(a.points.wins),
-                      )
-                      .map((item: Leaderboard, index: number) => (
+                    renderedLeaderboard.map(
+                      (item: Leaderboard, index: number) => (
                         <TableRow
                           key={item.teamId}
                           className={`
@@ -1698,8 +1737,16 @@ export default function LeaderBoardScreen() {
                               {item.points.losses}
                             </span>
                           </TableCell>
+                          {selectedSport === "Official" && (
+                            <TableCell className="text-right pr-6 lg:pr-14">
+                              <span className="bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded-md font-medium">
+                                {item.points.official}
+                              </span>
+                            </TableCell>
+                          )}
                         </TableRow>
-                      ))}
+                      ),
+                    )}
                 </TableBody>
               </Table>
             </div>

@@ -10,6 +10,7 @@ export type GenderType = (typeof GENDER)[number];
 export type WinsLosses = {
   wins: number;
   losses: number;
+  official: number;
 };
 
 export type MatchStatus = "Scheduled" | "Ongoing" | "Completed";
@@ -58,7 +59,7 @@ export type AdminUser = {
 
 export type Leaderboard = {
   teamId: string;
-  points: { wins: number; losses: number };
+  points: WinsLosses;
 };
 
 export type Bracket = {
