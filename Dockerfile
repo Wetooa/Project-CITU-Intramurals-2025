@@ -1,9 +1,20 @@
-FROM node:20-alpine
+# Use official Node image
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
+
+# Copy everything
 COPY . .
+
+# Install deps
+RUN npm install
+
+# Build project
 RUN npm run build
+
+# Expose port
 EXPOSE 3000
+
+# Run app
 CMD ["npm", "start"]
